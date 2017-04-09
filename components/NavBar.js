@@ -11,9 +11,12 @@ import styles from '../styles'
 class NavBar extends Component {
   render() {
     return (
-      <View>
+      <View style = {styles.navContainer}>
         <View style={styles.navbar}>
-          <Text style = {{justifyContent:'center'}}>This is the NavBar</Text>
+          <Text>One</Text>
+          <Text>Two</Text>
+          <Text>Three</Text>
+
         </View>
       </View>
     );

@@ -1,4 +1,4 @@
-// Setup: Initialize Navigation, Firebase
+// Setup: Initialize Navigation
 
 import React, {Component} from 'react';
 import {
