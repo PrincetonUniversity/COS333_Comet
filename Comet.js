@@ -12,7 +12,6 @@ import SignupPage from './pages/SignupPage';
 import SchedulePage from './pages/SchedulePage';
 import AddPage from './pages/AddPage';
 import StatsPage from './pages/StatsPage';
-import ModalExample from './components/ModalExample';
 
 class Comet extends Component {
   render() {
@@ -42,9 +41,6 @@ class Comet extends Component {
     }
     if (route.name == 'StatsPage') {
       return <StatsPage navigator={navigator} />
-    }
-    if (route.name == 'ModalExample') {
-      return <ModalExample navigator={navigator} />
     }
   }  
 }

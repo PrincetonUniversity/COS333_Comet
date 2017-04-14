@@ -9,7 +9,22 @@ import {
 	} from 'react-native';
 import styles from '../styles.js';
 import ModalExample from './ModalExample'
-import { Container, Content, Card, CardItem, Body } from 'native-base';
+import { Card, CardItem } from 'native-base';
+import { 
+  Container, 
+  Content, 
+  Header,
+  Footer, 
+  FooterTab, 
+  Button, 
+  Icon, 
+  Left,
+  Right,
+  Body,
+  Title, 
+  Tab,
+  Tabs
+} from 'native-base';
 
 class EventDisplay extends Component {
   state = {
@@ -30,6 +45,9 @@ class EventDisplay extends Component {
           onRequestClose={() => {alert("Modal has been closed.")}}>
            <View style={{flex:1, marginTop: 22}}>
               <View style={styles.eventCard}>
+                <View style={{alignItems: 'flex-end'}}>
+                  <Icon onPress={()=>this.setModalVisible(!this.state.modalVisible)} name="close" style={{fontSize: 30, fontWeight:'bold',color: 'black'}}/>
+                </View>
                 <View style={{alignItems: 'center'}}>
                   <Text style={{fontWeight: 'bold', fontSize: 17}}>{this.props.event.eventName}</Text>
                 </View>
@@ -46,9 +64,9 @@ class EventDisplay extends Component {
                   />
                 </View>
 
-                <TouchableHighlight onPress={()=>this.setModalVisible(!this.state.modalVisible)} 
+                <TouchableHighlight onPress={()=>{}} 
                                     style={styles.primaryButton}>
-                  <Text style={styles.primaryButtonText}>Close</Text>
+                  <Text style={styles.primaryButtonText}>Edit</Text>
                 </TouchableHighlight>
               </View>
            </View>

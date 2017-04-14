@@ -67,7 +67,7 @@ class SchedulePage extends Component {
 
   render() {
     return (
-      <View style = {{flex:1, marginTop: 22}}>
+      <View style = {{flex:1, backgroundColor: '#eaecef'}}>
        <View style = {styles.screenContainer}>   
          <TitleBar title='Your Scheduled Events'/>
          <ListView dataSource = {this.state.dataSource} 

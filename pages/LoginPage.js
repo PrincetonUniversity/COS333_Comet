@@ -72,7 +72,7 @@ export default class LoginPage extends Component {
         this.setState({
 	        loading: false
 	      });
-        this.props.navigator.push({
+        this.props.navigator.replace({
           name: 'HomePage',
         });
       }

@@ -1,15 +1,27 @@
 // Stats Page
-
 'use strict';
-import React, {Component} from 'react';
+import React, { Component } from 'react';
+import { 
+  Container, 
+  Content, 
+  Header,
+  Footer, 
+  FooterTab, 
+  Button, 
+  Icon, 
+  Text,
+  Left,
+  Right,
+  Body,
+  Title, 
+  Tab,
+  Tabs
+} from 'native-base';
 import {
-    AppRegistry,
-    Navigator,
-    View,
-    Text, 
-    Image
-  } from 'react-native';
-import styles from '../styles';
+  AppRegistry,
+  StyleSheet,
+  View
+} from 'react-native';
 import NavBar from '../components/NavBar';
 
 class StatsPage extends Component {
@@ -19,16 +31,48 @@ class StatsPage extends Component {
 
   render() {
     return (
-      <View style = {{flex:1}}>
-       <View style = {styles.screenContainer}>   
-        <View style = {{flex:1, justifyContent: 'center', alignItems: 'center'}}>
-          <Text style={{justifyContent: 'center'}}>Stats Page</Text>
+        <View style={{flex:1}}>
+        <Container style={{flex:9}}>
+            <Header style={{ backgroundColor: 'gray' }}>
+              <Left>
+                <Button transparent>
+                  <Icon name='menu' />
+                </Button>
+              </Left>
+              <Body>
+                <Title>Attendance Stats</Title>
+              </Body>
+              <Right />
+            </Header>
+            
+            <Text> </Text>
+            <Text> </Text>
+            
+            <Body>
+              <Icon ios='ios-ionic' android="md-ionic" style={{fontSize: 300, color: 'gray'}}/>
+            </Body>
+
+            <Content />
+            <Body>
+            <Button style={{backgroundColor: 'gray'}}>
+              <Text> 78 Absences </Text>
+            </Button>
+            </Body>
+          </Container>
+          <NavBar navigator={this.props.navigator}/>
         </View>
-       </View>
-         <NavBar navigator={this.props.navigator}/>
-      </View>
+        
     );
-  }  
+  }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
+});
+
 
 module.exports = StatsPage;

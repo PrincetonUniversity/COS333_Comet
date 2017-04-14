@@ -5,6 +5,7 @@ var styles = StyleSheet.create({
 	screenContainer: {
 		flex:9,
 		flexDirection: 'column',
+		backgroundColor: 'white',
 	},
 	navContainer:{
 		flex:1,
@@ -23,8 +24,8 @@ var styles = StyleSheet.create({
 		flex:1,
 		flexDirection: 'row',
 		backgroundColor: 'white',
-		borderColor: '#d7dbe2',
-		borderWidth: 1,
+		borderColor: '#eaecef',
+		borderBottomWidth: 1,
 		height: 50,
 		alignItems: 'center',
 		justifyContent: 'space-around',
@@ -35,14 +36,18 @@ var styles = StyleSheet.create({
 	},
 	titleBar: {
 		flexDirection: 'row',
-		backgroundColor: '#373451',
-		height: 40,
+		backgroundColor: '#eaecef',
+		borderColor: 'gray',
+		borderBottomWidth: 1,
+		height: 50,
+		marginTop: 22,
 		alignItems: 'center',
 		justifyContent: 'space-around',
 	},
 	titleBarText: {
 		fontSize: 15,
-		color: 'white',
+		fontWeight: 'bold',
+		color: 'black',
 		alignItems: 'center', 
 	},
 	eventCard: {
@@ -53,12 +58,6 @@ var styles = StyleSheet.create({
 		borderRadius: 10,
 		padding: 35,
 		margin: 35,
-	},
-	mapPlaceHolder: {
-		alignItems: 'center',
-		backgroundColor: 'lightgreen',
-		height: 100,
-		width: 100,
 	},
 	/***********/
 	container: {

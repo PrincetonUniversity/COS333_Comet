@@ -7,7 +7,22 @@ import {
     StyleSheet,
     Navigator
   } from 'react-native';
-import styles from '../styles'
+import styles from '../styles';
+import { 
+  Container, 
+  Content, 
+  Header,
+  Footer, 
+  FooterTab, 
+  Button, 
+  Icon, 
+  Left,
+  Right,
+  Body,
+  Title, 
+  Tab,
+  Tabs
+} from 'native-base';
 
 class NavBar extends Component {
   constructor(props) {
@@ -18,9 +33,9 @@ class NavBar extends Component {
     return (
       <View style = {styles.navContainer}>
         <View style={styles.navbar}>
-          <Text onPress={()=>this._navigate("SchedulePage")}>Schedule</Text>
-          <Text onPress={()=>this._navigate("HomePage")}>Home</Text>
-          <Text onPress={()=>this._navigate("StatsPage")}>Stats</Text>
+          <Icon onPress={()=>this._navigate("HomePage")} name="home" style={{fontSize: 20, color: 'black'}}/>
+          <Icon onPress={()=>this._navigate("SchedulePage")} name="calendar" style={{fontSize: 20, color: 'black'}}/>
+          <Icon onPress={()=>this._navigate("StatsPage")} name="stats" style={{fontSize: 20, color: 'black'}}/>
         </View>
       </View>
     );
