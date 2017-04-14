@@ -18,18 +18,18 @@ class NavBar extends Component {
     return (
       <View style = {styles.navContainer}>
         <View style={styles.navbar}>
-          <Text onPress={()=>this._navigate()}>Schedule</Text>
-          <Text>Two</Text>
-          <Text>Three</Text>
+          <Text onPress={()=>this._navigate("SchedulePage")}>Schedule</Text>
+          <Text onPress={()=>this._navigate("HomePage")}>Home</Text>
+          <Text onPress={()=>this._navigate("StatsPage")}>Stats</Text>
         </View>
       </View>
     );
   }
 
-  _navigate(){
-    /*this.props.navigator.push({
-      name: 'TestScreen', // Matches route.name
-    })*/
+  _navigate(page){
+    this.props.navigator.replace({
+      name: page
+    })
   }
 }
 

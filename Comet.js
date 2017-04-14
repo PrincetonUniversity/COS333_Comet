@@ -9,6 +9,10 @@ import {
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
+import SchedulePage from './pages/SchedulePage';
+import AddPage from './pages/AddPage';
+import StatsPage from './pages/StatsPage';
+import ModalExample from './components/ModalExample';
 
 class Comet extends Component {
   render() {
@@ -24,14 +28,25 @@ class Comet extends Component {
     if (route.name == 'LoginPage') {
       return <LoginPage navigator={navigator} />
     }
-    if (route.name == 'HomePage') {
-      return <HomePage navigator={navigator} />
-    }
     if (route.name == 'SignupPage') {
       return <SignupPage navigator={navigator} />
     }
+    if (route.name == 'HomePage') {
+      return <HomePage navigator={navigator} />
+    }
+    if (route.name == 'SchedulePage') {
+      return <SchedulePage navigator={navigator} />
+    }
+    if (route.name == 'AddPage') {
+      return <AddPage navigator={navigator} />
+    }
+    if (route.name == 'StatsPage') {
+      return <StatsPage navigator={navigator} />
+    }
+    if (route.name == 'ModalExample') {
+      return <ModalExample navigator={navigator} />
+    }
   }  
-
 }
 
 AppRegistry.registerComponent('Comet', () => Comet);

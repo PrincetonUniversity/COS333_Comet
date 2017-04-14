@@ -20,7 +20,6 @@ export default class SignupPage extends Component {
     this.state = {
       // used to display a progress indicator if waiting for a network response.
       loading: false,
-      // entered credentials
       email: '',
       password: ''
     }
@@ -66,15 +65,18 @@ export default class SignupPage extends Component {
           onChangeText={(text) => this.setState({email: text})}
           value={this.state.email}
           placeholder={"Email Address"} />
+
         <TextInput
           style={styles.textInput}
           onChangeText={(text) => this.setState({password: text})}
           value={this.state.password}
           secureTextEntry={true}
           placeholder={"Password"} />
+
         <TouchableHighlight onPress={this.signup.bind(this)} style={styles.primaryButton}>
           <Text style={styles.primaryButtonText}>Signup</Text>
         </TouchableHighlight>
+
         <TouchableHighlight onPress={this.goToLogin.bind(this)} style={styles.transparentButton}>
           <Text style={styles.transparentButtonText}>Go back to login</Text>
         </TouchableHighlight>
