@@ -18,7 +18,7 @@ class Comet extends Component {
     return (
       <Navigator
         initialRoute={{ name: 'LoginPage' }}
-        renderScene = { this.renderScene } 
+        renderScene = { this.renderScene }
       />
     )
   }
@@ -42,7 +42,7 @@ class Comet extends Component {
     if (route.name == 'StatsPage') {
       return <StatsPage navigator={navigator} />
     }
-  }  
+  }
 }
 
 AppRegistry.registerComponent('Comet', () => Comet);

@@ -3,7 +3,7 @@ const {StyleSheet} = React
 
 var styles = StyleSheet.create({
 	screenContainer: {
-		flex:9,
+		flex:10,
 		flexDirection: 'column',
 		backgroundColor: 'white',
 	},
@@ -14,72 +14,68 @@ var styles = StyleSheet.create({
 	navbar: {
 		flex:1,
 		alignItems: 'center',
-		backgroundColor: 'powderblue',
+		backgroundColor: '#c6d6ef',
 		borderColor: 'transparent',
 		borderWidth: 1,
 		justifyContent: 'space-around',
 		flexDirection: 'row'
 	},
-	eventContainer: {
-		flex:1,
-		flexDirection: 'row',
-		backgroundColor: 'white',
-		borderColor: '#eaecef',
-		borderBottomWidth: 1,
-		height: 50,
-		alignItems: 'center',
-		justifyContent: 'space-around',
-	},
-	eventText: {
-		fontSize: 15,
-		alignItems: 'center', 
-	},
 	titleBar: {
 		flexDirection: 'row',
 		backgroundColor: '#eaecef',
 		borderColor: 'gray',
-		borderBottomWidth: 1,
-		height: 50,
-		marginTop: 22,
+		borderBottomWidth: .5,
+		height: 55,
 		alignItems: 'center',
-		justifyContent: 'space-around',
+		justifyContent: 'center',
 	},
 	titleBarText: {
 		fontSize: 15,
 		fontWeight: 'bold',
 		color: 'black',
-		alignItems: 'center', 
+		alignItems: 'center',
 	},
-	eventCard: {
-		flex:1,
-		backgroundColor: 'white',
-		borderColor: 'black',
-		borderWidth: 1,
-		borderRadius: 10,
-		padding: 35,
-		margin: 35,
+	xButton: {
+	    fontSize: 30,
+	    fontWeight:'bold',
+	    color: 'black'
+  	},
+
+  	// Formatting a Card
+  	cardBackground: {
+  		flex:1,
+  		backgroundColor: 'rgba(0,0,0,0.3)',
+  	},
+  	cardBody: {
+	    flex:1,
+	    backgroundColor: 'white',
+	    borderColor: '#eaecef',
+	    borderWidth: 1,
+	    paddingTop: 10,
+	    padding: 25,
+	    margin: 25,
 	},
+
+
+
+
+
 	/***********/
 	container: {
-	    alignItems: 'stretch',
-	    flex: 1
-	},
-	body: {
-	    flex: 9,
-	    flexDirection:'row',
-	    alignItems:'center',
-	    justifyContent:'center',
-	    backgroundColor: '#F5FCFF',
+	    flex: 1,
+			backgroundColor:'#eff3f9'
 	},
  	toolbar: {
 	   	height: 56,
 	    backgroundColor: '#e9eaed',
 	},
 	textInput: {
-	    height: 40,
-	    width: 200,
-	    borderColor: 'black',
-	    borderWidth: .5
+    backgroundColor: 'white',
+    borderColor: 'black',
+    borderWidth: 1,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'space-around',
 	},
 	 transparentButton: {
 	    marginTop: 10,
@@ -93,6 +89,7 @@ var styles = StyleSheet.create({
 	  primaryButton: {
 	    margin: 10,
 	    padding: 15,
+			width: 100,
 	    backgroundColor: '#d7dbe2',
 	  },
 	  primaryButtonText: {

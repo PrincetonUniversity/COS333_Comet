@@ -8,18 +8,18 @@ import {
     Navigator
   } from 'react-native';
 import styles from '../styles';
-import { 
-  Container, 
-  Content, 
+import {
+  Container,
+  Content,
   Header,
-  Footer, 
-  FooterTab, 
-  Button, 
-  Icon, 
+  Footer,
+  FooterTab,
+  Button,
+  Icon,
   Left,
   Right,
   Body,
-  Title, 
+  Title,
   Tab,
   Tabs
 } from 'native-base';

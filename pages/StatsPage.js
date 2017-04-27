@@ -32,7 +32,7 @@ class StatsPage extends Component {
   render() {
     return (
         <View style={{flex:1}}>
-        <Container style={{flex:9}}>
+        <Container style={{flex:10}}>
             <Header style={{ backgroundColor: 'gray' }}>
               <Left>
                 <Button transparent>

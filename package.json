@@ -8,9 +8,16 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^4.0.0",
+    "moment": "^2.18.1",
+    "moment-timezone": "^0.5.13",
     "native-base": "^2.1.1",
     "react": "16.0.0-alpha.6",
-    "react-native": "0.43.2"
+    "react-moment": "^0.2.2",
+    "react-native": "^0.43.4",
+    "react-native-accordion": "^1.0.1",
+    "react-native-collapsible": "^0.8.0",
+    "react-native-maps": "^0.14.0",
+    "react-native-swipeout": "^2.0.12"
   },
   "devDependencies": {
     "babel-jest": "19.0.0",

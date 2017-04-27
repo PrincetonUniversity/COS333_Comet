@@ -20,6 +20,7 @@ export default class LoginPage extends Component {
       email: '',
       password: ''
     }
+    this.ref = Firebase.database().ref();
   }
 
   render() {
@@ -31,7 +32,7 @@ export default class LoginPage extends Component {
           style={styles.textInput}
           onChangeText={(text) => this.setState({email: text})}
           value={this.state.email}
-          placeholder={"Email Address"} />
+          placeholder={"Email Address"}/>
 
         <TextInput
           style={styles.textInput}
@@ -40,13 +41,13 @@ export default class LoginPage extends Component {
           secureTextEntry={true}
           placeholder={"Password"} />
 
-        <TouchableHighlight 
-          onPress={this.login.bind(this)} 
+        <TouchableHighlight
+          onPress={this.login.bind(this)}
           style={styles.primaryButton}>
           <Text style={styles.primaryButtonText}>Login</Text>
         </TouchableHighlight>
-        
-        <TouchableHighlight 
+
+        <TouchableHighlight
           onPress={this.goToSignup.bind(this)}
           style={styles.transparentButton}>
           <Text style={styles.transparentButtonText}>New here?</Text>
@@ -72,6 +73,7 @@ export default class LoginPage extends Component {
         this.setState({
 	        loading: false
 	      });
+        //var user = firebase.auth().currentUser;
         this.props.navigator.replace({
           name: 'HomePage',
         });
