@@ -69,14 +69,21 @@ class AddPage extends Component {
     if (this.state.wednesday == true) {days.push("W")}
     if (this.state.thursday == true) {days.push("Th")}
     if (this.state.friday == true) {days.push("F")}
-    this.itemsRef.push({
+    if (days.length == 0) {days.push(" ")}
+
+    // a new schedule entry
+    var scheduleData = {
       eventName: this.state.eventName,
       location: this.state.location,
       startDate: this.state.startDate.toLocaleDateString(),
       startTime: this.state.startDate.toLocaleTimeString(),
       endDate: this.state.endDate.toLocaleDateString(),
       endTime: this.state.endDate.toLocaleTimeString(),
-      day: days})
+      day: days,
+    };
+
+    var userid = Firebase.auth().currentUser.uid
+    Firebase.database().ref().child('/users/' + userid + '/').push(scheduleData);
     this.props.navigator.pop();
   }
 

@@ -20,7 +20,6 @@ export default class LoginPage extends Component {
       email: '',
       password: ''
     }
-    this.ref = Firebase.database().ref();
   }
 
   render() {
@@ -73,7 +72,9 @@ export default class LoginPage extends Component {
         this.setState({
 	        loading: false
 	      });
-        //var user = firebase.auth().currentUser;
+        Firebase.database().ref('users/' + Firebase.auth().currentUser.uid).update({
+          name: Firebase.auth().currentUser.email
+        });
         this.props.navigator.replace({
           name: 'HomePage',
         });

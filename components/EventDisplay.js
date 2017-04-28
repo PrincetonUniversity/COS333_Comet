@@ -34,7 +34,10 @@ class EventDisplay extends Component {
   }
 
   _deleteEvent() {
-    this.eventsRef.child(this.props.event._key).remove()
+    var userid = Firebase.auth().currentUser.uid
+    var key = this.props.event._key
+    Firebase.database().ref('/users/' + userid + '/').child(key).remove()
+    Firebase.database().ref('/users/' + userid + '/today/').child(key).remove()
     this.setModalVisible(!this.state.modalVisible)
   }
 
