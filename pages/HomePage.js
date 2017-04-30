@@ -12,6 +12,7 @@ import NavBar from '../components/NavBar';
 import styles from '../styles';
 import Coordinates from '../components/Coordinates';
 import Firebase from '../components/Firebase';
+import BackgroundTimer from 'react-native-background-timer';
 var moment = require('moment');
 
 class HomePage extends Component {
@@ -19,42 +20,82 @@ class HomePage extends Component {
     super(props);
     this.state={
       loading: false,
+      currentEvent: null, //currentEvent is a {moment, key}
+      todayEvents: [], // {startTime: moment, _key: key}
+      counter: 0
     }
     this.userid = Firebase.auth().currentUser.uid
-    this.eventsRef = Firebase.database().ref()
+    this.currentEvent = null,
+    this.counter = 0
   }
 
-  componentDidMount() {
+  componentWillMount() {
+    console.log("IM MOUNTING");
     this._renderToday();
   }
 
-  // rendering of today's events
+  componentDidMount() {
+    /*if (this.state.todayEvents.length > 0) {
+      this._checkTime();
+    }*/
+  }
+
+  componentWillUnmount() {
+    var userid = Firebase.auth().currentUser.uid
+    Firebase.database().ref().child('/users/' + userid + '/today/').off();
+  }
+
+  // build list of today events
   _renderToday() {
-    this.eventsRef.child('/users/' + this.userid + '/').on('value', (snap) => {
-      var todayEvents = []
-      var today = new Date()
-      var dayOfWeeksList = ['Sun', 'M', 'T', 'W', 'Th', 'F', 'Sat']
-      var dayOfWeek = dayOfWeeksList[today.getDay()]
-      var t = today.getMonth() + "/" + today.getDate() + "/" + today.getFullYear()
-      var todayDate = moment(t, "MM/DD/YYYY")
-
+    var todayList = Firebase.database().ref().child('/users/' + this.userid + '/today')
+    todayList.on('value', (snap) => {
+      var todayEvents = [];
       snap.forEach((child) => {
-        if (child.key != 'name' && child.key != 'today') {
-          var cStartDate = moment(child.val().startDate, 'MM/DD/YYYY').subtract(1, 'months')
-          var cEndDate = moment(child.val().endDate, 'MM/DD/YYYY').subtract(1, 'months')
-          var cDays = child.val().day
-
-          // within repeat duration and correct day of week
-          if (todayDate >= cStartDate && todayDate <= cEndDate) {
-            if(cDays.includes(" ") || cDays.includes(dayOfWeek)) {
-              Firebase.database().ref('users/' + this.userid + '/today/').update({
-                [child.key]: moment(child.val().startTime, 'h:mm A').format('h:mm A')
-              });
-            }
-          }
-        }
+        todayEvents.push({
+          startTime: moment(child.val(), "h:mm A"),
+          _key: child.key
+        });
       });
+      this.setState({
+        todayEvents: todayEvents,
+      });
+      if (todayEvents.length > 0) {
+        this.currentEvent = todayEvents[0]
+      }
     });
+  }
+
+  _checkTime = () => {
+    //var timerExists = true;
+    console.log("CURRENT STATE ", this.state)
+    if (moment() >= this.currentEvent.startTime) {
+      console.log("state 1");
+      console.log("this event: " + this.currentEvent._key);
+      if (this.counter == this.state.todayEvents.length-1) {
+        const timeoutId = BackgroundTimer.setTimeout(() => {
+    // this will be executed once after 10 seconds
+    // even when app is the the background
+  	     console.log('tac');}, 10000);
+        return(BackgroundTimer.clearTimeout(timeoutId));
+      }
+      var newCounter = this.counter + 1
+      var newEvent = this.state.todayEvents[newCounter]
+        //duration: moment.duration(15000).seconds(),
+      console.log("next event: " + newEvent._key);
+      this.currentEvent = newEvent, //<--CHANGE THIS TO UPDATE FIREBASE EVENT
+      this.counter = newCounter
+    }
+    else {
+      console.log("state 2");
+    }
+    BackgroundTimer.setTimeout(this._checkTime(), this._changeInterval());
+  }
+
+  _changeInterval() {
+    return(
+       moment(this.currentEvent.startTime).diff(moment()) //<--CHANGE TO FIREBASE CALL
+       //interval = 1000
+     );
   }
 
   render() {

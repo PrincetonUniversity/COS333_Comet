@@ -32,6 +32,13 @@ class SchedulePage extends Component {
     this._listenForEvents(this.eventsRef);
   }
 
+  componentWillUnmount() {
+    var userid = Firebase.auth().currentUser.uid
+    this.eventsRef.off();
+    this.eventsRef.child('/users/' + userid + '/').off();
+    this.eventsRef.child('/users/' + userid + '/today/').off();
+  }
+
   setModalVisible(visible) {
     this.setState({modalVisible: visible});
   }
@@ -54,12 +61,22 @@ class SchedulePage extends Component {
 
   _listenForEvents(eventsRef) {
     var userid = Firebase.auth().currentUser.uid
+    var allList = eventsRef.child('/users/' + userid + '/')
+    var todayList = eventsRef.child('/users/' + userid + '/today/')
+    var today = []
 
-    eventsRef.child('/users/' + userid + '/').on('value', (snap) => {
+    allList.on('value', (snap) => {
       var allEvents = [];
       // iterates through each event & adds them to an array
       snap.forEach((child) => {
-        if (child.key != 'name' && child.key != 'today') {
+        if (child.key == 'today') {
+          todayList.on('value', (snap) => {
+            snap.forEach((child) => {
+              today.push(child.key);
+            });
+          });
+        }
+        else if (child.key != 'name') {
           allEvents.push({
             eventName: child.val().eventName,
             day: child.val().day,
@@ -77,13 +94,13 @@ class SchedulePage extends Component {
       });
     });
 
-    /*var totalEvents =
-    eventsRef.child('/users/' + userid + '/today/').on('value', (snap) => {
+    // build list of today events
+    allList = eventsRef.child('/users/' + userid + '/')
+    allList.on('value', (snap) => {
       var todayEvents = [];
-      // iterates through each event & adds them to an array
       snap.forEach((child) => {
-        if (child.key != 'name' && child.key != 'today') {
-          allEvents.push({
+        if (today.includes(child.key)) {
+          todayEvents.push({
             eventName: child.val().eventName,
             day: child.val().day,
             startDate: child.val().startDate,
@@ -96,9 +113,9 @@ class SchedulePage extends Component {
         }
       });
       this.setState({
-        todayEvents: this.state.todayEvents.cloneWithRows(todayEvents)
+        todayEvents: this.state.todayEvents.cloneWithRows(todayEvents),
       });
-    });*/
+    });
   }
 
   render() {
@@ -116,7 +133,13 @@ class SchedulePage extends Component {
           </View>
         </View>
 
-         <ListView dataSource = {this.state.allEvents}
+        <Text style={{backgroundColor: '#eaecef'}}>Events for Today:</Text>
+         <ListView dataSource = {this.state.todayEvents}
+                    renderRow={this._renderEvent.bind(this)}
+                    enableEmptySections={true}/>
+
+        <Text style={{backgroundColor:'#eaecef'}}>All Events:</Text>
+          <ListView dataSource = {this.state.allEvents}
                     renderRow={this._renderEvent.bind(this)}
                     enableEmptySections={true}/>
         </View>

@@ -43,7 +43,43 @@ class EventDisplay extends Component {
 
   render() {
     var sTime = moment(this.props.event.startTime, 'h:mm A').format('h:mm A')
+    var sDate = moment(this.props.event.startDate, 'MM/DD/YYYY').format('MM/DD/YYYY')
     var eTime = moment(this.props.event.endTime, 'h:mm A').format('h:mm A')
+    var eDate = moment(this.props.event.endDate, 'MM/DD/YYYY').format('MM/DD/YYYY')
+
+    // format date
+    if (this.props.event.day.includes(" ")) {
+      var dayDisplay = ""
+    }
+    else if (sDate == eDate) {
+      str = ""
+      for (var i = 0; i < this.props.event.day.length; i++) {
+        str = str + this.props.event.day[i]
+        if (i < (this.props.event.day.length-1)) str = str + ', '
+      }
+      var dayDisplay = "repeats " + str
+    }
+    else {
+      str = ""
+      for (var i = 0; i < this.props.event.day.length; i++) {
+        str = str + this.props.event.day[i]
+        if (i < (this.props.event.day.length)-1) str = str + ', '
+      }
+      var dayDisplay = "repeats " + str + " from " + sDate + " to " + eDate
+    }
+
+    // format location
+    var name = this.props.event.location.name.split(', ')
+    var top = name[0]
+    var bottom = ""
+    for (var i = 1; i < name.length; i++) {
+      bottom = bottom + name[i]
+      if (i < name.length-1){
+        bottom = bottom + ', '
+      }
+    }
+    var locationText = top + '\n' + bottom
+
     return (
       <View>
         <Modal
@@ -61,9 +97,9 @@ class EventDisplay extends Component {
                 </View>
 
                 <View style={{marginTop:10}}>
-                  <Text style={localStyles.eventText}>Location: {this.props.event.location}</Text>
-                  <Text style={localStyles.eventText}>Time: {sTime} - {eTime}</Text>
-                  <Text style={localStyles.eventText}>Days: {this.props.event.day}</Text>
+                  <Text style={localStyles.locationText}>{locationText}</Text>
+                  <Text style={localStyles.eventText}>from {sTime} to {eTime}</Text>
+                  <Text style={localStyles.eventText}>{dayDisplay}</Text>
                 </View>
 
                 <View style={{flexDirection:'row', justifyContent: 'space-around'}}>
@@ -82,7 +118,7 @@ class EventDisplay extends Component {
 
         <TouchableHighlight onPress={()=>this._eventDetails()}>
           <View style={localStyles.eventContainer}>
-            <Text style={localStyles.eventText}>{this.props.event.eventName}</Text>
+            <Text style={localStyles.titleText}>{this.props.event.eventName}</Text>
           </View>
         </TouchableHighlight>
       </View>
@@ -109,8 +145,17 @@ var localStyles = StyleSheet.create({
     padding: 35,
     margin: 35,
   },
-  eventText: {
+  titleText: {
     fontSize: 15,
+    alignItems: 'center',
+  },
+  eventText: {
+    fontSize: 13,
+    alignItems: 'center',
+  },
+  locationText: {
+    fontSize: 13,
+    color: 'navy',
     alignItems: 'center',
   },
 })

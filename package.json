@@ -15,7 +15,10 @@
     "react-moment": "^0.2.2",
     "react-native": "^0.43.4",
     "react-native-accordion": "^1.0.1",
+    "react-native-background-timer": "^1.0.0",
     "react-native-collapsible": "^0.8.0",
+    "react-native-geocoding": "^0.1.0",
+    "react-native-google-places-autocomplete": "^1.2.12",
     "react-native-maps": "^0.14.0",
     "react-native-swipeout": "^2.0.12"
   },

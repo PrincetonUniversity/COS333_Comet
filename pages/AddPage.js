@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import {
   AppRegistry, Text, TextInput, View, TouchableHighlight,
   ActivityIndicator, Image, Alert, ListView, AlertIOS,
-  DatePickerIOS, StyleSheet, ScrollView,
+  DatePickerIOS, StyleSheet, ScrollView, TouchableOpacity
 } from 'react-native';
 import styles from '../styles';
 import Firebase from '../components/Firebase';
@@ -48,6 +48,7 @@ class AddPage extends Component {
     };
     this._M = this._M.bind(this)
     this.setState = this.setState.bind(this)
+    this._updateLocation = this._updateLocation.bind(this)
   }
 
   _checkFields() {
@@ -134,6 +135,21 @@ class AddPage extends Component {
     );
   }
 
+  _navigateLocation() {
+    this.props.navigator.push({
+      name: 'LocationSearchPage',
+      passProps: {
+        updateLocation: this._updateLocation.bind(this),
+      }
+    });
+  }
+
+  _updateLocation(name, lat, long) {
+    this.setState({
+      location: {name : name, latitude: lat, longitude: long}
+    });
+  };
+
   _renderContent(section) {
     if (section.title == 'Starts') {
       return (
@@ -162,23 +178,50 @@ class AddPage extends Component {
       );
     }
   }
+
+
   render() {
+    if (this.state.location == '') {
+      var locationTextStyle = localStyles.placeHolder
+      var locationText = 'Location'
+    }
+    else {
+      var locationTextStyle = localStyles.locationTextStyle
+      var name = this.state.location.name.split(', ')
+      var top = name[0]
+      if (top.length > 47) {
+        var top = top.slice(0,47) + '...'
+      }
+      var bottom = ""
+      for (var i = 1; i < name.length; i++) {
+        bottom = bottom + name[i]
+        if (i < name.length-1){
+          bottom = bottom + ', '
+        }
+      }
+      if (bottom.length > 47) {
+        var bottom = bottom.slice(0,47) + '...'
+      }
+      locationText = top + '\n' + bottom
+    }
+
     const content = this.state.loading ? <ActivityIndicator size="large"/> :
       <View>
         <View style={{height: 20, backgroundColor: '#eff3f9', borderColor: '#d7dbe2', borderBottomWidth: 1}}/>
         <TextInput
           style={localStyles.inputRow}
           placeholder={"Title"}
+          placeholderTextColor={'#d7dbe2'}
           onChangeText={(text) => this.setState({eventName: tr(text)})}
           maxLength = {50}/>
 
         <View style={{height: 1, backgroundColor: 'white', borderColor: '#d7dbe2', borderBottomWidth: 1}}/>
 
-        <TextInput
-          style={localStyles.inputRow}
-          placeholder={"Location"}
-          onChangeText={(text) => this.setState({location: tr(text)})}
-          maxLength = {50}/>
+        <TouchableOpacity style={localStyles.locationRow}
+                          onPress={() => this._navigateLocation()}
+                          activeOpacity={.5}>
+          <Text style={locationTextStyle}>{locationText}</Text>
+        </TouchableOpacity>
 
         <View style={{height: 30, backgroundColor: '#eff3f9', borderColor: '#d7dbe2', borderTopWidth: 1, borderBottomWidth: 1}}/>
 
@@ -244,11 +287,12 @@ class AddPage extends Component {
 
 var localStyles = StyleSheet.create({
   inputRow: {
-    height: 45,
+    height: 50,
     backgroundColor:'white',
     borderColor: '#d7dbe2',
     borderBottomWidth: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
     padding: 12,
     flexDirection: 'row',
   },
@@ -281,7 +325,22 @@ var localStyles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-around',
     padding: 7,
-  }
+  },
+  locationRow: {
+    height: 50,
+    backgroundColor:'white',
+    borderColor: '#d7dbe2',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    paddingLeft: 12,
+    flexDirection: 'row',
+  },
+  placeHolder: {
+    color: '#d7dbe2',
+    fontSize: 15
+  },
+  locationTextStyle: {
+  },
 })
 
 module.exports = AddPage;
