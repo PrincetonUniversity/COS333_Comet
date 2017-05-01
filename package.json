@@ -19,7 +19,6 @@
     "react-native-collapsible": "^0.8.0",
     "react-native-geocoding": "^0.1.0",
     "react-native-google-places-autocomplete": "^1.2.12",
-    "react-native-maps": "^0.14.0",
     "react-native-swipeout": "^2.0.12"
   },
   "devDependencies": {
