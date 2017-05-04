@@ -1,4 +1,5 @@
-dependencies: /Users/ninawang/COS333_Comet/ios/CometTests/CometTests.m \
+dependencies: \
+  /Users/MargaretLi1/Desktop/COS333_Comet/ios/CometTests/CometTests.m \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Library/Frameworks/XCTest.framework/Modules/module.modulemap \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Library/Frameworks/XCTest.framework/Headers/XCUIRemote.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Library/Frameworks/XCTest.framework/Headers/XCUIKeyboardKeys.h \
@@ -34,13 +35,13 @@ dependencies: /Users/ninawang/COS333_Comet/ios/CometTests/CometTests.m \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Library/Frameworks/XCTest.framework/Headers/XCTestErrors.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Library/Frameworks/XCTest.framework/Headers/XCTestDefines.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Library/Frameworks/XCTest.framework/Headers/XCTest.h \
-  /Users/ninawang/COS333_Comet/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTLog.h \
-  /Users/ninawang/COS333_Comet/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTAssert.h \
-  /Users/ninawang/COS333_Comet/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTDefines.h \
-  /Users/ninawang/COS333_Comet/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTRootView.h \
-  /Users/ninawang/COS333_Comet/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTBridge.h \
-  /Users/ninawang/COS333_Comet/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTBridgeDelegate.h \
-  /Users/ninawang/COS333_Comet/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTJavaScriptLoader.h \
-  /Users/ninawang/COS333_Comet/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTBridgeModule.h \
-  /Users/ninawang/COS333_Comet/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTFrameUpdate.h \
-  /Users/ninawang/COS333_Comet/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTInvalidating.h
+  /Users/MargaretLi1/Desktop/COS333_Comet/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTLog.h \
+  /Users/MargaretLi1/Desktop/COS333_Comet/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTAssert.h \
+  /Users/MargaretLi1/Desktop/COS333_Comet/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTDefines.h \
+  /Users/MargaretLi1/Desktop/COS333_Comet/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTRootView.h \
+  /Users/MargaretLi1/Desktop/COS333_Comet/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTBridge.h \
+  /Users/MargaretLi1/Desktop/COS333_Comet/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTBridgeDelegate.h \
+  /Users/MargaretLi1/Desktop/COS333_Comet/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTJavaScriptLoader.h \
+  /Users/MargaretLi1/Desktop/COS333_Comet/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTBridgeModule.h \
+  /Users/MargaretLi1/Desktop/COS333_Comet/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTFrameUpdate.h \
+  /Users/MargaretLi1/Desktop/COS333_Comet/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTInvalidating.h

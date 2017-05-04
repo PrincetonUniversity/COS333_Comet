@@ -19,7 +19,8 @@
     "react-native-collapsible": "^0.8.0",
     "react-native-geocoding": "^0.1.0",
     "react-native-google-places-autocomplete": "^1.2.12",
-    "react-native-swipeout": "^2.0.12"
+    "react-native-swipeout": "^2.0.12",
+    "react-native-vector-icons": "^4.0.1"
   },
   "devDependencies": {
     "babel-jest": "19.0.0",

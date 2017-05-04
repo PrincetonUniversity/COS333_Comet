@@ -1,23 +1,23 @@
 dependencies: \
-  /Users/ninawang/COS333_Comet/node_modules/react-native/React/Modules/RCTDevSettings.mm \
-  /Users/ninawang/COS333_Comet/node_modules/react-native/React/Modules/RCTDevSettings.h \
-  /Users/ninawang/COS333_Comet/node_modules/react-native/React/Base/RCTBridge.h \
-  /Users/ninawang/COS333_Comet/node_modules/react-native/React/Base/RCTBridgeDelegate.h \
-  /Users/ninawang/COS333_Comet/node_modules/react-native/React/Base/RCTJavaScriptLoader.h \
-  /Users/ninawang/COS333_Comet/node_modules/react-native/React/Base/RCTDefines.h \
-  /Users/ninawang/COS333_Comet/node_modules/react-native/React/Base/RCTBridgeModule.h \
-  /Users/ninawang/COS333_Comet/node_modules/react-native/React/Base/RCTFrameUpdate.h \
-  /Users/ninawang/COS333_Comet/node_modules/react-native/React/Base/RCTInvalidating.h \
-  /Users/ninawang/COS333_Comet/ios/build/Build/Products/Debug-iphonesimulator/include/jschelpers/JavaScriptCore.h \
-  /Users/ninawang/COS333_Comet/ios/build/Build/Products/Debug-iphonesimulator/include/jschelpers/JSCWrapper.h \
-  /Users/ninawang/COS333_Comet/node_modules/react-native/React/Modules/JSCSamplingProfiler.h \
-  /Users/ninawang/COS333_Comet/node_modules/react-native/React/Base/RCTBridge+Private.h \
-  /Users/ninawang/COS333_Comet/node_modules/react-native/React/Base/RCTEventDispatcher.h \
-  /Users/ninawang/COS333_Comet/node_modules/react-native/React/Base/RCTLog.h \
-  /Users/ninawang/COS333_Comet/node_modules/react-native/React/Base/RCTAssert.h \
-  /Users/ninawang/COS333_Comet/node_modules/react-native/React/Profiler/RCTProfile.h \
-  /Users/ninawang/COS333_Comet/node_modules/react-native/React/Base/RCTUtils.h \
-  /Users/ninawang/COS333_Comet/node_modules/react-native/React/DevSupport/RCTPackagerClient.h \
-  /Users/ninawang/COS333_Comet/node_modules/react-native/React/DevSupport/RCTPackagerClientResponder.h \
-  /Users/ninawang/COS333_Comet/node_modules/react-native/React/DevSupport/RCTReloadPackagerMethod.h \
-  /Users/ninawang/COS333_Comet/node_modules/react-native/React/DevSupport/RCTSamplingProfilerPackagerMethod.h
+  /Users/MargaretLi1/Desktop/COS333_Comet/node_modules/react-native/React/Modules/RCTDevSettings.mm \
+  /Users/MargaretLi1/Desktop/COS333_Comet/node_modules/react-native/React/Modules/RCTDevSettings.h \
+  /Users/MargaretLi1/Desktop/COS333_Comet/node_modules/react-native/React/Base/RCTBridge.h \
+  /Users/MargaretLi1/Desktop/COS333_Comet/node_modules/react-native/React/Base/RCTBridgeDelegate.h \
+  /Users/MargaretLi1/Desktop/COS333_Comet/node_modules/react-native/React/Base/RCTJavaScriptLoader.h \
+  /Users/MargaretLi1/Desktop/COS333_Comet/node_modules/react-native/React/Base/RCTDefines.h \
+  /Users/MargaretLi1/Desktop/COS333_Comet/node_modules/react-native/React/Base/RCTBridgeModule.h \
+  /Users/MargaretLi1/Desktop/COS333_Comet/node_modules/react-native/React/Base/RCTFrameUpdate.h \
+  /Users/MargaretLi1/Desktop/COS333_Comet/node_modules/react-native/React/Base/RCTInvalidating.h \
+  /Users/MargaretLi1/Desktop/COS333_Comet/ios/build/Build/Products/Debug-iphonesimulator/include/jschelpers/JavaScriptCore.h \
+  /Users/MargaretLi1/Desktop/COS333_Comet/ios/build/Build/Products/Debug-iphonesimulator/include/jschelpers/JSCWrapper.h \
+  /Users/MargaretLi1/Desktop/COS333_Comet/node_modules/react-native/React/Modules/JSCSamplingProfiler.h \
+  /Users/MargaretLi1/Desktop/COS333_Comet/node_modules/react-native/React/Base/RCTBridge+Private.h \
+  /Users/MargaretLi1/Desktop/COS333_Comet/node_modules/react-native/React/Base/RCTEventDispatcher.h \
+  /Users/MargaretLi1/Desktop/COS333_Comet/node_modules/react-native/React/Base/RCTLog.h \
+  /Users/MargaretLi1/Desktop/COS333_Comet/node_modules/react-native/React/Base/RCTAssert.h \
+  /Users/MargaretLi1/Desktop/COS333_Comet/node_modules/react-native/React/Profiler/RCTProfile.h \
+  /Users/MargaretLi1/Desktop/COS333_Comet/node_modules/react-native/React/Base/RCTUtils.h \
+  /Users/MargaretLi1/Desktop/COS333_Comet/node_modules/react-native/React/DevSupport/RCTPackagerClient.h \
+  /Users/MargaretLi1/Desktop/COS333_Comet/node_modules/react-native/React/DevSupport/RCTPackagerClientResponder.h \
+  /Users/MargaretLi1/Desktop/COS333_Comet/node_modules/react-native/React/DevSupport/RCTReloadPackagerMethod.h \
+  /Users/MargaretLi1/Desktop/COS333_Comet/node_modules/react-native/React/DevSupport/RCTSamplingProfilerPackagerMethod.h

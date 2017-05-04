@@ -2,9 +2,9 @@
 'use strict';
 import React, {Component} from 'react';
 import {AppRegistry, Navigator, View, Text, Image, ListView, TouchableHighlight,
-        Modal, ScrollView} from 'react-native';
+        Modal, ScrollView, StatusBar, StyleSheet} from 'react-native';
 import {Container, Content, Header, Footer, FooterTab, Button, Icon, Left, Right,
-        Body, Title, Tab, Tabs} from 'native-base';
+        Body, Title, Tab, Tabs, Card, CardItem} from 'native-base';
 import styles from '../styles';
 import NavBar from '../components/NavBar';
 import Firebase from '../components/Firebase';
@@ -120,33 +120,83 @@ class SchedulePage extends Component {
 
   render() {
     return (
-      <View style = {{flex:1, backgroundColor: '#eaecef'}}>
-       <View style = {styles.screenContainer}>
-         <View style={styles.titleBar}>
-          <View style = {{flex:1, marginTop: 20, marginLeft: 17}}>
-          </View>
-          <View style = {{flex: 10, marginTop: 20, alignItems: 'center'}}>
-             <Text style={styles.titleBarText}>Your Scheduled Events</Text>
-          </View>
-          <View style = {{flex: 1, marginTop: 20, marginRight: 17, flexDirection: 'row', justifyContent:'flex-end'}}>
-            <Icon onPress={()=>this._navigate()} name="add" style={{fontSize: 30, color: 'navy', fontWeight:'bold'}}/>
-          </View>
-        </View>
 
-        <Text style={{backgroundColor: '#eaecef'}}>Events for Today:</Text>
-         <ListView dataSource = {this.state.todayEvents}
-                    renderRow={this._renderEvent.bind(this)}
-                    enableEmptySections={true}/>
+      <View style={styles.container}>
+        <Container style={{flex:10}}>
+          <Header style={{ backgroundColor: '#483D8B'}}>
+            <Left />
+            <Body>
+              <Title style={{color: 'white'}}>Your Schedule</Title>
+            </Body>
+            <Right>
+              <View>
+                <Icon onPress={()=>this._navigate()} name="add" style={{fontSize: 30, color: 'white', fontWeight:'bold'}}/>
+              </View>
+            </Right>
+          </Header>
+          <StatusBar
+             barStyle="light-content"
+          />
 
-        <Text style={{backgroundColor:'#eaecef'}}>All Events:</Text>
-          <ListView dataSource = {this.state.allEvents}
-                    renderRow={this._renderEvent.bind(this)}
-                    enableEmptySections={true}/>
-        </View>
+          <View style={styles.screenContainer}>
+
+          <Card>
+              <CardItem header style={{backgroundColor: '#5CACEE'}}>
+                  <Text style={{color: 'white', fontSize: 16}}>{"Today's Events:"}</Text>
+              </CardItem>
+              <ListView dataSource = {this.state.todayEvents}
+                  renderRow={this._renderEvent.bind(this)}
+                  enableEmptySections={true}/>
+          </Card>
+
+          <Card>
+              <CardItem header style={{backgroundColor: '#5CACEE'}}>
+                  <Text style={{color: 'white', fontSize: 16}}>All Events:</Text>
+              </CardItem>
+              <ListView dataSource = {this.state.allEvents}
+                  renderRow={this._renderEvent.bind(this)}
+                  enableEmptySections={true}/>
+           </Card>
+
+          </View>
+        </Container>
         <NavBar navigator={this.props.navigator}/>
       </View>
+
+      // <View style={styles.container}>
+      //  <View style = {styles.screenContainer}>
+      //    <View style={styles.titleBar}>
+      //     <View style = {{flex:1, marginTop: 20, marginLeft: 17}}>
+      //     </View>
+      //     <View style = {{flex: 10, marginTop: 20, alignItems: 'center'}}>
+      //        <Text style={styles.titleBarText}>Your Scheduled Events</Text>
+      //     </View>
+      //     <View style = {{flex: 1, marginTop: 20, marginRight: 17, flexDirection: 'row', justifyContent:'flex-end'}}>
+      //       <Icon onPress={()=>this._navigate()} name="add" style={{fontSize: 30, color: 'navy', fontWeight:'bold'}}/>
+      //     </View>
+      //   </View>
+      //
+      //   <Text style={{backgroundColor: '#eaecef'}}>Events for Today:</Text>
+      //    <ListView dataSource = {this.state.todayEvents}
+      //               renderRow={this._renderEvent.bind(this)}
+      //               enableEmptySections={true}/>
+      //
+      //   <Text style={{backgroundColor:'#eaecef'}}>All Events:</Text>
+      //     <ListView dataSource = {this.state.allEvents}
+      //               renderRow={this._renderEvent.bind(this)}
+      //               enableEmptySections={true}/>
+      //   </View>
+      //   <NavBar navigator={this.props.navigator}/>
+      // </View>
     );
   }
 }
+
+const localStyles = StyleSheet.create({
+  heading: {
+
+  },
+});
+
 
 module.exports = SchedulePage;

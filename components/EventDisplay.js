@@ -10,9 +10,8 @@ import {
 	} from 'react-native';
 import styles from '../styles.js';
 import ModalExample from './ModalExample'
-import { Card, CardItem } from 'native-base';
 import { Container, Content, Header, Footer, FooterTab, Button, Icon, Left,
-          Right, Body, Title, Tab, Tabs } from 'native-base';
+          Right, Body, Title, Tab, Tabs, Card, CardItem, H3} from 'native-base';
 import Firebase from './Firebase'
 var moment = require('moment');
 
@@ -86,31 +85,32 @@ class EventDisplay extends Component {
           animationType={"none"}
           transparent={true}
           visible={this.state.modalVisible}>
-           <View style={styles.cardBackground}>
-              <View style={styles.cardBody}>
+           <View style={localStyles.cardBackground}>
+              <View style={localStyles.cardBody}>
                 <View style={{alignItems: 'flex-end'}}>
-                  <Icon onPress={()=>this.setModalVisible(!this.state.modalVisible)} name="close" style={{fontSize: 30, fontWeight:'bold', color: 'black'}}/>
+                  <Icon onPress={()=>this.setModalVisible(!this.state.modalVisible)} name="close"/>
                 </View>
 
                 <View style={{alignItems: 'center'}}>
-                  <Text style={{fontWeight: 'bold', fontSize: 15}}>{this.props.event.eventName}</Text>
+                  <H3 style={{fontSize: 18, color: '#7D7F94'}}>{this.props.event.eventName}</H3>
                 </View>
 
                 <View style={{marginTop:10}}>
-                  <Text style={localStyles.locationText}>{locationText}</Text>
-                  <Text style={localStyles.eventText}>from {sTime} to {eTime}</Text>
+                  <Text style={localStyles.eventText}>{locationText}</Text>
+                  <Text style={localStyles.eventText}>{sTime} to {eTime}</Text>
                   <Text style={localStyles.eventText}>{dayDisplay}</Text>
                 </View>
 
-                <View style={{flexDirection:'row', justifyContent: 'space-around'}}>
-                  <TouchableHighlight onPress={()=>this._deleteEvent()}
-                                      style={styles.primaryButton}>
-                    <Text style={styles.primaryButtonText}>Delete</Text>
-                  </TouchableHighlight>
-                  <TouchableHighlight onPress={()=>{}}
-                                      style={styles.primaryButton}>
-                    <Text style={styles.primaryButtonText}>Edit</Text>
-                  </TouchableHighlight>
+                <View style={{flexDirection:'row', justifyContent: 'space-around', marginTop: 40}}>
+
+                  <Button block onPress={()=>this._deleteEvent()}>
+                      <Text style={{color: 'white'}}>Delete</Text>
+                  </Button>
+                  <Button block onPress={()=>{}}>
+                      <Text style={{color: 'white'}}>Edit</Text>
+                  </Button>
+
+
                 </View>
               </View>
            </View>
@@ -127,6 +127,21 @@ class EventDisplay extends Component {
 }
 
 var localStyles = StyleSheet.create({
+  cardBackground: {
+    flex:1,
+    backgroundColor: 'rgba(0,0,0,0.3)',
+  },
+  cardBody: {
+    flex:1,
+    backgroundColor: 'white',
+    borderColor: '#eaecef',
+    borderWidth: 1,
+    paddingTop: 10,
+    padding: 15,
+    margin: 40,
+    marginTop: 80,
+    marginBottom: 80,
+  },
   eventContainer: {
     flex:1,
     flexDirection: 'row',
@@ -145,18 +160,20 @@ var localStyles = StyleSheet.create({
     padding: 35,
     margin: 35,
   },
-  titleText: {
-    fontSize: 15,
-    alignItems: 'center',
-  },
+  // titleText: {
+  //   fontSize: 15,
+  //   alignItems: 'center',
+  // },
   eventText: {
-    fontSize: 13,
+    fontSize: 14,
     alignItems: 'center',
+    marginTop: 10,
   },
   locationText: {
-    fontSize: 13,
-    color: 'navy',
+    fontSize: 14,
+    color: '#483D8B',
     alignItems: 'center',
+    marginTop: 10,
   },
 })
 

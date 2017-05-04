@@ -1,13 +1,10 @@
 // Home Page
 'use strict';
 import React, {Component} from 'react';
-import {
-    AppRegistry,
-    Navigator,
-    View,
-    Text,
-    Image
-  } from 'react-native';
+import {AppRegistry, Navigator, View, Text, StatusBar, Image, ListView, TouchableHighlight,
+        Modal} from 'react-native';
+import {Container, Content, Header, Footer, FooterTab, Button, Icon, Left, Right,
+          Body, Title, Tab, Tabs} from 'native-base';
 import NavBar from '../components/NavBar';
 import styles from '../styles';
 import Coordinates from '../components/Coordinates';
@@ -35,9 +32,9 @@ class HomePage extends Component {
   }
 
   componentDidMount() {
-    /*if (this.state.todayEvents.length > 0) {
-      this._checkTime();
-    }*/
+    // if (this.state.todayEvents.length > 0) {
+    //   this._checkTime();
+    // }
   }
 
   componentWillUnmount() {
@@ -100,22 +97,38 @@ class HomePage extends Component {
 
   render() {
     return (
-      <View style = {{flex:1}}>
-       <View style = {styles.screenContainer}>
-        <View style = {{flex:1, justifyContent: 'center', alignItems: 'center'}}>
-          <Image style = {{width: 200, height: 200, justifyContent: 'center'}}
-                 source={{uri: 'https://previews.123rf.com/images/natalyon/natalyon1502/natalyon150200013/36745703-Doodle-space-elements-collection-in-black-and-white-ISS-moonwalker-planet-comet-moon-astronaut-alien-Stock-Vector.jpg'}}
+      <View style={styles.container}>
+      <Container style={{flex:10}}>
+          <Header style={{ backgroundColor: '#483D8B', }}>
+            <Left>
+              <View>
+                <Icon onPress={()=>this._navigate()} name="ios-settings" style={{fontSize: 30, color: 'white', fontWeight:'bold'}}/>
+              </View>
+            </Left>
+            <Body>
+              <Title style={{color: 'white'}}>Comet</Title>
+            </Body>
+            <Right/>
+          </Header>
+          <StatusBar
+             barStyle="light-content"
           />
-          <Text style={{justifyContent: 'center'}}>Welcome to Comet!</Text>
-          <Text style={{marginTop: 15, justifyContent: 'center'}}>Your Current Location:</Text>
-          <Coordinates/>
-        </View>
-       </View>
-         <NavBar navigator={this.props.navigator}/>
+
+          <View style={styles.screenContainer}>
+            <View style = {{flex:1, justifyContent: 'center', alignItems: 'center'}}>
+              <Image style = {{width: 150, height: 150, justifyContent: 'center'}}
+                source={{uri: 'comet_logo'}}
+              />
+              <Text style={{justifyContent: 'center'}}>Welcome to Comet!</Text>
+              <Text style={{marginTop: 15, justifyContent: 'center'}}>Your Current Location:</Text>
+              <Coordinates/>
+            </View>
+          </View>
+        </Container>
+        <NavBar navigator={this.props.navigator}/>
       </View>
     );
   }
-
 }
 
 module.exports = HomePage;

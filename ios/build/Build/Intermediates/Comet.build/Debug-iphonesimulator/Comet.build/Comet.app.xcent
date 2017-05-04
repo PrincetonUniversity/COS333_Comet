@@ -3,10 +3,10 @@
 <plist version="1.0">
 <dict>
 	<key>application-identifier</key>
-	<string>FAKETEAMID.org.reactjs.native.example.Comet</string>
+	<string>WKRZ8G7B5R.org.reactjs.native.example.Comet</string>
 	<key>keychain-access-groups</key>
 	<array>
-		<string>FAKETEAMID.org.reactjs.native.example.Comet</string>
+		<string>WKRZ8G7B5R.org.reactjs.native.example.Comet</string>
 	</array>
 </dict>
 </plist>

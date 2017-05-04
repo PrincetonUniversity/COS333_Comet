@@ -3,9 +3,12 @@ import React, {Component} from 'react';
 import {
   AppRegistry, Text, TextInput, View, TouchableHighlight,
   ActivityIndicator, Image, Alert, ListView, AlertIOS,
-  DatePickerIOS, StyleSheet, ScrollView, TouchableOpacity
-} from 'react-native';
+  DatePickerIOS, StyleSheet, ScrollView, TouchableOpacity,
+  StatusBar } from 'react-native';
+import {Container, Content, Header, Footer, FooterTab, Button, Icon, Left, Right,
+        Body, Title, Tab, Tabs} from 'native-base';
 import styles from '../styles';
+import NavBar from '../components/NavBar';
 import Firebase from '../components/Firebase';
 import RadioButton from '../components/RadioButton';
 import Accordion from 'react-native-collapsible/Accordion';
@@ -263,24 +266,57 @@ class AddPage extends Component {
       </View>;
 
     return (
+
       <View style={styles.container}>
-        <View style={styles.titleBar}>
-          <View style = {{flex: 1, marginTop: 20, marginRight: 17, flexDirection: 'row', justifyContent:'flex-end'}}>
-              <Text onPress={()=>this.props.navigator.pop()} style={{fontSize: 15, color: 'navy'}}>Cancel</Text>
-          </View>
-          <View style = {{flex: 3, marginTop: 20, alignItems: 'center'}}>
-              <Text style={styles.titleBarText}>New Event</Text>
-          </View>
-          <View style = {{flex: 1, marginTop: 20, marginRight: 17, flexDirection: 'row', justifyContent:'flex-end'}}>
-              <Text onPress={this._checkFields.bind(this)} style={{fontSize: 15, color: 'navy'}}>Add</Text>
-          </View>
-        </View>
-        <ScrollView style={styles.container}>
-          <View>
-            {content}
-          </View>
-        </ScrollView>
+        <Container style={{flex:10}}>
+          <Header style={{ backgroundColor: '#483D8B' }}>
+            <Left>
+              <View>
+                  <Text onPress={()=>this.props.navigator.pop()} style={{fontSize: 15, color: 'white'}}>Cancel</Text>
+              </View>
+            </Left>
+            <Body>
+              <Title style={{color: 'white'}}>Attendance</Title>
+            </Body>
+            <Right>
+              <View>
+                  <Text onPress={this._checkFields.bind(this)} style={{fontSize: 15, color: 'white'}}>Add</Text>
+              </View>
+            </Right>
+          </Header>
+          <StatusBar
+             barStyle="light-content"
+          />
+
+          <ScrollView style={styles.container}>
+            <View>
+              {content}
+            </View>
+          </ScrollView>
+
+        </Container>
+        <NavBar navigator={this.props.navigator}/>
       </View>
+
+
+      // <View style={styles.container}>
+      //   <View style={styles.titleBar}>
+      //     <View style = {{flex: 1, marginTop: 20, marginRight: 17, flexDirection: 'row', justifyContent:'flex-end'}}>
+      //         <Text onPress={()=>this.props.navigator.pop()} style={{fontSize: 15, color: 'navy'}}>Cancel</Text>
+      //     </View>
+      //     <View style = {{flex: 3, marginTop: 20, alignItems: 'center'}}>
+      //         <Text style={styles.titleBarText}>New Event</Text>
+      //     </View>
+      //     <View style = {{flex: 1, marginTop: 20, marginRight: 17, flexDirection: 'row', justifyContent:'flex-end'}}>
+      //         <Text onPress={this._checkFields.bind(this)} style={{fontSize: 15, color: 'navy'}}>Add</Text>
+      //     </View>
+      //   </View>
+      //   <ScrollView style={styles.container}>
+      //     <View>
+      //       {content}
+      //     </View>
+      //   </ScrollView>
+      // </View>
     );
   }
 }

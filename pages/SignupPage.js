@@ -8,8 +8,12 @@ import {
   TouchableHighlight,
   ActivityIndicator,
   Image,
-  Alert
+  Alert,
+  StyleSheet,
 } from 'react-native';
+import {
+  H1
+} from 'native-base';
 import styles from '../styles';
 import LoginPage from './LoginPage';
 import Firebase from '../components/Firebase';
@@ -29,7 +33,7 @@ export default class SignupPage extends Component {
   signup() {
     this.setState({
       // When waiting for the firebase server show the loading indicator.
-      loading: true      
+      loading: true
     });
 
     // Make a call to firebase to create a new user.
@@ -59,35 +63,44 @@ export default class SignupPage extends Component {
     // The content of the screen should be inputs for a username, password and submit button.
     // If we are loading then we display an ActivityIndicator.
     const content = this.state.loading ? <ActivityIndicator size="large"/> :
-      <View>
+    <View>
+      <View style={localStyles.logoContainer}>
+        <H1 style={{color: 'white', marginTop: 80, marginBottom: 40}}>Welcome!</H1>
+      </View>
+      <View style={localStyles.loginContainer}>
         <TextInput
           style={styles.textInput}
           onChangeText={(text) => this.setState({email: text})}
           value={this.state.email}
-          placeholder={"Email Address"} />
+          placeholder={"Email Address"}
+          placeholderTextColor="rgba(255,255,255,0.7)"/>
 
         <TextInput
           style={styles.textInput}
           onChangeText={(text) => this.setState({password: text})}
           value={this.state.password}
           secureTextEntry={true}
-          placeholder={"Password"} />
+          placeholder={"Password"}
+          placeholderTextColor="rgba(255,255,255,0.7)"/>
 
-        <TouchableHighlight onPress={this.signup.bind(this)} style={styles.primaryButton}>
-          <Text style={styles.primaryButtonText}>Signup</Text>
+        <TouchableHighlight
+          onPress={this.signup.bind(this)}
+          style={localStyles.loginButton}>
+          <Text style={localStyles.loginButtonText}>Signup</Text>
         </TouchableHighlight>
 
-        <TouchableHighlight onPress={this.goToLogin.bind(this)} style={styles.transparentButton}>
-          <Text style={styles.transparentButtonText}>Go back to login</Text>
+        <TouchableHighlight
+          onPress={this.goToLogin.bind(this)}
+          style={localStyles.transparentButton}>
+          <Text style={localStyles.transparentButtonText}>Go back to login</Text>
         </TouchableHighlight>
-      </View>;
+      </View>
+    </View>
 
     // A simple UI with a toolbar, and content below it.
     return (
-      <View style={styles.container}>
-        <View style={styles.body}>
+      <View style={{flex:1, backgroundColor: '#22316C'}}>
           {content}
-        </View>
       </View>
     )
   }
@@ -96,5 +109,39 @@ export default class SignupPage extends Component {
     this.props.navigator.pop();
   }
 }
+
+const localStyles = StyleSheet.create({
+  loginContainer: {
+    padding: 20,
+  },
+  logoContainer: {
+    marginTop: 80,
+    marginBottom: 40,
+    alignItems: 'center',
+    flexGrow: 1,
+    justifyContent: 'center',
+  },
+  loginButton: {
+    padding: 15,
+    marginTop: 40,
+    backgroundColor: '#1C86EE',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  loginButtonText: {
+    color: 'white',
+    textAlign: 'center',
+    fontSize: 16
+  },
+  transparentButton: {
+     marginTop: 10,
+     padding: 15
+   },
+   transparentButtonText: {
+     color: '#1C86EE',
+     textAlign: 'center',
+     fontSize: 16
+   },
+});
 
 module.exports = SignupPage;

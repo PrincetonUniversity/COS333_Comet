@@ -2,10 +2,14 @@ const React = require('react-native')
 const {StyleSheet} = React
 
 var styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		backgroundColor:'#eaecef'
+	},
 	screenContainer: {
 		flex:10,
 		flexDirection: 'column',
-		backgroundColor: 'white',
+		backgroundColor: '#eaecef',
 	},
 	navContainer:{
 		flex:1,
@@ -14,7 +18,7 @@ var styles = StyleSheet.create({
 	navbar: {
 		flex:1,
 		alignItems: 'center',
-		backgroundColor: '#c6d6ef',
+		backgroundColor: '#483D8B',
 		borderColor: 'transparent',
 		borderWidth: 1,
 		justifyContent: 'space-around',
@@ -22,86 +26,52 @@ var styles = StyleSheet.create({
 	},
 	titleBar: {
 		flexDirection: 'row',
-		backgroundColor: '#eaecef',
-		borderColor: 'gray',
-		borderBottomWidth: .5,
-		height: 55,
+		backgroundColor: '#483D8B',
+		height: 65,
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
 	titleBarText: {
 		fontSize: 15,
 		fontWeight: 'bold',
-		color: 'black',
+		color: 'white',
 		alignItems: 'center',
 	},
-	xButton: {
-	    fontSize: 30,
-	    fontWeight:'bold',
-	    color: 'black'
-  	},
-
-  	// Formatting a Card
-  	cardBackground: {
-  		flex:1,
-  		backgroundColor: 'rgba(0,0,0,0.3)',
-  	},
-  	cardBody: {
-	    flex:1,
-	    backgroundColor: 'white',
-	    borderColor: '#eaecef',
-	    borderWidth: 1,
-	    paddingTop: 10,
-	    padding: 25,
-	    margin: 25,
+	primaryButton: {
+		padding: 15,
+		marginTop: 40,
+		backgroundColor: '#1C86EE',
+		alignItems: 'center',
+		justifyContent: 'center',
 	},
-
-
-
-
-
-	/***********/
-	container: {
-	    flex: 1,
-			backgroundColor:'#eff3f9'
+	primaryButtonText: {
+		color: 'white',
+		textAlign: 'center',
+		fontSize: 16
+	},
+	xButton: {
+    fontSize: 30,
+    fontWeight:'bold',
+    color: 'black'
 	},
  	toolbar: {
 	   	height: 56,
 	    backgroundColor: '#e9eaed',
 	},
 	textInput: {
-    backgroundColor: 'white',
-    borderColor: 'black',
-    borderWidth: 1,
-    height: 50,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+		fontSize: 16,
+		color: 'rgba(255,255,255,0.7)',
+		paddingHorizontal: 10,
+    height: 40,
     alignItems: 'center',
     justifyContent: 'space-around',
+		marginBottom: 20,
 	},
-	 transparentButton: {
-	    marginTop: 10,
-	    padding: 15
-	  },
-	  transparentButtonText: {
-	    color: '#0485A9',
-	    textAlign: 'center',
-	    fontSize: 16
-	  },
-	  primaryButton: {
-	    margin: 10,
-	    padding: 15,
-			width: 100,
-	    backgroundColor: '#d7dbe2',
-	  },
-	  primaryButtonText: {
-	    color: 'black',
-	    textAlign: 'center',
-	    fontSize: 15
-	  },
-	  image: {
-	    width: 100,
-	    height: 100
-	  },
-	 /***/
+	image: {
+		width: 100,
+		height: 100,
+	},
 })
 
 

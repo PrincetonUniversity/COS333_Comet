@@ -1,28 +1,31 @@
 // Stats Page
 'use strict';
 import React, { Component } from 'react';
-import { 
-  Container, 
-  Content, 
+import {
+  Container,
+  Content,
   Header,
-  Footer, 
-  FooterTab, 
-  Button, 
-  Icon, 
+  Footer,
+  FooterTab,
+  Button,
+  Icon,
   Text,
   Left,
   Right,
   Body,
-  Title, 
+  Title,
   Tab,
-  Tabs
+  Tabs,
 } from 'native-base';
 import {
   AppRegistry,
   StyleSheet,
-  View
+  View,
+  StatusBar,
 } from 'react-native';
 import NavBar from '../components/NavBar';
+import styles from '../styles';
+
 
 class StatsPage extends Component {
   constructor(props) {
@@ -31,48 +34,40 @@ class StatsPage extends Component {
 
   render() {
     return (
-        <View style={{flex:1}}>
-        <Container style={{flex:10}}>
-            <Header style={{ backgroundColor: 'gray' }}>
-              <Left>
-                <Button transparent>
-                  <Icon name='menu' />
-                </Button>
-              </Left>
-              <Body>
-                <Title>Attendance Stats</Title>
-              </Body>
-              <Right />
-            </Header>
-            
-            <Text> </Text>
-            <Text> </Text>
-            
-            <Body>
-              <Icon ios='ios-ionic' android="md-ionic" style={{fontSize: 300, color: 'gray'}}/>
-            </Body>
 
-            <Content />
-            <Body>
-            <Button style={{backgroundColor: 'gray'}}>
-              <Text> 78 Absences </Text>
-            </Button>
-            </Body>
+        <View style={styles.container}>
+        <Container style={{flex:10}}>
+            <Header style={{ backgroundColor: '#483D8B' }}>
+              <Left/>
+              <Body>
+                <Title style={{color: 'white'}}>Attendance</Title>
+              </Body>
+              <Right/>
+            </Header>
+            <StatusBar
+               barStyle="light-content"
+            />
+
+            <Text></Text>
+            <Text></Text>
+
+            <View style = {{flex:1, justifyContent: 'center', alignItems: 'center'}}>
+              <Body>
+                <Icon ios='ios-ionic' android="md-ionic" style={{fontSize: 300, color: '#5CACEE'}}/>
+              </Body>
+              <Content/>
+              <Body>
+                <Button rounded style={{backgroundColor: '#5CACEE', alignItems: 'center'}}>
+                  <Text> 78 Absences </Text>
+                </Button>
+              </Body>
+            </View>
+
           </Container>
           <NavBar navigator={this.props.navigator}/>
         </View>
-        
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
-  }
-});
-
 
 module.exports = StatsPage;

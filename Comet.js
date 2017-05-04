@@ -96,13 +96,19 @@ class Comet extends Component {
   }
 
   render() {
+    console.log("in render");
     let route = this.state.user ? {name: 'HomePage'} : {name: 'LoginPage'}
     // loading screen
     if (!this.state.loadedToday) {
+      console.log("Loaded today!");
       return (
-        <View/>
+        <Navigator
+          initialRoute={{ name: 'LoginPage' }}
+          renderScene = { this.renderScene }
+        />
       )
     } else {
+      console.log("not loaded today");
       return (
         <Navigator
           initialRoute={route}

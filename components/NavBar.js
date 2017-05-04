@@ -33,9 +33,9 @@ class NavBar extends Component {
     return (
       <View style = {styles.navContainer}>
         <View style={styles.navbar}>
-          <Icon onPress={()=>this._navigate("HomePage")} name="home" style={{fontSize: 20, color: 'black'}}/>
-          <Icon onPress={()=>this._navigate("SchedulePage")} name="calendar" style={{fontSize: 20, color: 'black'}}/>
-          <Icon onPress={()=>this._navigate("StatsPage")} name="stats" style={{fontSize: 20, color: 'black'}}/>
+          <Icon onPress={()=>this._navigate("HomePage")} name="home" style={{fontSize: 20, color: 'white'}}/>
+          <Icon onPress={()=>this._navigate("SchedulePage")} name="calendar" style={{fontSize: 20, color: 'white'}}/>
+          <Icon onPress={()=>this._navigate("StatsPage")} name="stats" style={{fontSize: 20, color: 'white'}}/>
         </View>
       </View>
     );
