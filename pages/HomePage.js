@@ -25,8 +25,8 @@ class HomePage extends Component {
       counter: 0
     }
     this.userid = Firebase.auth().currentUser.uid
-    this.currentEvent = null,
-    this.counter;
+    this.currentEvent = null
+    this.counter = 0
   }
 
   componentWillMount() {
@@ -35,9 +35,15 @@ class HomePage extends Component {
   }
 
   componentDidMount() {
-    if (this.state.todayEvents.length > 0) {
-      this._checkTime();
+    console.log("I'VE MOUNTED");
+    //if (this.state.todayEvents.length > 0)
+
+    var checkTime = () => {
+      console.log("HELLO" + checkTime)
+      //BackgroundTimer.setTimeout(checkTime, 1000);
     }
+    //BackgroundTimer.setTimeout(()=>{}, 1000)
+    //checkTime();
   }
 
   // rendering of firebase list of today's events
@@ -64,7 +70,7 @@ class HomePage extends Component {
             if(cDays.includes(" ") || cDays.includes(dayOfWeek)) {
               // push event to list
               todayEvents.push({
-                startTime: moment(child.val(), "h:mm A"),
+                startTime: moment(child.val().startTime, "h:mm A"),
                 _key: child.key
               });
               // push event to Firebase
@@ -89,42 +95,43 @@ class HomePage extends Component {
         this.currentEvent = todayEvents[0]
       }
     });
+    //console.log("EXCUSE ME: " + todayEvents.length);
   }
 
-  _checkTime = () => {
-    //var timerExists = true;
-    console.log("CURRENT STATE ", this.state)
+/*  _checkTime = () => {
     if (moment() >= this.currentEvent.startTime) {
-      console.log("match");
-      console.log("this event: " + this.currentEvent._key);
+      //console.log("this event: " + this.currentEvent._key);
       if (this.counter == this.state.todayEvents.length-1) {
+        // no more events left; next event is "tomorrow"
         console.log("going to tomorrow")
-        this.setState({
-          currentEvent: moment().add(1, 'days').hours(0).minutes(0).second(0).millisecond(0)
-        });
+        this.currentEvent = {
+            startTime: moment().add(1, 'days').hours(0).minutes(0).second(0).millisecond(0),
+            _key: 'tomorrow'
+        }
+        return;
       }
       else {
+        console.log("match")
         var newCounter = this.counter + 1
+        console.log("counter: " + newCounter);
         var newEvent = this.state.todayEvents[newCounter]
-          //duration: moment.duration(15000).seconds(),
-        console.log("next event: " + newEvent._key);
         this.currentEvent = newEvent, //<--CHANGE THIS TO UPDATE FIREBASE EVENT
         this.counter = newCounter
       }
+       // only update timer when seen event
     }
     else {
-      // no more events left; next event is "tomorrow"
-      console.log("no match");
+      //console.log("no match");
     }
-    BackgroundTimer.setTimeout(this._checkTime(), this._changeInterval());
+    //BackgroundTimer.setTimeout(this._checkTime(), 100000)
   }
 
   _changeInterval() {
+    // when interval is negative...?
     return(
        moment(this.currentEvent.startTime).diff(moment()) //<--CHANGE TO FIREBASE CALL
-       //interval = 1000
      );
-  }
+  }*/
 
   _logout() {
     console.log("Inside logout")
@@ -136,7 +143,7 @@ class HomePage extends Component {
         name: 'LoginPage',
       });
     });
-}
+  }
 
   render() {
     var user = Firebase.auth().currentUser

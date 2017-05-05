@@ -1,3 +1,4 @@
+
 // Setup: Initialize Navigation
 'use strict';
 import React, {Component} from 'react';
@@ -5,7 +6,7 @@ import {
     AppRegistry,
     Navigator,
     Text,
-    View
+    View,
   } from 'react-native';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
@@ -14,100 +15,54 @@ import SchedulePage from './pages/SchedulePage';
 import AddPage from './pages/AddPage';
 import StatsPage from './pages/StatsPage';
 import LocationSearchPage from './pages/LocationSearchPage';
-import Firebase from './components/Firebase'
+import Firebase from './components/Firebase';
+import Loading from './components/Loading';
+import BackgroundTimer from 'react-native-background-timer';
+import Time from './pages/Time';
 var moment = require('moment');
 
 class Comet extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      loadedUser: false,
-      user: null,
-      loadedToday: false,
+      page: null,
     }
   }
 
   componentWillMount() {
     console.log("IM MOUNTING");
-  }
-  componentWillUnmount() {
-    console.log("GOODBYE")
-  }
-
-  componentDidMount() {
-    Firebase.auth().onAuthStateChanged((user)=>this._func(user));
-  }
-
-  _func(user) {
-    if (user) {
-      this.setState({
-        loadedUser: true,
-        user: user
-      });
-      this._renderToday();
-    }
-    else {
-      this.setState({
-        loadedUser: true
-      });
-    }
-  }
-
-  // rendering of today's events
-  _renderToday() {
-    this.userid = Firebase.auth().currentUser.uid
-    this.eventsRef = Firebase.database().ref()
-
-    this.eventsRef.child('/users/' + this.userid + '/').on('value', (snap) => {
-      var todayEvents = []
-      var today = new Date()
-      var dayOfWeeksList = ['Sun', 'M', 'T', 'W', 'Th', 'F', 'Sat']
-      var dayOfWeek = dayOfWeeksList[today.getDay()]
-      var t = today.getMonth() + "/" + today.getDate() + "/" + today.getFullYear()
-      var todayDate = moment(t, "MM/DD/YYYY")
-
-      snap.forEach((child) => {
-        if (child.key != 'name' && child.key != 'today') {
-          var cStartDate = moment(child.val().startDate, 'MM/DD/YYYY').subtract(1, 'months')
-          var cEndDate = moment(child.val().endDate, 'MM/DD/YYYY').subtract(1, 'months')
-          var cDays = child.val().day
-
-          // within repeat duration and correct day of week
-          var count = 0
-          if (todayDate >= cStartDate && todayDate <= cEndDate) {
-            if(cDays.includes(" ") || cDays.includes(dayOfWeek)) {
-              Firebase.database().ref('users/' + this.userid + '/today/').update({
-                [child.key]: moment(child.val().startTime, 'h:mm A').format('h:mm A')
-              });
-              count = count + 1
-            }
-          }
-          if (count == 0) {
-            Firebase.database().ref('users/' + this.userid + '/today/').update({
-              none: null
-            });
-          }
-        }
-      });
-      this.setState({
-        loadedToday: true
-      })
+    const unsubscribe = Firebase.auth().onAuthStateChanged((user) => {
+      // If the user is logged in take them to the home screen
+      if (user != null) {
+        this.setState({page: 'HomePage'});
+        return;
+      }
+      // otherwise have them login
+      this.setState({page: 'LoginPage'});
+      unsubscribe();
     });
   }
 
+  componentDidMount () {
+    BackgroundTimer.setTimeout(()=>{console.log('tic')}, 100);
+  }
+
   render() {
-    let route = this.state.user ? {name: 'HomePage'} : {name: 'LoginPage'}
-    // loading screen
-    if (!this.state.loadedToday) {
+      /*return (
+        <View>
+          <Time/>
+        </View>
+      );*/
+    if (this.state.page) {
       return (
-        <View/>
+        <Navigator
+          initialRoute={{name: this.state.page}}
+          renderScene = { this.renderScene }
+        />
       )
     } else {
       return (
-        <Navigator
-          initialRoute={route}
-          renderScene = { this.renderScene }
-        />
+        <Loading/>
       )
     }
   }
@@ -137,4 +92,4 @@ class Comet extends Component {
   }
 }
 
-AppRegistry.registerComponent('Comet', () => Comet);
+AppRegistry.registerComponent('datepicker', () => Comet);

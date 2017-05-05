@@ -11,6 +11,7 @@ import React, {Component} from 'react';
 import SignupPage from './SignupPage';
 import styles from '../styles';
 import Firebase from '../components/Firebase';
+import Loading from '../components/Loading';
 
 export default class LoginPage extends Component {
   constructor(props){
@@ -25,7 +26,7 @@ export default class LoginPage extends Component {
   render() {
     // The content of the screen should be inputs for a username, password and submit button.
     // If we are loading then we display an ActivityIndicator.
-    const content = this.state.loading ? <ActivityIndicator size="large"/> :
+    const content = this.state.loading ? <Loading/> :
       <View>
         <TextInput
           style={styles.textInput}

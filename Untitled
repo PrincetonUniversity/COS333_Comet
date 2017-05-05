@@ -1,0 +1,32 @@
+componentDidMount() {
+    this._renderToday();
+
+    //ADDED
+    checkTime = () => {
+    timerExists = true;
+    console.log("CURRENT STATE ", this.state)
+    if ((moment().format('MMMM Do YYYY, h:mm')) === (moment(this.state.event).format('MMMM Do YYYY, h:mm'))) {
+      console.log("state 1");
+      this.setState({
+        //duration: moment.duration(15000).seconds(),
+        event: moment(events[eventCounter++]), //<--CHANGE THIS TO UPDATE FIREBASE EVENT
+      });
+    }
+    else {
+      console.log("state 2");
+      this.setState({});
+    }
+    BackgroundTimer.setTimeout(checkTime, this.changeInterval());
+  }
+  checkTime();
+  //
+}
+
+//ADDED
+  changeInterval() {
+  return(
+     interval = moment(this.state.event).diff(moment()) //<--CHANGE TO FIREBASE CALL
+     //interval = 1000
+    );
+}
+//

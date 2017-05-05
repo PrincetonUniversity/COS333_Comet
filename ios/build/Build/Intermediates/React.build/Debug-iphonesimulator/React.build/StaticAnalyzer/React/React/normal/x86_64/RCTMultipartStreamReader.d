@@ -1,3 +1,3 @@
 dependencies: \
-  /Users/ninawang/COS333_Comet/node_modules/react-native/React/Base/RCTMultipartStreamReader.m \
-  /Users/ninawang/COS333_Comet/node_modules/react-native/React/Base/RCTMultipartStreamReader.h
+  /Users/ninawang/datepicker/node_modules/react-native/React/Base/RCTMultipartStreamReader.m \
+  /Users/ninawang/datepicker/node_modules/react-native/React/Base/RCTMultipartStreamReader.h

@@ -12,7 +12,7 @@ import {
   View
 } from 'react-native';
 
-export default class Comet extends Component {
+export default class datepicker extends Component {
   render() {
     return (
       <View style={styles.container}>
@@ -50,4 +50,4 @@ const styles = StyleSheet.create({
   },
 });
 
-AppRegistry.registerComponent('Comet', () => Comet);
+AppRegistry.registerComponent('datepicker', () => datepicker);
