@@ -76,7 +76,7 @@ class SchedulePage extends Component {
             });
           });
         }
-        else if (child.key != 'name') {
+        else if (child.key != 'name' && child.key != 'counter') {
           allEvents.push({
             eventName: child.val().eventName,
             day: child.val().day,

@@ -15,6 +15,8 @@ import AddPage from './pages/AddPage';
 import StatsPage from './pages/StatsPage';
 import LocationSearchPage from './pages/LocationSearchPage';
 import Firebase from './components/Firebase'
+// import Settings from './components/Settings'
+
 var moment = require('moment');
 
 class Comet extends Component {
@@ -140,6 +142,9 @@ class Comet extends Component {
     if (route.name == 'LocationSearchPage') {
       return <LocationSearchPage navigator={navigator} {...route.passProps} />
     }
+    // if (route.name == 'Settings') {
+    //   return <Settings navigator={navigator} {...route.passProps} />
+    // }
   }
 }
 

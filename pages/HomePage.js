@@ -2,14 +2,16 @@
 'use strict';
 import React, {Component} from 'react';
 import {AppRegistry, Navigator, View, Text, StatusBar, Image, ListView, TouchableHighlight,
-        Modal} from 'react-native';
+        Modal, StyleSheet} from 'react-native';
 import {Container, Content, Header, Footer, FooterTab, Button, Icon, Left, Right,
-          Body, Title, Tab, Tabs} from 'native-base';
+          Body, Title, Tab, Tabs, H1, H2, H3} from 'native-base';
 import NavBar from '../components/NavBar';
 import styles from '../styles';
 import Coordinates from '../components/Coordinates';
 import Firebase from '../components/Firebase';
 import BackgroundTimer from 'react-native-background-timer';
+// import LinearGradient from 'react-native-linear-gradient';
+// import Settings from '../components/Settings';
 var moment = require('moment');
 
 class HomePage extends Component {
@@ -32,9 +34,7 @@ class HomePage extends Component {
   }
 
   componentDidMount() {
-    // if (this.state.todayEvents.length > 0) {
-    //   this._checkTime();
-    // }
+    BackgroundTimer.setTimeout((()=>{console.log("tic")}), 1000);
   }
 
   componentWillUnmount() {
@@ -95,6 +95,17 @@ class HomePage extends Component {
      );
   }
 
+  // _navigate(){
+  //   this.props.navigator.push({
+  //     name: 'Settings'
+  //   })
+  // }
+  // _renderEvent(event) {
+  //   return (
+  //     <Settings event={event}></Settings>
+  //   );
+  // }
+
   render() {
     return (
       <View style={styles.container}>
@@ -102,7 +113,7 @@ class HomePage extends Component {
           <Header style={{ backgroundColor: '#483D8B', }}>
             <Left>
               <View>
-                <Icon onPress={()=>this._navigate()} name="ios-settings" style={{fontSize: 30, color: 'white', fontWeight:'bold'}}/>
+                <Icon name="ios-settings" style={{fontSize: 30, color: 'white', fontWeight:'bold'}}/>
               </View>
             </Left>
             <Body>
@@ -114,12 +125,12 @@ class HomePage extends Component {
              barStyle="light-content"
           />
 
-          <View style={styles.screenContainer}>
+          <View style={localStyles.background}>
             <View style = {{flex:1, justifyContent: 'center', alignItems: 'center'}}>
-              <Image style = {{width: 150, height: 150, justifyContent: 'center'}}
-                source={{uri: 'comet_logo'}}
+              <Text style={localStyles.welcome}>Hi, Margaret!</Text>
+              <Image style = {{width: 250, height: 250, justifyContent: 'center'}}
+                source={{uri: 'stars'}}
               />
-              <Text style={{justifyContent: 'center'}}>Welcome to Comet!</Text>
               <Text style={{marginTop: 15, justifyContent: 'center'}}>Your Current Location:</Text>
               <Coordinates/>
             </View>
@@ -130,5 +141,24 @@ class HomePage extends Component {
     );
   }
 }
+
+const localStyles = StyleSheet.create({
+  welcome: {
+    justifyContent: 'center',
+    fontSize: 25,
+    color: 'rgba(255,255,255,0.7)'
+  },
+  background: {
+		flex:10,
+		flexDirection: 'column',
+		backgroundColor: '#8F8FBC',
+	},
+  // linearGradient: {
+  //   flex: 1,
+  //   paddingLeft: 15,
+  //   paddingRight: 15,
+  //   borderRadius: 5
+  // },
+})
 
 module.exports = HomePage;

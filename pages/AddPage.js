@@ -215,6 +215,7 @@ class AddPage extends Component {
           style={localStyles.inputRow}
           placeholder={"Title"}
           placeholderTextColor={'#d7dbe2'}
+          fontSize={17}
           onChangeText={(text) => this.setState({eventName: tr(text)})}
           maxLength = {50}/>
 
@@ -276,7 +277,7 @@ class AddPage extends Component {
               </View>
             </Left>
             <Body>
-              <Title style={{color: 'white'}}>Attendance</Title>
+              <Title style={{color: 'white'}}>New Event</Title>
             </Body>
             <Right>
               <View>
@@ -297,26 +298,6 @@ class AddPage extends Component {
         </Container>
         <NavBar navigator={this.props.navigator}/>
       </View>
-
-
-      // <View style={styles.container}>
-      //   <View style={styles.titleBar}>
-      //     <View style = {{flex: 1, marginTop: 20, marginRight: 17, flexDirection: 'row', justifyContent:'flex-end'}}>
-      //         <Text onPress={()=>this.props.navigator.pop()} style={{fontSize: 15, color: 'navy'}}>Cancel</Text>
-      //     </View>
-      //     <View style = {{flex: 3, marginTop: 20, alignItems: 'center'}}>
-      //         <Text style={styles.titleBarText}>New Event</Text>
-      //     </View>
-      //     <View style = {{flex: 1, marginTop: 20, marginRight: 17, flexDirection: 'row', justifyContent:'flex-end'}}>
-      //         <Text onPress={this._checkFields.bind(this)} style={{fontSize: 15, color: 'navy'}}>Add</Text>
-      //     </View>
-      //   </View>
-      //   <ScrollView style={styles.container}>
-      //     <View>
-      //       {content}
-      //     </View>
-      //   </ScrollView>
-      // </View>
     );
   }
 }
@@ -373,7 +354,7 @@ var localStyles = StyleSheet.create({
   },
   placeHolder: {
     color: '#d7dbe2',
-    fontSize: 15
+    fontSize: 17
   },
   locationTextStyle: {
   },
