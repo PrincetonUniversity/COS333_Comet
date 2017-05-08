@@ -23,20 +23,21 @@ class SchedulePage extends Component {
       }),
       todayEvents: new ListView.DataSource({
         rowHasChanged: (row1, row2) => row1 !== row2,
-      })
+      }),
     };
+    this.userid = Firebase.auth().currentUser.uid
   }
 
   // initial state
   componentDidMount() {
+    this._renderToday();
     this._listenForEvents(this.eventsRef);
   }
 
   componentWillUnmount() {
-    var userid = Firebase.auth().currentUser.uid
-    this.eventsRef.off();
-    this.eventsRef.child('/users/' + userid + '/').off();
-    this.eventsRef.child('/users/' + userid + '/today/').off();
+    //this.eventsRef.off();
+    this.eventsRef.child('/users/' + this.userid + '/').off();
+    //this.eventsRef.child('/users/' + userid + '/today/').off();
   }
 
   setModalVisible(visible) {
@@ -55,28 +56,72 @@ class SchedulePage extends Component {
 
   _renderEvent(event) {
     return (
-      <EventDisplay event={event}></EventDisplay>
+      <EventDisplay event={event} navigator={this.props.navigator}></EventDisplay>
     );
   }
 
-  _listenForEvents(eventsRef) {
-    var userid = Firebase.auth().currentUser.uid
-    var allList = eventsRef.child('/users/' + userid + '/')
-    var todayList = eventsRef.child('/users/' + userid + '/today/')
-    var today = []
+  // this function ensures that all changes to "today" will be reflected
+  _renderToday() {
+    Firebase.database().ref('/users/' + this.userid + '/').on('value', (snap) => {
+      var todayEvents = []
+      var today = new Date()
+      var dayOfWeeksList = ['Sun', 'M', 'T', 'W', 'Th', 'F', 'Sat']
+      var dayOfWeek = dayOfWeeksList[today.getDay()]
+      var t = today.getMonth() + "/" + today.getDate() + "/" + today.getFullYear()
+      var todayDate = moment(t, "MM/DD/YYYY")
 
-    allList.on('value', (snap) => {
-      var allEvents = [];
-      // iterates through each event & adds them to an array
       snap.forEach((child) => {
-        if (child.key == 'today') {
-          todayList.on('value', (snap) => {
-            snap.forEach((child) => {
-              today.push(child.key);
-            });
-          });
+        if (child.key != 'name' && child.key != 'today' && child.key != 'counter') {
+          var cStartDate = moment(child.val().startDate, 'MM/DD/YYYY').subtract(1, 'months')
+          var cEndDate = moment(child.val().endDate, 'MM/DD/YYYY').subtract(1, 'months')
+          var cDays = child.val().day
+
+          // within repeat duration and correct day of week
+          var count = 0
+          if (todayDate >= cStartDate && todayDate <= cEndDate) {
+            if(cDays.includes(" ") || cDays.includes(dayOfWeek)) {
+              // push event to Firebase
+              Firebase.database().ref('users/' + this.userid + '/today/').update({
+                [child.key]: moment(child.val().startTime, 'h:mm A').format('h:mm A')
+              });
+              count = count + 1
+            }
+          }
+          // if not today, but still in today list, delete.
+          else {
+            Firebase.database().ref('/users/' + this.userid + '/today/').child(child.key).remove()
+          }
         }
-        else if (child.key != 'name' && child.key != 'counter') {
+      });
+    });
+  }
+
+  _listenForEvents(eventsRef) {
+    var allList = Firebase.database().ref('/users/' + this.userid + '/')
+
+    // build list of today events & all events
+    allList.on('value', (snap) => {
+      var todayEvents = [];
+      var allEvents = [];
+      snap.forEach((child) => {
+        // put today events in todayEvents
+        if (snap.child('today/' + child.key).exists()) {
+          todayEvents.push({
+            eventName: child.val().eventName,
+            day: child.val().day,
+            startDate: child.val().startDate,
+            startTime: child.val().startTime,
+            endDate: child.val().endDate,
+            endTime: child.val().endTime,
+            location: child.val().location,
+            _key: child.key
+          });
+          // if tomorrow timer has been set, clear it.
+          //BackgroundTimer.clearTimeout(this.props.timeoutId);
+          //var
+        }
+        // put all events into allEvents
+        if (child.key != 'name' && child.key != 'today' && child.key != 'counter') {
           allEvents.push({
             eventName: child.val().eventName,
             day: child.val().day,
@@ -89,33 +134,24 @@ class SchedulePage extends Component {
           });
         }
       });
+      todayEvents.sort(this._sortEvents);
+      allEvents.sort(this._sortEvents);
       this.setState({
+        todayEvents: this.state.todayEvents.cloneWithRows(todayEvents),
         allEvents: this.state.allEvents.cloneWithRows(allEvents),
       });
     });
+  }
 
-    // build list of today events
-    allList = eventsRef.child('/users/' + userid + '/')
-    allList.on('value', (snap) => {
-      var todayEvents = [];
-      snap.forEach((child) => {
-        if (today.includes(child.key)) {
-          todayEvents.push({
-            eventName: child.val().eventName,
-            day: child.val().day,
-            startDate: child.val().startDate,
-            startTime: child.val().startTime,
-            endDate: child.val().endDate,
-            endTime: child.val().endTime,
-            location: child.val().location,
-            _key: child.key
-          });
-        }
-      });
-      this.setState({
-        todayEvents: this.state.todayEvents.cloneWithRows(todayEvents),
-      });
-    });
+  // sort events by their start times
+  _sortEvents(a, b) {
+    var aTime = moment(a.startTime, "h:mm A")
+    var bTime = moment(b.startTime, "h:mm A")
+    if (aTime < bTime)
+      return -1;
+    else if (aTime > bTime)
+      return 1;
+    return 0;
   }
 
   render() {

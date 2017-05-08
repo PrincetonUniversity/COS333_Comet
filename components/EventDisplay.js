@@ -41,6 +41,38 @@ class EventDisplay extends Component {
     this.setModalVisible(!this.state.modalVisible)
   }
 
+  _editEvent() {
+    this.setModalVisible(!this.state.modalVisible);
+    this.props.navigator.push({
+      name: 'EditPage',
+      passProps: {
+        eventName: this.props.event.eventName,
+        location: this.props.event.location,
+        days: this.props.event.day,
+        keyID: this.props.event._key,
+        startTime: this.props.event.startTime,
+        endTime: this.props.event.endTime,
+        checkEdited: this._checkEdited.bind(this),
+      }
+    })
+  }
+
+  _checkEdited(eventName, location, days, key, startDate, endDate) {
+    var scheduleData = {
+      eventName: eventName,
+      location: location,
+      startDate: startDate.toLocaleDateString(),
+      startTime: startDate.toLocaleTimeString(),
+      endDate: endDate.toLocaleDateString(),
+      endTime: endDate.toLocaleTimeString(),
+      day: days,
+    };
+
+    var userid = Firebase.auth().currentUser.uid
+    Firebase.database().ref('/users/' + userid + '/today/').child(key).remove()
+    Firebase.database().ref().child('/users/' + userid + '/' + key).update(scheduleData);
+  }
+
   render() {
     var sTime = moment(this.props.event.startTime, 'h:mm A').format('h:mm A')
     var sDate = moment(this.props.event.startDate, 'MM/DD/YYYY').format('MM/DD/YYYY')
@@ -107,7 +139,7 @@ class EventDisplay extends Component {
                                       style={styles.primaryButton}>
                     <Text style={styles.primaryButtonText}>Delete</Text>
                   </TouchableHighlight>
-                  <TouchableHighlight onPress={()=>{}}
+                  <TouchableHighlight onPress={()=>this._editEvent()}
                                       style={styles.primaryButton}>
                     <Text style={styles.primaryButtonText}>Edit</Text>
                   </TouchableHighlight>

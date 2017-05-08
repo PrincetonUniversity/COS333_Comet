@@ -77,7 +77,7 @@ class LocationSearchPage extends Component{
                   planLatitude: place.lat,
                   planLongitude: place.lng,
                 });
-                this.props.updateLocation(this.state.planAddr, this.state.planLatitude, this.state.planLongitude )
+                this.props.updateLocation(this.state.planAddr, this.state.planLatitude, this.state.planLongitude)
                 this.props.navigator.pop();
               },
               error => {

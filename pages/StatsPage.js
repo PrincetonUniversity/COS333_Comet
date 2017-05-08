@@ -1,19 +1,19 @@
 // Stats Page
 'use strict';
 import React, { Component } from 'react';
-import { 
-  Container, 
-  Content, 
+import {
+  Container,
+  Content,
   Header,
-  Footer, 
-  FooterTab, 
-  Button, 
-  Icon, 
+  Footer,
+  FooterTab,
+  Button,
+  Icon,
   Text,
   Left,
   Right,
   Body,
-  Title, 
+  Title,
   Tab,
   Tabs
 } from 'native-base';
@@ -23,13 +23,28 @@ import {
   View
 } from 'react-native';
 import NavBar from '../components/NavBar';
+import Firebase from '../components/Firebase';
+
 
 class StatsPage extends Component {
   constructor(props) {
     super(props);
+    this.eventsRef = Firebase.database().ref()
   }
 
   render() {
+    var userid = Firebase.auth().currentUser.uid
+    var count = 0
+    var ref = Firebase.database().ref('/users' + userid + '/')
+    var allList = this.eventsRef.child('/users/' + userid + '/')
+    allList.on('value', (snap) => {
+      snap.forEach((child) => {
+        if (child.key == 'counter') {
+          count = child.val();
+          console.log("inside counter")
+        }
+      });
+    });
     return (
         <View style={{flex:1}}>
         <Container style={{flex:10}}>
@@ -44,10 +59,10 @@ class StatsPage extends Component {
               </Body>
               <Right />
             </Header>
-            
+
             <Text> </Text>
             <Text> </Text>
-            
+
             <Body>
               <Icon ios='ios-ionic' android="md-ionic" style={{fontSize: 300, color: 'gray'}}/>
             </Body>
@@ -55,13 +70,13 @@ class StatsPage extends Component {
             <Content />
             <Body>
             <Button style={{backgroundColor: 'gray'}}>
-              <Text> 78 Absences </Text>
+              <Text> {count} Absences </Text>
             </Button>
             </Body>
           </Container>
           <NavBar navigator={this.props.navigator}/>
         </View>
-        
+
     );
   }
 }
