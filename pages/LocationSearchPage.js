@@ -52,22 +52,11 @@ class LocationSearchPage extends Component{
       fetchDetails={true}
 
       renderDescription={(row) => {
-        name = row.description.split(', ')
-        top = name[0]
-        if (top.length > 47) {
-          top = top.slice(0,47) + '...'
+        name = row.description
+        if (name.length > 49) {
+          name = name.slice(0,49) + '...'
         }
-        bottom = ""
-        for (var j = 1; j < name.length; j++) {
-          bottom = bottom + name[j]
-          if (j < name.length-1){
-            bottom = bottom + ', '
-          }
-        }
-        if (bottom.length > 47) {
-          bottom = bottom.slice(0,47) + '...'
-        }
-        return top + '\n' + bottom
+        return name
       }} // custom description render
       onPress={(data, details = "null") => { // 'details' is provided when fetchDetails = true
         //geocode the planned location
@@ -134,7 +123,7 @@ class LocationSearchPage extends Component{
     return (
       <View style={styles.container}>
         <Container style={{flex:10}}>
-          <Header style={{ backgroundColor: '#483D8B' }}>
+          <Header style={{ backgroundColor: '#3A5FCD' }}>
             <Left>
               <View>
                   <Icon onPress={()=>this.props.navigator.pop()} name="arrow-back" style={{fontSize: 20, color: 'white'}}/>

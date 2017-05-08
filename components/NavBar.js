@@ -33,7 +33,7 @@ class NavBar extends Component {
     return (
 
       <View>
-        <Footer style={{backgroundColor: '#483D8B'}}>
+        <Footer style={{backgroundColor: '#3A5FCD'}}>
             <FooterTab>
                 <Button onPress={()=>this._navigate("HomePage")}>
                     <Icon name="home" style={{fontSize: 20, color: 'white'}}/>

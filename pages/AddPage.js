@@ -270,7 +270,7 @@ class AddPage extends Component {
 
       <View style={styles.container}>
         <Container style={{flex:10}}>
-          <Header style={{ backgroundColor: '#483D8B' }}>
+          <Header style={{ backgroundColor: '#3A5FCD' }}>
             <Left>
               <View>
                   <Text onPress={()=>this.props.navigator.pop()} style={{fontSize: 15, color: 'white'}}>Cancel</Text>

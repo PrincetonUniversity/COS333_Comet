@@ -102,15 +102,12 @@ class EventDisplay extends Component {
                 </View>
 
                 <View style={{flexDirection:'row', justifyContent: 'space-around', marginTop: 40}}>
-
-                  <Button block onPress={()=>this._deleteEvent()}>
+                  <Button block info onPress={()=>this._deleteEvent()}>
                       <Text style={{color: 'white'}}>Delete</Text>
                   </Button>
-                  <Button block onPress={()=>{}}>
-                      <Text style={{color: 'white'}}>Edit</Text>
+                  <Button block info onPress={()=>{}}>
+                      <Text style={{color: 'white'}}>  Edit  </Text>
                   </Button>
-
-
                 </View>
               </View>
            </View>

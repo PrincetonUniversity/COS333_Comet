@@ -40,7 +40,7 @@ var styles = StyleSheet.create({
 	primaryButton: {
 		padding: 15,
 		marginTop: 40,
-		backgroundColor: '#1C86EE',
+		backgroundColor: '#5CACEE',
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
@@ -72,6 +72,43 @@ var styles = StyleSheet.create({
 		width: 100,
 		height: 100,
 	},
+
+	//login and signup page styles
+	loginContainer: {
+		padding: 20,
+	},
+	logoContainer: {
+		marginTop: 80,
+		marginBottom: 40,
+		alignItems: 'center',
+		flexGrow: 1,
+		justifyContent: 'center',
+	},
+	logo: {
+		width: 150,
+		height: 150,
+	},
+	loginButton: {
+		padding: 15,
+		marginTop: 60,
+		margin: 20,
+		backgroundColor: '#1C86EE',
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	loginButtonText: {
+		color: 'white',
+		textAlign: 'center',
+		fontSize: 16
+	},
+	transparentButton: {
+		 marginTop: 10,
+	 },
+	 transparentButtonText: {
+		 color: '#1C86EE',
+		 textAlign: 'center',
+		 fontSize: 16
+	 },
 })
 
 

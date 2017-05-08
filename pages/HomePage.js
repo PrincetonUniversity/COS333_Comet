@@ -10,8 +10,6 @@ import styles from '../styles';
 import Coordinates from '../components/Coordinates';
 import Firebase from '../components/Firebase';
 import BackgroundTimer from 'react-native-background-timer';
-// import LinearGradient from 'react-native-linear-gradient';
-// import Settings from '../components/Settings';
 var moment = require('moment');
 
 class HomePage extends Component {
@@ -95,25 +93,14 @@ class HomePage extends Component {
      );
   }
 
-  // _navigate(){
-  //   this.props.navigator.push({
-  //     name: 'Settings'
-  //   })
-  // }
-  // _renderEvent(event) {
-  //   return (
-  //     <Settings event={event}></Settings>
-  //   );
-  // }
-
   render() {
     return (
       <View style={styles.container}>
       <Container style={{flex:10}}>
-          <Header style={{ backgroundColor: '#483D8B', }}>
+          <Header style={{ backgroundColor: '#3A5FCD', }}>
             <Left>
               <View>
-                <Icon name="ios-settings" style={{fontSize: 30, color: 'white', fontWeight:'bold'}}/>
+                <Icon name="ios-power" style={{fontSize: 25, color: 'white', fontWeight:'bold'}}/>
               </View>
             </Left>
             <Body>
@@ -127,12 +114,12 @@ class HomePage extends Component {
 
           <View style={localStyles.background}>
             <View style = {{flex:1, justifyContent: 'center', alignItems: 'center'}}>
-              <Text style={localStyles.welcome}>Hi, Margaret!</Text>
-              <Image style = {{width: 250, height: 250, justifyContent: 'center'}}
-                source={{uri: 'stars'}}
+              <Text style={localStyles.welcome}>Hello!</Text>
+              <Image style = {{width: 280, height: 280, justifyContent: 'center'}}
+                source={{uri: 'constellation2'}}
               />
-              <Text style={{marginTop: 15, justifyContent: 'center'}}>Your Current Location:</Text>
-              <Coordinates/>
+              <Text style={localStyles.text}>Your attendance streak:</Text>
+              <Text style={localStyles.streak}>10</Text>
             </View>
           </View>
         </Container>
@@ -145,20 +132,24 @@ class HomePage extends Component {
 const localStyles = StyleSheet.create({
   welcome: {
     justifyContent: 'center',
-    fontSize: 25,
+    fontSize: 20,
+    color: 'rgba(255,255,255,0.7)'
+  },
+  text: {
+    justifyContent: 'center',
+    fontSize: 15,
+    color: 'rgba(255,255,255,0.7)'
+  },
+  streak: {
+    justifyContent: 'center',
+    fontSize: 40,
     color: 'rgba(255,255,255,0.7)'
   },
   background: {
 		flex:10,
 		flexDirection: 'column',
-		backgroundColor: '#8F8FBC',
+		backgroundColor: '#283A90',
 	},
-  // linearGradient: {
-  //   flex: 1,
-  //   paddingLeft: 15,
-  //   paddingRight: 15,
-  //   borderRadius: 5
-  // },
 })
 
 module.exports = HomePage;
