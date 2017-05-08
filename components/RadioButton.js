@@ -5,8 +5,12 @@ import {StyleSheet, TouchableOpacity, View} from 'react-native';
 class RadioButton extends Component {
   constructor(props) {
     super(props)
+    var tValue = false;
+    if (this.props.truthValue == true) {
+      tValue = true
+    }
     this.state = {
-      pressed: false,
+      pressed: tValue,
     };
   }
 

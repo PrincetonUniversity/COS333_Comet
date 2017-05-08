@@ -2,7 +2,7 @@
 'use strict';
 import React, {Component} from 'react';
 import {AppRegistry, Navigator, View, Text, StatusBar, Image, ListView, TouchableHighlight,
-        Modal} from 'react-native';
+        Modal, StyleSheet} from 'react-native';
 import {Container, Content, Header, Footer, FooterTab, Button, Icon, Left, Right,
           Body, Title, Tab, Tabs} from 'native-base';
 import NavBar from '../components/NavBar';
@@ -25,19 +25,17 @@ class HomePage extends Component {
   }
 
   _incrementCounter() {
-    var prevCounter = 0
-    var allList = Firebase.database().ref().child('/users/' + this.userid + '/')
-    allList.on('value', (snap) => {
-      snap.forEach((child) => {
-        if (child.key == 'counter') {
-          prevCounter = child.val();
-        }
-      });
-    });
-    prevCounter = prevCounter + 1;
-    Firebase.database().ref('users/' + this.userid).update({
-      counter: prevCounter
-    });
+    var userid = Firebase.auth().currentUser.uid
+    var ref = Firebase.database().ref('/users/' + userid);
+    ref.once("value")
+      .then(function(snapshot) {
+        var prevCounter = snapshot.child("counter").val();
+        console.log("counter is: " + prevCounter);
+        prevCounter = prevCounter + 1
+        Firebase.database().ref('users/' + Firebase.auth().currentUser.uid).update({
+          counter: prevCounter
+        });
+      })
   }
 
   _logout() {
@@ -54,36 +52,76 @@ class HomePage extends Component {
     if (user) {
       var name = Firebase.auth().currentUser.email
     }
-
-    return (
-      <View style = {{flex:1}}>
-      <View style = {styles.screenContainer}>
-        <View style = {{flex:1, justifyContent: 'center', alignItems: 'center'}}>
-            <Image style = {{width: 200, height: 200, justifyContent: 'center'}}
-                   source={{uri: 'https://previews.123rf.com/images/natalyon/natalyon1502/natalyon150200013/36745703-Doodle-space-elements-collection-in-black-and-white-ISS-moonwalker-planet-comet-moon-astronaut-alien-Stock-Vector.jpg'}}
-            />
-            <Text style={{justifyContent: 'center'}}>Welcome to Comet, {name}!</Text>
-            <Text style={{marginTop: 15, justifyContent: 'center'}}>Your Current Location:</Text>
+//        // <View style = {{flex:1, justifyContent: 'center', alignItems: 'center'}}>
+  //<View style = {styles.screenContainer}>
+//</View>
+  return (
+      <View style={{flex:1}}>
+        <Image
+          source={require('../sky.jpeg')}
+          style={localStyles.container}>
+            <Text style={{color:'white'}}>Welcome to Comet, {name}!</Text>
+            <Text style={{marginTop: 15, justifyContent: 'center', color:'white'}}>Your Current Location:</Text>
             <Coordinates/>
-          </View>
+            <TouchableHighlight
+              onPress={this._logout.bind(this)}
+              style={styles.primaryButton}>
+              <Text style={styles.primaryButtonText}>Logout</Text>
+            </TouchableHighlight>
 
-          <TouchableHighlight
-            onPress={this._logout.bind(this)}
-            style={styles.primaryButton}>
-            <Text style={styles.primaryButtonText}>Logout</Text>
-          </TouchableHighlight>
+            <TouchableHighlight
+              onPress={this._incrementCounter.bind(this)}
+              style={styles.primaryButton}>
+              <Text style={styles.primaryButtonText}>Increment</Text>
+            </TouchableHighlight>
+        </Image>
+        <NavBar navigator={this.props.navigator}/>
+      </View>
+    );
+  }
 
-          <TouchableHighlight
-            onPress={this._incrementCounter.bind(this)}
-            style={styles.primaryButton}>
-            <Text style={styles.primaryButtonText}>Increment</Text>
-          </TouchableHighlight>
+    /*
+      <View style = {{flex:1}}>
+          <Image style = {styles.screenContainer}
+                   source={require('../sky.jpg')}>
+            <View style = {{flex:1, justifyContent: 'center', alignItems: 'center'}}>
+              <Text style={{justifyContent: 'center'}}>Welcome to Comet, {name}!</Text>
+              <Text style={{marginTop: 15, justifyContent: 'center'}}>Your Current Location:</Text>
+              <Coordinates/>
 
-         </View>
+
+
+            <TouchableHighlight
+              onPress={this._logout.bind(this)}
+              style={styles.primaryButton}>
+              <Text style={styles.primaryButtonText}>Logout</Text>
+            </TouchableHighlight>
+
+            <TouchableHighlight
+              onPress={this._incrementCounter.bind(this)}
+              style={styles.primaryButton}>
+              <Text style={styles.primaryButtonText}>Increment</Text>
+            </TouchableHighlight>
+            </View>
+          </Image>
+
            <NavBar navigator={this.props.navigator}/>
         </View>
       );
-    }
+    }*/
+
   }
+
+  const localStyles = StyleSheet.create({
+  container: {
+    flex: 10,
+    flexDirection: 'column',
+    width: undefined,
+    height: undefined,
+    backgroundColor:'transparent',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
 
   module.exports = HomePage;

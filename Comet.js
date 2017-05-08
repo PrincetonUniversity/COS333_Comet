@@ -21,11 +21,12 @@ class Comet extends Component {
       page: null,
       loadedToday: false,
       todayEvents: [],
-      todayDate: new Date()
     }
     this.currentEvent = null
     this.counter = 0
     this.userid = null
+    this.timer = null
+    this.todayDate = new Date()
   }
 
   componentWillMount() {
@@ -49,42 +50,55 @@ class Comet extends Component {
     Firebase.database().ref().child('/users/' + this.userid + '/today/').off()
   }
 
+/****************************** BACKGROUND TIMER ******************************/
   _startTimer() {
-    if (this.state.todayEvents.length > 0) {
-      this.currentEvent = this.state.todayEvents[0] // {moment, key}
-      this._listenForToday(); // keep track of changes to 'today'
-
-      var checkTime = () => {
-        //this._renderTodayList(); // re-render todayList to catch any updates
-        var currentEventTime = this.currentEvent.startTime // {moment}
-        console.log(currentEventTime.format("h:mm A"))
-        console.log("current event: " + this.currentEvent._key)
-        if (moment() >= currentEventTime) {
-          if (this.counter == this.state.todayEvents.length-1) {
-            // no more events left; next event is "tomorrow"
-            console.log("going to tomorrow")
-            this.currentEvent = {
-              startTime: moment().add(1, 'days').hours(0).minutes(0).second(0).millisecond(0),
-              _key: 'tomorrow'
-            }
-            // IMPORTANT: HERE, THE FUNCTION NEEDS TO RECALCULATE 'TODAY'
-            var timeoutID = BackgroundTimer.setTimeout(checkTime, this._changeInterval())
-            console.log("tomorrow id: " + timeoutID)
-            return;
+    var checkTime = () => {
+      console.log("this is the updated today list:")
+      for (var i = 0; i < this.state.todayEvents.length; i++) {
+        console.log(" - checkpoint: " + this.state.todayEvents[i].checkPoint + ", key: " + this.state.todayEvents[i]._key)
+      }
+      this.todayDate = new Date()
+      var currentEventTime = moment(this.currentEvent.checkPoint, "h:mm A") // {moment}
+      if (moment() >= currentEventTime) {
+        console.log("CHECKED " + this.currentEvent._key + " at " + this.currentEvent.checkPoint)
+        if (this.counter == this.state.todayEvents.length-1) {
+          console.log("going to tomorrow")
+          this.counter = 0
+          this.currentEvent = {
+            checkPoint: moment().add(1, 'days').hours(0).minutes(0).second(0).millisecond(0),
+            _key: 'tomorrow'
           }
-          else {
-            var newEvent = this.state.todayEvents[this.counter + 1]
-            this.currentEvent = newEvent
-            this.counter = this.counter + 1
-          }
+          this.timer = BackgroundTimer.setTimeout(checkTime, this._changeInterval())
+          return;
         }
         else {
-          console.log("no match");
+          var newEvent = this.state.todayEvents[this.counter + 1]
+          this.currentEvent = newEvent
+          this.counter = this.counter + 1
         }
-        var timeoutID = BackgroundTimer.setTimeout(checkTime, this._changeInterval())
-        console.log("id: " + timeoutID)
       }
+      else {
+        console.log("waiting on " + this.currentEvent._key + " at " + this.currentEvent.checkPoint + "; will take " + this._changeInterval() + " milliseconds.")
+      }
+      if (this._changeInterval()) {
+        this.timer = BackgroundTimer.setTimeout(checkTime, this._changeInterval())
+      }
+    }
+
+    var start = this.counter
+    if (this.state.todayEvents.length > start) {
+      this.currentEvent = this.state.todayEvents[start] // {moment, key}
       checkTime();
+    }
+    else { // if no events, just go straight for tmrw
+      this.currentEvent = {
+        checkPoint: moment().add(1, 'days').hours(0).minutes(0).second(0).millisecond(0),
+        _key: 'tomorrow'
+      }
+      if (!this.timer) {
+        console.log("going to tomorrow")
+        this.timer = BackgroundTimer.setTimeout(checkTime, this._changeInterval())
+      }
     }
   }
 
@@ -94,7 +108,7 @@ class Comet extends Component {
     }
     else {
       return(
-       moment(this.currentEvent.startTime).diff(moment()) //<--CHANGE TO FIREBASE CALL
+       moment(this.currentEvent.checkPoint, "h:mm A").diff(moment()) //<--CHANGE TO FIREBASE CALL
      );
     }
   }
@@ -102,32 +116,22 @@ class Comet extends Component {
   _renderToday() {
     var todayEvents = []
     Firebase.database().ref('/users/' + this.userid + '/').on('value', (snap) => {
-      /*var today = new Date()
-      var dayOfWeeksList = ['Sun', 'M', 'T', 'W', 'Th', 'F', 'Sat']
-      var dayOfWeek = dayOfWeeksList[today.getDay()]
-      var t = today.getMonth() + "/" + today.getDate() + "/" + today.getFullYear()
-      var todayDate = moment(t, "MM/DD/YYYY")*/
-
       snap.forEach((child) => {
         if (child.key != 'name' && child.key != 'today' && child.key != 'counter') {
-          /*var cStartDate = moment(child.val().startDate, 'MM/DD/YYYY').subtract(1, 'months')
-          var cEndDate = moment(child.val().endDate, 'MM/DD/YYYY').subtract(1, 'months')
-          var cDays = child.val().day*/
           if (this._isToday(child)) {
-
-          // within repeat duration and correct day of week
-          //if (todayDate >= cStartDate && todayDate <= cEndDate) {
-            //if(cDays.includes(" ") || cDays.includes(dayOfWeek)) {
-              // push event to Firebase
-              Firebase.database().ref('users/' + this.userid + '/today/').update({
-                [child.key]: moment(child.val().startTime, 'h:mm A').format('h:mm A')
-              });
-              // push event to todayList
+            var difference = (moment(child.val().endTime, 'h:mm A').diff(moment(child.val().startTime, 'h:mm A')))/2
+            var checkPoint = moment(moment(child.val().startTime, 'h:mm A') + difference).format('h:mm A')
+            // push event to Firebase
+            Firebase.database().ref('users/' + this.userid + '/today/').update({
+              [child.key]: checkPoint // a string
+            });
+            // push *upcoming* events to todayList; phase out events that've passed
+            if (moment() < moment(checkPoint, 'h:mm A')) {
               todayEvents.push({
-                startTime: moment(child.val().startTime, "h:mm A"),
+                checkPoint: checkPoint, // a string
                 _key: child.key
               });
-
+            }
           }
           // if not today, but still in today list, delete.
           else {
@@ -135,7 +139,9 @@ class Comet extends Component {
           }
         }
       });
-      todayEvents.sort(this._sortEvents);
+      todayEvents.sort(this._sortEvents); // sort by checkpoint time!
+
+      this._listenForToday(); // listen for changes to 'today'
       this.setState({
         loadedToday: true,
         todayEvents: todayEvents,
@@ -143,8 +149,27 @@ class Comet extends Component {
     });
   }
 
+  _renderTodayList() {
+     var todayList = Firebase.database().ref().child('/users/' + this.userid + '/today')
+     todayList.on('value', (snap) => {
+       var todayEvents = [];
+       snap.forEach((child) => {
+         if (moment() < moment(child.val(), 'h:mm A')) {
+           todayEvents.push({
+             checkPoint: child.val(), // a string
+             _key: child.key
+           });
+         }
+       });
+       todayEvents.sort(this._sortEvents);
+       this.setState({
+         todayEvents: todayEvents,
+       }, this._startTimer);
+     });
+   }
+
   _isToday(child) {
-    var today = this.state.todayDate
+    var today = this.todayDate
     var dayOfWeeksList = ['Sun', 'M', 'T', 'W', 'Th', 'F', 'Sat']
     var dayOfWeek = dayOfWeeksList[today.getDay()]
     var t = today.getMonth() + "/" + today.getDate() + "/" + today.getFullYear()
@@ -165,8 +190,8 @@ class Comet extends Component {
   }
 
   _sortEvents(a, b) {
-    var aTime = moment(a.startTime, "h:mm A")
-    var bTime = moment(b.startTime, "h:mm A")
+    var aTime = moment(a.checkPoint, "h:mm A")
+    var bTime = moment(b.checkPoint, "h:mm A")
     if (aTime < bTime)
       return -1;
     else if (aTime > bTime)
@@ -174,50 +199,96 @@ class Comet extends Component {
     return 0;
   }
 
+  // new today event! edit timer accordingly
+  // IMPORTANT: DOES EDIT WORK???????
   _listenForToday() {
-    var todayList = Firebase.database().ref('/users/' + this.userid + '/today')
-    // check if today; edit timer accordingly
+    this._renderTodayList();
+    var todayList = Firebase.database().ref('/users/' + this.userid + '/today/')
     var todayEvents = this.state.todayEvents;
     todayList.on("child_added", (snap) => {
-      console.log("i've grown")
-      //compareTime(); // see if current event is today
-      /*snap.forEach((child) => {
-        todayEvents.push({
-          startTime: moment(child.val(), "h:mm A"),
-          _key: child.key
-        });
-      });*/
-      this.setState({
-        todayEvents: todayEvents,
-      });
+      // cancel current timer & restart at prev point. if already passed, just increment counter.
+      console.log("you added a new event for today at " + snap.val())
+      if (this.timer) {
+        if (moment() < moment(snap.val(), 'h:mm A')) { // if not yet passed ***corner case =
+          BackgroundTimer.clearTimeout(this.timer);
+          console.log("cleared timer # " + this.timer)
+        }
+      }
     });
+
     todayList.on("child_removed", (snap) => {
-      console.log("i've shrunk")
-      var todayEvents = [];
-      snap.forEach((child) => {
-        todayEvents.push({
-          startTime: moment(child.val(), "h:mm A"),
-          _key: child.key
-        });
-      });
-      this.setState({
-        todayEvents: todayEvents,
-      });
+      console.log("you removed an event for today at " + snap.val())
+      if (this.timer && this.counter > 0) { // should always be true but just in case
+        if (moment() < moment(snap.val(), 'h:mm A')) { // in case you delete the current event.
+          BackgroundTimer.clearTimeout(this.timer);
+          console.log("cleared timer # " + this.timer)
+        }
+      }
     });
+
     todayList.on("child_changed", (snap) => {
-      console.log("i've changed")
-      var todayEvents = [];
-      snap.forEach((child) => {
-        todayEvents.push({
-          startTime: moment(child.val(), "h:mm A"),
-          _key: child.key
-        });
-      });
-      this.setState({
-        todayEvents: todayEvents,
-      });
+      // cancel current timer & restart at prev point. if it's already passed, just ignore.
+      console.log("changed an event for today at " + snap.val()) // same logic for added but w/o incrementing
+      if (this.timer) {
+        if (moment() < moment(snap.val(), 'h:mm A')) { // in case you change the current event.
+          BackgroundTimer.clearTimeout(this.timer);
+          console.log("cleared timer # " + this.timer)
+        }
+      }
     });
   }
+
+/****************************** ATTENDANCE DATA ******************************/
+  _incrementAbsence() {
+    var key = this.currentEvent._key
+    console.log(key)
+    var ref = Firebase.database().ref('/users/' + this.userid + '/' + key);
+    ref.once("value")
+      .then(function(snapshot) {
+        var prevCounter = snapshot.child("absent").val();
+        console.log("prevCounter: " + prevCounter)
+        prevCounter = prevCounter + 1
+        Firebase.database().ref('users/' + this.userid + '/' + key).update({
+          absent: prevCounter
+        });
+      })
+  }
+
+  _incrementPresence() {
+    var key = this.props.event._key
+    console.log(key)
+    var ref = Firebase.database().ref('/users/' + this.userid + '/' + key);
+    ref.once("value")
+      .then(function(snapshot) {
+        var prevCounter = snapshot.child("present").val();
+        console.log("prevCounter: " + prevCounter)
+        prevCounter = prevCounter + 1
+        Firebase.database().ref('users/' + this.userid + '/' + key).update({
+          present: prevCounter
+        });
+      })
+  }
+
+  _incrementCounter() {
+    var ref = Firebase.database().ref('/users/' + this.userid);
+    ref.once("value")
+      .then(function(snapshot) {
+        var prevCounter = snapshot.child("counter").val();
+        console.log("counter is: " + prevCounter);
+        prevCounter = prevCounter + 1
+        Firebase.database().ref('users/' + this.userid).update({
+          counter: prevCounter
+        });
+      })
+  }
+
+  _reset() {
+    Firebase.database().ref('users/' + this.userid).update({
+      counter: 0
+    });
+  }
+
+/****************************** NAVIGATION ************************************/
 
   render() {
     if (this.state.page == 'HomePage') {

@@ -12,55 +12,127 @@ import Accordion from 'react-native-collapsible/Accordion';
 var moment = require('moment');
 var tr = require("trim");
 
-const SECTIONS = [{title: 'Starts',}, {title: 'Ends',}];
+const SECTIONS = [{title: 'Starts',}, {title: 'Ends',},
+                  {title: 'Start Repeat',}, {title: 'End Repeat',}];
 
 class EditPage extends Component {
-  static defaultProps = {
+  /*static defaultProps = {
     startDate: new Date(),
     endDate: new Date(),
+    startTime: new Date(),
+    endTime: new Date(),
     timeZoneOffsetInHours: (-1) * (new Date()).getTimezoneOffset() / 60,
-  };
+  };*/
 
   constructor(props) {
     super(props);
-    this.props.startDate.setMinutes(0)
-    var h = this.props.startDate.getHours();
+  /*  this.props.startTime.setMinutes(0)
+    var h = this.props.startTime.getHours();
     if (h == 12) {
-      this.props.endDate.setHours(1)
+      this.props.endTime.setHours(1)
     }
     else {
-      this.props.endDate.setHours(h + 1)
+      this.props.endTime.setHours(h + 1)
     }
-    this.props.endDate.setMinutes(0)
+    this.props.endTime.setMinutes(0)*/
+  /*  var startString = this.props.sDate.concat(space, this.props.startTime)
+    console.log(startString)
+    var endString = this.props.eDate.concat(space, this.props.endTime)
+    console.log(endString)
+    this.itemsRef = Firebase.database().ref();*/
+    var space = " "
+    var start = this.props.startTime.split(':')
+    var end = this.props.endTime.split(':')
+    var startString = this.props.sDate.concat(space, this.props.startTime)
+    var endString = this.props.eDate.concat(space, this.props.endTime)
+    var sTime = new Date(startString)
+    var eTime = new Date(endString)
+
+    var dayString = this.props.days
+    var mVal = false
+    var tVal = false
+    var wVal = false
+    var thVal = false
+    var fVal = false
+    var satVal = false
+    var sunVal = false
+    if (dayString.indexOf("M") != -1) {
+      mVal = true
+    }
+    if (dayString.indexOf("T") != -1) {
+      tVal = true
+    }
+    if (dayString.indexOf("W") != -1) {
+      wVal = true
+    }
+    if (dayString.indexOf("Th") != -1) {
+      thVal = true
+    }
+    if (dayString.indexOf("F") != -1) {
+      fVal = true
+    }
+    if (dayString.indexOf("Sat") != -1) {
+      satVal = true
+    }
+    if (dayString.indexOf("Sun") != -1) {
+      sunVal = true
+    }
     this.itemsRef = Firebase.database().ref();
     this.state = {
       loading: false,
       eventName: this.props.eventName,
       location: {name : this.props.location.name, latitude: this.props.location.latitude, longitude: this.props.location.longitude},
-      startDate: this.props.startDate,
-      endDate: this.props.endDate,
+      startTime: sTime, //new Date(0, 0, 0, start[0], start[1], 0, 0),
+      endTime: eTime,  //new Date(0, 0, 0, end[0], end[1], 0, 0),
+      startDate: new Date(this.props.sDate),
+      endDate: new Date(this.props.eDate),
       timeZoneOffsetInHours: this.props.timeZoneOffsetInHours,
+      monday: mVal,
+      tuesday: tVal,
+      wednesday: wVal,
+      thursday: thVal,
+      friday: fVal,
+      saturday: satVal,
+      sunday: sunVal,
       keyID: this.props.keyID,
-      monday: false,
-      tuesday: false,
-      wednesday: false,
-      thursday: false,
-      friday: false,
     };
-    this.complete = false
     this.setState = this.setState.bind(this)
     this._updateLocation = this._updateLocation.bind(this)
   }
 
   _checkFields() {
+    var eHours = this.state.endTime.getHours()
+    var eMins = this.state.endTime.getMinutes()
+    var endTime = new Date(0, 0, 0, eHours, eMins, 0, 0);
+
+    var sHours = this.state.startTime.getHours()
+    var sMins = this.state.startTime.getMinutes()
+    var startTime = new Date(0, 0, 0, sHours, sMins, 0, 0);
+
+    var eDate = this.state.endDate.getDate()
+    var eMonth = this.state.endDate.getMonth()
+    var eYear = this.state.endDate.getFullYear()
+    var endDate = new Date(eYear, eMonth, eDate, 0, 0, 0, 0);
+
+    var sDate = this.state.startDate.getDate()
+    var sMonth = this.state.startDate.getMonth()
+    var sYear = this.state.startDate.getFullYear()
+    var startDate = new Date(sYear, sMonth, sDate, 0, 0, 0, 0);
+
     if (this.state.eventName === '' || this.state.day === '' || this.state.location === '') {
       Alert.alert('Error', 'Fields must not be empty.');
     }
-    else if (this.state.endDate.getTime() < this.state.startDate.getTime()) {
+    else if (endTime.getTime() < startTime.getTime()) {
+      Alert.alert('Error', 'End time cannot come before start time.');
+    }
+    else if (endTime.getTime() == startTime.getTime()) {
+      Alert.alert('Error', 'End time cannot be the same as start time.');
+    }
+    else if (endDate.getTime() < startDate.getTime()) {
       Alert.alert('Error', 'End date cannot come before start date.');
     }
     else {
-      this._updateItem();
+      this._updateItem()
     }
   }
 
@@ -71,38 +143,25 @@ class EditPage extends Component {
     if (this.state.wednesday == true) {days.push("W")}
     if (this.state.thursday == true) {days.push("Th")}
     if (this.state.friday == true) {days.push("F")}
+    if (this.state.saturday == true) {days.push("Sat")}
+    if (this.state.sunday == true) {days.push("Sun")}
     if (days.length == 0) {days.push(" ")}
 
     //(eventName, location, days, key, startDate, endDate
-
     this.props.checkEdited(this.state.eventName, this.state.location, days, this.state.keyID,
-                              this.state.startDate, this.state.endDate)
+                              this.state.startDate, this.state.endDate, this.state.startTime, this.state.endTime)
     this.props.navigator.pop();
     // a new schedule entry
-  /*  var scheduleData = {
-      eventName: this.state.eventName,
-      location: this.state.location,
-      startDate: this.state.startDate.toLocaleDateString(),
-      startTime: this.state.startDate.toLocaleTimeString(),
-      endDate: this.state.endDate.toLocaleDateString(),
-      endTime: this.state.endDate.toLocaleTimeString(),
-      day: days,
-    };
-
-    var userid = Firebase.auth().currentUser.uid
-    Firebase.database().ref('/users/' + userid + '/today/').child(this.state.keyID).remove()
-    Firebase.database().ref().child('/users/' + userid + '/' + this.state.keyID).update(scheduleData);
-    this._wait();*/
   }
 
-  _wait() {
-    if (this.complete == true) {
-      this.props.navigator.pop();
-    }
-    else {
-      this._wait();
-    }
-  }
+  onStartTimeChange = (time) => {
+    this.setState({startTime: time})
+    this.setState({endTime: time})
+  };
+
+  onEndTimeChange = (time) => {
+    this.setState({endTime: time})
+  };
 
   onStartDateChange = (date) => {
     this.setState({startDate: date})
@@ -131,14 +190,28 @@ class EditPage extends Component {
 
   _F() {this.setState({friday: !(this.state.friday)});}
 
+  _Sat() {this.setState({saturday: !(this.state.saturday)});}
+
+  _Sun() {this.setState({sunday: !(this.state.sunday)});}
+
   _renderHeader(section) {
     if (section.title == 'Starts') {
-      var date = this.state.startDate
+      var time = this.state.startTime
+      var text = moment(time).format('LT')
     }
     else if (section.title == 'Ends') {
-      var date = this.state.endDate
+      var time = this.state.endTime
+      var text = moment(time).format('LT')
     }
-    var text = moment(date).format('ll') + '   ' + moment(date).format('LT')
+    else if (section.title == 'Start Repeat') {
+      var date = this.state.startDate
+      var text = moment(date).format('ll')
+    }
+    else if (section.title == 'End Repeat') {
+      var date = this.state.endDate
+      var text = moment(date).format('ll')
+    }
+
     return (
       <View style={localStyles.inputRow}>
         <View style={localStyles.inputText}>
@@ -171,12 +244,12 @@ class EditPage extends Component {
       return (
         <View>
           <DatePickerIOS
-            date={this.state.startDate}
+            date={this.state.startTime}
             style={{borderBottomWidth: 1, borderColor: '#d7dbe2',backgroundColor:'white'}}
-            mode="datetime"
+            mode="time"
             minuteInterval={5}
             timeZoneOffsetInMinutes={this.state.timeZoneOffsetInHours * 60}
-            onDateChange={this.onStartDateChange}/>
+            onDateChange={this.onStartTimeChange}/>
         </View>
       );
     }
@@ -184,10 +257,34 @@ class EditPage extends Component {
       return (
         <View>
           <DatePickerIOS
+            date={this.state.endTime}
+            style={{borderBottomWidth: 1, borderColor: '#d7dbe2',backgroundColor:'white'}}
+            mode="time"
+            minuteInterval={5}
+            timeZoneOffsetInMinutes={this.state.timeZoneOffsetInHours * 60}
+            onDateChange={this.onEndTimeChange}/>
+        </View>
+      );
+    }
+    else if (section.title == 'Start Repeat') {
+      return (
+        <View>
+          <DatePickerIOS
+            date={this.state.startDate}
+            style={{borderBottomWidth: 1, borderColor: '#d7dbe2',backgroundColor:'white'}}
+            mode="date"
+            timeZoneOffsetInMinutes={this.state.timeZoneOffsetInHours * 60}
+            onDateChange={this.onStartDateChange}/>
+        </View>
+      );
+    }
+    else if (section.title == 'End Repeat') {
+      return (
+        <View>
+          <DatePickerIOS
             date={this.state.endDate}
             style={{borderBottomWidth: 1, borderColor: '#d7dbe2',backgroundColor:'white'}}
-            mode="datetime"
-            minuteInterval={5}
+            mode="date"
             timeZoneOffsetInMinutes={this.state.timeZoneOffsetInHours * 60}
             onDateChange={this.onEndDateChange}/>
         </View>
@@ -255,24 +352,32 @@ class EditPage extends Component {
 
         <View style={localStyles.repeatBody}>
           <View style = {localStyles.repeatItem}>
-            <RadioButton call={this._M.bind(this)}/>
+            <RadioButton call={this._Sun.bind(this)} truthValue = {this.state.sunday}/>
+            <Text>Sun</Text>
+          </View>
+          <View style = {localStyles.repeatItem}>
+            <RadioButton call={this._M.bind(this)} truthValue = {this.state.monday}/>
             <Text>M</Text>
           </View>
           <View style = {localStyles.repeatItem}>
-            <RadioButton call={this._T.bind(this)}/>
+            <RadioButton call={this._T.bind(this)} truthValue = {this.state.tuesday}/>
             <Text>T</Text>
           </View>
           <View style = {localStyles.repeatItem}>
-            <RadioButton call={this._W.bind(this)}/>
+            <RadioButton call={this._W.bind(this)} truthValue = {this.state.wednesday}/>
             <Text>W</Text>
           </View>
           <View style = {localStyles.repeatItem}>
-            <RadioButton call={this._Th.bind(this)}/>
+            <RadioButton call={this._Th.bind(this)} truthValue = {this.state.thursday}/>
             <Text>Th</Text>
           </View>
           <View style = {localStyles.repeatItem}>
-            <RadioButton call={this._F.bind(this)}/>
+            <RadioButton call={this._F.bind(this)} truthValue = {this.state.friday}/>
             <Text>F</Text>
+          </View>
+          <View style = {localStyles.repeatItem}>
+            <RadioButton call={this._Sat.bind(this)} truthValue = {this.state.saturday}/>
+            <Text>Sat</Text>
           </View>
         </View>
       </View>;
@@ -284,7 +389,7 @@ class EditPage extends Component {
               <Text onPress={()=>this.props.navigator.pop()} style={{fontSize: 15, color: 'navy'}}>Cancel</Text>
           </View>
           <View style = {{flex: 3, marginTop: 20, alignItems: 'center'}}>
-              <Text style={styles.titleBarText}>Edit Event</Text>
+              <Text style={styles.titleBarText}>New Event</Text>
           </View>
           <View style = {{flex: 1, marginTop: 20, marginRight: 17, flexDirection: 'row', justifyContent:'flex-end'}}>
               <Text onPress={this._checkFields.bind(this)} style={{fontSize: 15, color: 'navy'}}>Save</Text>

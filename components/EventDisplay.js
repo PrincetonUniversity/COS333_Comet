@@ -25,6 +25,14 @@ class EventDisplay extends Component {
     };
   }
 
+  componentDidMount() {
+    //this._renderToday();
+  }
+
+  componentWillUnmount() {
+    this.eventsRef.child('/users/' + this.userid + '/').off();
+  }
+
   setModalVisible(visible) {
     this.setState({modalVisible: visible});
   }
@@ -52,25 +60,64 @@ class EventDisplay extends Component {
         keyID: this.props.event._key,
         startTime: this.props.event.startTime,
         endTime: this.props.event.endTime,
+        sDate: this.props.event.startDate,
+        eDate: this.props.event.endDate,
         checkEdited: this._checkEdited.bind(this),
       }
     })
   }
 
-  _checkEdited(eventName, location, days, key, startDate, endDate) {
+  _checkEdited(eventName, location, days, key, startDate, endDate, startTime, endTime) {
     var scheduleData = {
       eventName: eventName,
       location: location,
       startDate: startDate.toLocaleDateString(),
-      startTime: startDate.toLocaleTimeString(),
+      startTime: startTime.toLocaleTimeString(),
       endDate: endDate.toLocaleDateString(),
-      endTime: endDate.toLocaleTimeString(),
+      endTime: endTime.toLocaleTimeString(),
       day: days,
     };
 
     var userid = Firebase.auth().currentUser.uid
     Firebase.database().ref('/users/' + userid + '/today/').child(key).remove()
     Firebase.database().ref().child('/users/' + userid + '/' + key).update(scheduleData);
+  }
+
+  // this function ensures that all changes to "today" will be reflected
+  _renderToday() {
+    Firebase.database().ref('/users/' + this.userid + '/').on('value', (snap) => {
+      var todayEvents = []
+      var today = new Date()
+      var dayOfWeeksList = ['Sun', 'M', 'T', 'W', 'Th', 'F', 'Sat']
+      var dayOfWeek = dayOfWeeksList[today.getDay()]
+      var t = today.getMonth() + "/" + today.getDate() + "/" + today.getFullYear()
+      var todayDate = moment(t, "MM/DD/YYYY")
+
+      snap.forEach((child) => {
+        if (child.key != 'name' && child.key != 'today' && child.key != 'counter') {
+          var cStartDate = moment(child.val().startDate, 'MM/DD/YYYY').subtract(1, 'months')
+          var cEndDate = moment(child.val().endDate, 'MM/DD/YYYY').subtract(1, 'months')
+          var cDays = child.val().day
+
+          // within repeat duration and correct day of week
+          if (todayDate >= cStartDate && todayDate <= cEndDate) {
+            if(cDays.includes(" ") || cDays.includes(dayOfWeek)) {
+              var difference = (moment(child.val().endTime, 'h:mm A').diff(moment(child.val().startTime, 'h:mm A')))/2
+              var checkPoint = moment(moment(child.val().startTime, 'h:mm A') + difference)
+
+              // push event to Firebase
+              Firebase.database().ref('users/' + this.userid + '/today/').update({
+                [child.key]: checkPoint.format('h:mm A')
+              });
+            }
+          }
+          // if not today, but still in today list, delete.
+          else {
+            Firebase.database().ref('/users/' + this.userid + '/today/').child(child.key).remove()
+          }
+        }
+      });
+    });
   }
 
   render() {

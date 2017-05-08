@@ -2,21 +2,8 @@
 'use strict';
 import React, { Component } from 'react';
 import {
-  Container,
-  Content,
-  Header,
-  Footer,
-  FooterTab,
-  Button,
-  Icon,
-  Text,
-  Left,
-  Right,
-  Body,
-  Title,
-  Tab,
-  Tabs
-} from 'native-base';
+  Container, Content, Header, Footer, FooterTab, Button, Icon, Text, Left, Right,
+  Body, Title, Tab, Tabs} from 'native-base';
 import {
   AppRegistry,
   StyleSheet,

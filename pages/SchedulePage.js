@@ -77,14 +77,16 @@ class SchedulePage extends Component {
           var cDays = child.val().day
 
           // within repeat duration and correct day of week
-          var count = 0
           if (todayDate >= cStartDate && todayDate <= cEndDate) {
             if(cDays.includes(" ") || cDays.includes(dayOfWeek)) {
+
+              var difference = (moment(child.val().endTime, 'h:mm A').diff(moment(child.val().startTime, 'h:mm A')))/2
+              var checkPoint = moment(moment(child.val().startTime, 'h:mm A') + difference)
+
               // push event to Firebase
               Firebase.database().ref('users/' + this.userid + '/today/').update({
-                [child.key]: moment(child.val().startTime, 'h:mm A').format('h:mm A')
+                [child.key]: checkPoint.format('h:mm A')
               });
-              count = count + 1
             }
           }
           // if not today, but still in today list, delete.
@@ -101,6 +103,7 @@ class SchedulePage extends Component {
 
     // build list of today events & all events
     allList.on('value', (snap) => {
+      console.log("I'VE CHANGED.")
       var todayEvents = [];
       var allEvents = [];
       snap.forEach((child) => {
@@ -116,9 +119,6 @@ class SchedulePage extends Component {
             location: child.val().location,
             _key: child.key
           });
-          // if tomorrow timer has been set, clear it.
-          //BackgroundTimer.clearTimeout(this.props.timeoutId);
-          //var
         }
         // put all events into allEvents
         if (child.key != 'name' && child.key != 'today' && child.key != 'counter') {
