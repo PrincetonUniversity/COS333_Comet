@@ -12,7 +12,9 @@ import LocationSearchPage from './pages/LocationSearchPage';
 import Firebase from './components/Firebase';
 import Loading from './components/Loading';
 import BackgroundTimer from 'react-native-background-timer';
+import Geocoder from 'react-native-geocoding';
 var moment = require('moment');
+Geocoder.setApiKey('AIzaSyCNz6l77DLDP0f9pehjVuABmkxByXUm90g');
 
 class Comet extends Component {
   constructor(props) {
@@ -21,11 +23,18 @@ class Comet extends Component {
       page: null,
       loadedToday: false,
       todayEvents: [],
+
+      planLatitude: null,
+      planLongitude: null,
+      currLatitude: null,
+      currLongitude: null,
+      here: null,
+      error: null,
     }
     this.currentEvent = null
     this.counter = 0
     this.userid = null
-    this.timer = null
+    this.timer = []
     this.todayDate = new Date()
   }
 
@@ -57,10 +66,17 @@ class Comet extends Component {
       for (var i = 0; i < this.state.todayEvents.length; i++) {
         console.log(" - checkpoint: " + this.state.todayEvents[i].checkPoint + ", key: " + this.state.todayEvents[i]._key)
       }
+      /*if (this.timer.length > 1) {
+        for (var i = 1; i < this.timer.length; i++) {
+          BackgroundTimer.clearTimeout(this.timer[i]);
+        }
+      }*/
       this.todayDate = new Date()
       var currentEventTime = moment(this.currentEvent.checkPoint, "h:mm A") // {moment}
       if (moment() >= currentEventTime) {
-        console.log("CHECKED " + this.currentEvent._key + " at " + this.currentEvent.checkPoint)
+        if (this.currentEvent._key != 'tomorrow') {
+          //this._checkEvent(this.currentEvent._key);
+        }
         if (this.counter == this.state.todayEvents.length-1) {
           console.log("going to tomorrow")
           this.counter = 0
@@ -68,7 +84,8 @@ class Comet extends Component {
             checkPoint: moment().add(1, 'days').hours(0).minutes(0).second(0).millisecond(0),
             _key: 'tomorrow'
           }
-          this.timer = BackgroundTimer.setTimeout(checkTime, this._changeInterval())
+          var timer = BackgroundTimer.setTimeout(checkTime, this._changeInterval())
+          this.timer.push(timer)
           return;
         }
         else {
@@ -81,7 +98,8 @@ class Comet extends Component {
         console.log("waiting on " + this.currentEvent._key + " at " + this.currentEvent.checkPoint + "; will take " + this._changeInterval() + " milliseconds.")
       }
       if (this._changeInterval()) {
-        this.timer = BackgroundTimer.setTimeout(checkTime, this._changeInterval())
+        var timer = BackgroundTimer.setTimeout(checkTime, this._changeInterval())
+        this.timer.push(timer)
       }
     }
 
@@ -95,9 +113,10 @@ class Comet extends Component {
         checkPoint: moment().add(1, 'days').hours(0).minutes(0).second(0).millisecond(0),
         _key: 'tomorrow'
       }
-      if (!this.timer) {
+      if (this.timer.length == 0) {
         console.log("going to tomorrow")
-        this.timer = BackgroundTimer.setTimeout(checkTime, this._changeInterval())
+        var timer = BackgroundTimer.setTimeout(checkTime, this._changeInterval())
+        this.timer.push(timer)
       }
     }
   }
@@ -140,8 +159,8 @@ class Comet extends Component {
         }
       });
       todayEvents.sort(this._sortEvents); // sort by checkpoint time!
-
       this._listenForToday(); // listen for changes to 'today'
+
       this.setState({
         loadedToday: true,
         todayEvents: todayEvents,
@@ -200,7 +219,6 @@ class Comet extends Component {
   }
 
   // new today event! edit timer accordingly
-  // IMPORTANT: DOES EDIT WORK???????
   _listenForToday() {
     this._renderTodayList();
     var todayList = Firebase.database().ref('/users/' + this.userid + '/today/')
@@ -208,20 +226,20 @@ class Comet extends Component {
     todayList.on("child_added", (snap) => {
       // cancel current timer & restart at prev point. if already passed, just increment counter.
       console.log("you added a new event for today at " + snap.val())
-      if (this.timer) {
+      if (this.timer.length > 1) {
         if (moment() < moment(snap.val(), 'h:mm A')) { // if not yet passed ***corner case =
-          BackgroundTimer.clearTimeout(this.timer);
-          console.log("cleared timer # " + this.timer)
+          BackgroundTimer.clearTimeout(this.timer[0]);
+          console.log("cleared timer # " + this.timer[0])
         }
       }
     });
 
     todayList.on("child_removed", (snap) => {
       console.log("you removed an event for today at " + snap.val())
-      if (this.timer && this.counter > 0) { // should always be true but just in case
+      if (this.timer.length > 1 && this.counter > 0) { // should always be true but just in case
         if (moment() < moment(snap.val(), 'h:mm A')) { // in case you delete the current event.
-          BackgroundTimer.clearTimeout(this.timer);
-          console.log("cleared timer # " + this.timer)
+          BackgroundTimer.clearTimeout(this.timer[0]);
+          console.log("cleared timer # " + this.timer[0])
         }
       }
     });
@@ -229,16 +247,58 @@ class Comet extends Component {
     todayList.on("child_changed", (snap) => {
       // cancel current timer & restart at prev point. if it's already passed, just ignore.
       console.log("changed an event for today at " + snap.val()) // same logic for added but w/o incrementing
-      if (this.timer) {
+      if (this.timer.length > 1) {
         if (moment() < moment(snap.val(), 'h:mm A')) { // in case you change the current event.
-          BackgroundTimer.clearTimeout(this.timer);
-          console.log("cleared timer # " + this.timer)
+          BackgroundTimer.clearTimeout(this.timer[0]);
+          console.log("cleared timer # " + this.timer[0])
         }
       }
     });
   }
 
 /****************************** ATTENDANCE DATA ******************************/
+  _checkEvent(eventKey) {
+    Firebase.database().ref('users/' + this.userid + '/').on('value', (snap) => {
+      var event = snap.child(eventKey).val()
+      this.setState({
+        //event address
+        planLatitude: event.location.latitude,
+        planLongitude: event.location.longitude,
+      }, this._checkLocation);
+    });
+  }
+
+  _checkLocation() {
+    if (this.state.planLatitude && this.state.planLongitude) {
+      // find current location
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          this.setState({
+            currLatitude: position.coords.latitude, //set current coordinates
+            currLongitude: position.coords.longitude,
+            error: null,
+          });
+
+          //compare with planned location coordinates, radius currently .005
+          if (Math.abs(this.state.planLatitude - this.state.currLatitude) < 0.005 &&
+            Math.abs(this.state.planLongitude - this.state.currLongitude) < 0.005)
+            {
+             console.log("p event coordinates: (" + this.state.planLatitude + ", " + this.state.planLongitude + ")")
+             console.log("p your coordinates: (" + this.state.currLatitude + ", " + this.state.currLongitude + ")")
+            } else {
+             console.log("a event coordinates: (" + this.state.planLatitude + ", " + this.state.planLongitude + ")")
+             console.log("a your coordinates: (" + this.state.currLatitude + ", " + this.state.currLongitude + ")")
+          }
+        },
+        (error) => this.setState({ error: error.message }),
+        { enableHighAccuracy: true, timeout: 20000, maximumAge: 1 },
+      );
+      console.log("CHECKED " + this.currentEvent._key + " at " + this.currentEvent.checkPoint)
+    } else {
+      console.log("NONE SEEN. GOSH.")
+    }
+  }
+
   _incrementAbsence() {
     var key = this.currentEvent._key
     console.log(key)

@@ -2,9 +2,9 @@
 'use strict';
 import React, {Component} from 'react';
 import {AppRegistry, Navigator, View, Text, StatusBar, Image, ListView, TouchableHighlight,
-        Modal, StyleSheet} from 'react-native';
+        Modal, StyleSheet, TouchableOpacity} from 'react-native';
 import {Container, Content, Header, Footer, FooterTab, Button, Icon, Left, Right,
-          Body, Title, Tab, Tabs} from 'native-base';
+          Body, Title, Tab, Tabs, H1, H2, H3} from 'native-base';
 import NavBar from '../components/NavBar';
 import styles from '../styles';
 import Coordinates from '../components/Coordinates';
@@ -52,76 +52,64 @@ class HomePage extends Component {
     if (user) {
       var name = Firebase.auth().currentUser.email
     }
-//        // <View style = {{flex:1, justifyContent: 'center', alignItems: 'center'}}>
-  //<View style = {styles.screenContainer}>
-//</View>
-  return (
-      <View style={{flex:1}}>
-        <Image
-          source={require('../sky.jpeg')}
-          style={localStyles.container}>
-            <Text style={{color:'white'}}>Welcome to Comet, {name}!</Text>
-            <Text style={{marginTop: 15, justifyContent: 'center', color:'white'}}>Your Current Location:</Text>
-            <Coordinates/>
-            <TouchableHighlight
-              onPress={this._logout.bind(this)}
-              style={styles.primaryButton}>
-              <Text style={styles.primaryButtonText}>Logout</Text>
-            </TouchableHighlight>
+    var dateString = moment().format('LLLL').split(',')
+    var date = (dateString[0] + ", " + dateString[1]).toLowerCase()
 
-            <TouchableHighlight
-              onPress={this._incrementCounter.bind(this)}
-              style={styles.primaryButton}>
-              <Text style={styles.primaryButtonText}>Increment</Text>
-            </TouchableHighlight>
+    //CALCULATE STREAK
+    var streak = 0;
+
+    return (
+      <View style={{flex:1}}>
+        <Image source={require('../skybg.jpeg')} style={localStyles.imageContainer}>
+          <View style={{flex:1, flexDirection:'row', backgroundColor: 'transparent'}}>
+            <View style={{flex:1, flexDirection:'row', alignItems: 'center', paddingLeft: 20, paddingTop: 21}}>
+              <TouchableOpacity onPress={this._logout.bind(this)} style={{flexDirection: 'row', alignItems:'center'}}>
+              <Icon name="ios-power" style={{fontSize: 25, color: 'white', fontWeight:'bold'}}/>
+              <Text style={{color:'white', fontSize: 15, fontFamily:'Avenir'}}>  logout</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View style={{flex:10, alignItems: 'center'}}>
+            <Text style={{color:'white', fontSize: 22, fontFamily:'Avenir-medium', paddingTop: 40}}>hello nina</Text>
+            <Text style={{color:'white', fontSize: 30, fontFamily:'Avenir-medium', paddingBottom: 20}}>{date}</Text>
+            <Image source={require('../constellation4.2.png')} style={localStyles.graphic}/>
+            <View style={{flexDirection:'row', alignItems:'center'}}>
+              <Icon name="star" style={{fontSize: 30, color: 'white', fontWeight:'bold', paddingTop:50}}/>
+              <Text style={{color:'white', fontSize: 25, fontFamily:'Avenir-medium', paddingTop: 50}}> {streak} days</Text>
+            </View>
+          </View>
         </Image>
         <NavBar navigator={this.props.navigator}/>
       </View>
     );
   }
-
-    /*
-      <View style = {{flex:1}}>
-          <Image style = {styles.screenContainer}
-                   source={require('../sky.jpg')}>
-            <View style = {{flex:1, justifyContent: 'center', alignItems: 'center'}}>
-              <Text style={{justifyContent: 'center'}}>Welcome to Comet, {name}!</Text>
-              <Text style={{marginTop: 15, justifyContent: 'center'}}>Your Current Location:</Text>
-              <Coordinates/>
-
-
-
-            <TouchableHighlight
-              onPress={this._logout.bind(this)}
-              style={styles.primaryButton}>
-              <Text style={styles.primaryButtonText}>Logout</Text>
-            </TouchableHighlight>
-
-            <TouchableHighlight
-              onPress={this._incrementCounter.bind(this)}
-              style={styles.primaryButton}>
-              <Text style={styles.primaryButtonText}>Increment</Text>
-            </TouchableHighlight>
-            </View>
-          </Image>
-
-           <NavBar navigator={this.props.navigator}/>
-        </View>
-      );
-    }*/
-
-  }
+}
 
   const localStyles = StyleSheet.create({
-  container: {
+  imageContainer: {
     flex: 10,
     flexDirection: 'column',
     width: undefined,
     height: undefined,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  container: {
+    flex: 10,
+    flexDirection: 'row',
     backgroundColor:'transparent',
     justifyContent: 'center',
     alignItems: 'center',
   },
+  header: {
+    flex: 1,
+    flexDirection: 'row',
+    backgroundColor: 'transparent',
+  },
+  graphic: {
+    height:275,
+    width:275,
+  }
 });
 
   module.exports = HomePage;

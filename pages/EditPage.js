@@ -137,7 +137,11 @@ class EditPage extends Component {
   }
 
   _updateItem() {
+    var userid = Firebase.auth().currentUser.uid
+    var key = this.state.keyID
+    var ref = Firebase.database().ref('/users/' + userid + '/' + key);
     var days = [];
+
     if (this.state.monday == true) {days.push("M")}
     if (this.state.tuesday == true) {days.push("T")}
     if (this.state.wednesday == true) {days.push("W")}
@@ -147,11 +151,34 @@ class EditPage extends Component {
     if (this.state.sunday == true) {days.push("Sun")}
     if (days.length == 0) {days.push(" ")}
 
-    //(eventName, location, days, key, startDate, endDate
-    this.props.checkEdited(this.state.eventName, this.state.location, days, this.state.keyID,
-                              this.state.startDate, this.state.endDate, this.state.startTime, this.state.endTime)
+    var name = this.state.eventName
+    var loc = this.state.location
+    var sd = this.state.startDate.toLocaleDateString()
+    var st = this.state.startTime.toLocaleTimeString()
+    var ed = this.state.endDate.toLocaleDateString()
+    var et = this.state.endTime.toLocaleTimeString()
+
+    ref.once("value")
+      .then(function(snapshot) {
+        var absentCount = snapshot.child("absent").val();
+        console.log("absent count: " + absentCount)
+        var presentCount = snapshot.child("present").val();
+        var scheduleData = {
+          eventName: name,
+          location: loc,
+          startDate: sd,
+          startTime: st,
+          endDate: ed,
+          endTime: et,
+          day: days,
+          absent: absentCount,
+          present: presentCount,
+        };
+        Firebase.database().ref().child('/users/' + userid + '/').push(scheduleData);
+    })
+    Firebase.database().ref('/users/' + userid + '/').child(key).remove()
+    Firebase.database().ref('/users/' + userid + '/today/').child(key).remove()
     this.props.navigator.pop();
-    // a new schedule entry
   }
 
   onStartTimeChange = (time) => {

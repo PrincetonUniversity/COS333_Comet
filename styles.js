@@ -14,15 +14,16 @@ var styles = StyleSheet.create({
 	navbar: {
 		flex:1,
 		alignItems: 'center',
-		backgroundColor: '#c6d6ef',
+		backgroundColor: '#1f1c3a',
 		borderColor: 'transparent',
 		borderWidth: 1,
 		justifyContent: 'space-around',
 		flexDirection: 'row'
 	},
+	//'#eaecef' gray
 	titleBar: {
 		flexDirection: 'row',
-		backgroundColor: '#eaecef',
+		backgroundColor: '#1f1c3a',
 		borderColor: 'gray',
 		borderBottomWidth: .5,
 		height: 55,
@@ -32,8 +33,9 @@ var styles = StyleSheet.create({
 	titleBarText: {
 		fontSize: 15,
 		fontWeight: 'bold',
-		color: 'black',
+		color: 'white',
 		alignItems: 'center',
+		fontFamily:'Avenir-medium',
 	},
 	xButton: {
 	    fontSize: 30,
@@ -95,7 +97,8 @@ var styles = StyleSheet.create({
 	  primaryButtonText: {
 	    color: 'black',
 	    textAlign: 'center',
-	    fontSize: 15
+	    fontSize: 15,
+			fontFamily:'Avenir-medium',
 	  },
 	  image: {
 	    width: 100,

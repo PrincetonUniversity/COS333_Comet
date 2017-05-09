@@ -1,69 +1,163 @@
-// Stats Page
-'use strict';
+//to install:
+// npm install react-native-pathjs-charts --save
+// react-native link react-native-svg
+// in node-modules/react-native-svg go to android/build.gradle change to 23.0.1 and 22
+
 import React, { Component } from 'react';
-import {
-  Container, Content, Header, Footer, FooterTab, Button, Icon, Text, Left, Right,
-  Body, Title, Tab, Tabs} from 'native-base';
 import {
   AppRegistry,
   StyleSheet,
-  View
+  Text,
+  View,
+  ScrollView
 } from 'react-native';
-import NavBar from '../components/NavBar';
-import Firebase from '../components/Firebase';
+//import Bar from 'react-native-pathjs-charts';
+import {Pie, Bar} from 'react-native-pathjs-charts';
+//import 'react-native-svg';
 
-
-class StatsPage extends Component {
+export default class StatsPage extends Component {
   constructor(props) {
     super(props);
-    this.eventsRef = Firebase.database().ref()
+/*    this.eventsRef = Firebase.database().ref()
+    this.state = {
+      modalVisible: false,
+      allEvents: new ListView.DataSource({
+        rowHasChanged: (row1, row2) => row1 !== row2,
+      }),
+      todayEvents: new ListView.DataSource({
+        rowHasChanged: (row1, row2) => row1 !== row2,
+      }),
+    };
+    this.userid = Firebase.auth().currentUser.uid */
   }
 
   render() {
-    var userid = Firebase.auth().currentUser.uid
-    var count = 0
-    var ref = Firebase.database().ref('/users' + userid + '/')
-    var allList = this.eventsRef.child('/users/' + userid + '/')
-    allList.on('value', (snap) => {
-      snap.forEach((child) => {
-        if (child.key == 'counter') {
-          count = child.val();
-          console.log("inside counter")
-        }
-      });
-    });
+
+    let StreakData = [{
+      "name": "Absences",
+      "count": 50
+    }, {
+      "name": "Presences",
+      "count": 100
+    }]
+
+    let StreakOptions = {
+      margin: {
+        top: 1,
+        left: 1,
+        right: 1,
+        bottom: 1
+      },
+      width: 150,
+      height: 150,
+      color: '#2980B9',
+      r: 20,
+      R: 75,
+      legendPosition: 'topLeft',
+      animate: {
+        type: 'oneByOne',
+        duration: 200,
+        fillTransition: 3
+      },
+      label: {
+        fontFamily: 'Arial',
+        fontSize: 10,
+        fontWeight: true,
+        color: '#ECF0F1'
+      }
+    }
+
+  let data = [
+    [{
+      "v": 30,
+      "name": "Event 1"
+    }],
+    [{
+      "v": 23,
+      "name": "Event 2"
+    }],
+    [{
+      "v": 19,
+      "name": "Event 3"
+    }],
+    [{
+      "v": 10,
+      "name": "Event 4"
+    }],
+    [{
+      "v": 15,
+      "name": "Event 4"
+    }]
+  ]
+
+  let options = {
+    width: 200,
+    height: 150,
+    margin: {
+      top: 20,
+      left: 25,
+      bottom: 30,
+      right: 20
+    },
+    color: '#2980B9',
+    gutter: 20,
+    animate: {
+      type: 'oneByOne',
+      duration: 200,
+      fillTransition: 3
+    },
+    axisX: {
+      showAxis: true,
+      showLines: true,
+      showLabels: true,
+      showTicks: true,
+      zeroAxis: false,
+      orient: 'bottom',
+      label: {
+        fontFamily: 'Arial',
+        fontSize:10,
+        fontWeight: true,
+        fill: '#34495E'
+      }
+    },
+    axisY: {
+      showAxis: true,
+      showLines: true,
+      showLabels: true,
+      showTicks: true,
+      zeroAxis: false,
+      orient: 'left',
+      label: {
+        fontFamily: 'Arial',
+        fontSize: 10,
+        fontWeight: true,
+        fill: '#34495E'
+      }
+    }
+  }
     return (
-        <View style={{flex:1}}>
-        <Container style={{flex:10}}>
-            <Header style={{ backgroundColor: 'gray' }}>
-              <Left>
-                <Button transparent>
-                  <Icon name='menu' />
-                </Button>
-              </Left>
-              <Body>
-                <Title>Attendance Stats</Title>
-              </Body>
-              <Right />
-            </Header>
+      <View style={styles.container}>
+        <Text style={styles.welcome}>
+          Your Streak:
+        </Text>
+        <Pie
+          data={StreakData}
+          options={StreakOptions}
+          accessorKey="count" />
+        <Bar
+          data={data}
+          options={options}
+          accessorKey='v'/>
+        <ScrollView>
+          <Text></Text>
+        </ScrollView>
 
-            <Text> </Text>
-            <Text> </Text>
-
-            <Body>
-              <Icon ios='ios-ionic' android="md-ionic" style={{fontSize: 300, color: 'gray'}}/>
-            </Body>
-
-            <Content />
-            <Body>
-            <Button style={{backgroundColor: 'gray'}}>
-              <Text> {count} Absences </Text>
-            </Button>
-            </Body>
-          </Container>
-          <NavBar navigator={this.props.navigator}/>
-        </View>
-
+{/*        <Text style={{backgroundColor: '#eaecef'}}>Events for Today:</Text>
+         <ListView dataSource = {this.state.todayEvents}
+                    renderRow={this._renderEvent.bind(this)}
+                    enableEmptySections={true}/>
+*/}
+      </View>
     );
   }
 }
@@ -72,9 +166,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+  },
+  welcome: {
+    fontSize: 20,
+    textAlign: 'center',
+    margin: 10,
+  },
+  instructions: {
+    textAlign: 'center',
+    color: '#333333',
+    marginBottom: 5,
+  },
 });
-
 
 module.exports = StatsPage;

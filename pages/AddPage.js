@@ -188,7 +188,7 @@ class AddPage extends Component {
     return (
       <View style={localStyles.inputRow}>
         <View style={localStyles.inputText}>
-          <Text>{section.title}</Text>
+          <Text style={{fontFamily:'Avenir',}}>{section.title}</Text>
         </View>
         <View style={localStyles.inputDate}>
           <Text style={localStyles.dateText}>{text}</Text>
@@ -319,38 +319,38 @@ class AddPage extends Component {
 
         <View style={localStyles.inputRow}>
           <View style ={localStyles.inputText}>
-            <Text>Repeats</Text>
+            <Text style={{fontFamily:'Avenir',}}>Repeats</Text>
           </View>
         </View>
 
         <View style={localStyles.repeatBody}>
           <View style = {localStyles.repeatItem}>
             <RadioButton call={this._Sun.bind(this)}/>
-            <Text>Sun</Text>
+            <Text style={{fontFamily:'Avenir',}}>Sun</Text>
           </View>
           <View style = {localStyles.repeatItem}>
             <RadioButton call={this._M.bind(this)}/>
-            <Text>M</Text>
+            <Text style={{fontFamily:'Avenir',}}>M</Text>
           </View>
           <View style = {localStyles.repeatItem}>
             <RadioButton call={this._T.bind(this)}/>
-            <Text>T</Text>
+            <Text style={{fontFamily:'Avenir',}}>T</Text>
           </View>
           <View style = {localStyles.repeatItem}>
             <RadioButton call={this._W.bind(this)}/>
-            <Text>W</Text>
+            <Text style={{fontFamily:'Avenir',}}>W</Text>
           </View>
           <View style = {localStyles.repeatItem}>
             <RadioButton call={this._Th.bind(this)}/>
-            <Text>Th</Text>
+            <Text style={{fontFamily:'Avenir',}}>Th</Text>
           </View>
           <View style = {localStyles.repeatItem}>
             <RadioButton call={this._F.bind(this)}/>
-            <Text>F</Text>
+            <Text style={{fontFamily:'Avenir',}}>F</Text>
           </View>
           <View style = {localStyles.repeatItem}>
             <RadioButton call={this._Sat.bind(this)}/>
-            <Text>Sat</Text>
+            <Text style={{fontFamily:'Avenir',}}>Sat</Text>
           </View>
         </View>
       </View>;
@@ -359,13 +359,13 @@ class AddPage extends Component {
       <View style={styles.container}>
         <View style={styles.titleBar}>
           <View style = {{flex: 1, marginTop: 20, marginRight: 17, flexDirection: 'row', justifyContent:'flex-end'}}>
-              <Text onPress={()=>this.props.navigator.pop()} style={{fontSize: 15, color: 'navy'}}>Cancel</Text>
+              <Text onPress={()=>this.props.navigator.pop()} style={{fontSize: 15, color: 'navy', fontFamily:'Avenir-medium'}}>Cancel</Text>
           </View>
           <View style = {{flex: 3, marginTop: 20, alignItems: 'center'}}>
               <Text style={styles.titleBarText}>New Event</Text>
           </View>
           <View style = {{flex: 1, marginTop: 20, marginRight: 17, flexDirection: 'row', justifyContent:'flex-end'}}>
-              <Text onPress={this._checkFields.bind(this)} style={{fontSize: 15, color: 'navy'}}>Add</Text>
+              <Text onPress={this._checkFields.bind(this)} style={{fontSize: 15, color: 'navy', fontFamily:'Avenir-medium'}}>Add</Text>
           </View>
         </View>
         <ScrollView style={styles.container} bounces={false}>
@@ -400,7 +400,8 @@ var localStyles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   dateText: {
-    color: 'navy'
+    color: 'navy',
+    fontFamily:'Avenir',
   },
   repeatBody: {
     height: 65,
@@ -433,6 +434,7 @@ var localStyles = StyleSheet.create({
     fontSize: 15
   },
   locationTextStyle: {
+    fontFamily:'Avenir',
   },
 })
 

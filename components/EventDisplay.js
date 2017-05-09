@@ -172,7 +172,7 @@ class EventDisplay extends Component {
                 </View>
 
                 <View style={{alignItems: 'center'}}>
-                  <Text style={{fontWeight: 'bold', fontSize: 15}}>{this.props.event.eventName}</Text>
+                  <Text style={{fontWeight: 'bold', fontSize: 17, fontFamily:'Avenir-medium'}}>{this.props.event.eventName}</Text>
                 </View>
 
                 <View style={{marginTop:10}}>
@@ -212,7 +212,7 @@ var localStyles = StyleSheet.create({
     backgroundColor: 'white',
     borderColor: '#eaecef',
     borderBottomWidth: 1,
-    height: 50,
+    height: 45,
     alignItems: 'center',
     justifyContent: 'space-around',
   },
@@ -227,15 +227,18 @@ var localStyles = StyleSheet.create({
   titleText: {
     fontSize: 15,
     alignItems: 'center',
+    fontFamily:'Avenir-medium'
   },
   eventText: {
-    fontSize: 13,
+    fontSize: 15,
     alignItems: 'center',
+    fontFamily:'Avenir'
   },
   locationText: {
-    fontSize: 13,
+    fontSize: 15,
     color: 'navy',
     alignItems: 'center',
+    fontFamily:'Avenir'
   },
 })
 

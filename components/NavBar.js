@@ -5,7 +5,7 @@ import {
     AppRegistry,
     View,
     StyleSheet,
-    Navigator
+    Navigator, TouchableOpacity
   } from 'react-native';
 import styles from '../styles';
 import {
@@ -33,9 +33,15 @@ class NavBar extends Component {
     return (
       <View style = {styles.navContainer}>
         <View style={styles.navbar}>
-          <Icon onPress={()=>this._navigate("HomePage")} name="home" style={{fontSize: 20, color: 'black'}}/>
-          <Icon onPress={()=>this._navigate("SchedulePage")} name="calendar" style={{fontSize: 20, color: 'black'}}/>
-          <Icon onPress={()=>this._navigate("StatsPage")} name="stats" style={{fontSize: 20, color: 'black'}}/>
+          <TouchableOpacity onPress={()=>this._navigate("HomePage")} style={{flex:1, alignItems:'center'}}>
+            <Icon name="home" style={{fontSize: 20, color: 'white'}}/>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={()=>this._navigate("SchedulePage")} style={{flex:1, alignItems:'center'}}>
+            <Icon name="calendar" style={{fontSize: 20, color: 'white'}}/>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={()=>this._navigate("StatsPage")} style={{flex:1, alignItems:'center'}}>
+            <Icon name="stats" style={{fontSize: 20, color: 'white'}}/>
+          </TouchableOpacity>
         </View>
       </View>
     );
