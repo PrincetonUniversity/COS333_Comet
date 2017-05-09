@@ -55,8 +55,15 @@ class HomePage extends Component {
     var dateString = moment().format('LLLL').split(',')
     var date = (dateString[0] + ", " + dateString[1]).toLowerCase()
 
-    //CALCULATE STREAK
-    var streak = 0;
+    var streak = 0
+    var allList = Firebase.database().ref().child('/users/' + this.userid + '/')
+    allList.on('value', (snap) => {
+      snap.forEach((child) => {
+        if (child.key == 'counter') {
+          streak = child.val();
+        }
+      });
+    });
 
     return (
       <View style={{flex:1}}>
@@ -64,8 +71,8 @@ class HomePage extends Component {
           <View style={{flex:1, flexDirection:'row', backgroundColor: 'transparent'}}>
             <View style={{flex:1, flexDirection:'row', alignItems: 'center', paddingLeft: 20, paddingTop: 21}}>
               <TouchableOpacity onPress={this._logout.bind(this)} style={{flexDirection: 'row', alignItems:'center'}}>
-              <Icon name="ios-power" style={{fontSize: 25, color: 'white', fontWeight:'bold'}}/>
-              <Text style={{color:'white', fontSize: 15, fontFamily:'Avenir'}}>  logout</Text>
+                <Icon name="ios-power" style={{fontSize: 25, color: 'white', fontWeight:'bold'}}/>
+                <Text style={{color:'white', fontSize: 15, fontFamily:'Avenir'}}>  logout</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -85,7 +92,7 @@ class HomePage extends Component {
   }
 }
 
-  const localStyles = StyleSheet.create({
+const localStyles = StyleSheet.create({
   imageContainer: {
     flex: 10,
     flexDirection: 'column',
@@ -112,4 +119,4 @@ class HomePage extends Component {
   }
 });
 
-  module.exports = HomePage;
+module.exports = HomePage;

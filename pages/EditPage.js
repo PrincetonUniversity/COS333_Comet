@@ -242,7 +242,7 @@ class EditPage extends Component {
     return (
       <View style={localStyles.inputRow}>
         <View style={localStyles.inputText}>
-          <Text>{section.title}</Text>
+          <Text style={{fontFamily:'Avenir-medium'}}>{section.title}</Text>
         </View>
         <View style={localStyles.inputDate}>
           <Text style={localStyles.dateText}>{text}</Text>
@@ -373,38 +373,38 @@ class EditPage extends Component {
 
         <View style={localStyles.inputRow}>
           <View style ={localStyles.inputText}>
-            <Text>Repeats</Text>
+            <Text style={{fontFamily:'Avenir-medium'}}>Repeats</Text>
           </View>
         </View>
 
         <View style={localStyles.repeatBody}>
           <View style = {localStyles.repeatItem}>
             <RadioButton call={this._Sun.bind(this)} truthValue = {this.state.sunday}/>
-            <Text>Sun</Text>
+            <Text style={{fontFamily:'Avenir'}}>Sun</Text>
           </View>
           <View style = {localStyles.repeatItem}>
             <RadioButton call={this._M.bind(this)} truthValue = {this.state.monday}/>
-            <Text>M</Text>
+            <Text style={{fontFamily:'Avenir'}}>M</Text>
           </View>
           <View style = {localStyles.repeatItem}>
             <RadioButton call={this._T.bind(this)} truthValue = {this.state.tuesday}/>
-            <Text>T</Text>
+            <Text style={{fontFamily:'Avenir'}}>T</Text>
           </View>
           <View style = {localStyles.repeatItem}>
             <RadioButton call={this._W.bind(this)} truthValue = {this.state.wednesday}/>
-            <Text>W</Text>
+            <Text style={{fontFamily:'Avenir'}}>W</Text>
           </View>
           <View style = {localStyles.repeatItem}>
             <RadioButton call={this._Th.bind(this)} truthValue = {this.state.thursday}/>
-            <Text>Th</Text>
+            <Text style={{fontFamily:'Avenir'}}>Th</Text>
           </View>
           <View style = {localStyles.repeatItem}>
             <RadioButton call={this._F.bind(this)} truthValue = {this.state.friday}/>
-            <Text>F</Text>
+            <Text style={{fontFamily:'Avenir'}}>F</Text>
           </View>
           <View style = {localStyles.repeatItem}>
             <RadioButton call={this._Sat.bind(this)} truthValue = {this.state.saturday}/>
-            <Text>Sat</Text>
+            <Text style={{fontFamily:'Avenir'}}>Sat</Text>
           </View>
         </View>
       </View>;
@@ -413,13 +413,13 @@ class EditPage extends Component {
       <View style={styles.container}>
         <View style={styles.titleBar}>
           <View style = {{flex: 1, marginTop: 20, marginRight: 17, flexDirection: 'row', justifyContent:'flex-end'}}>
-              <Text onPress={()=>this.props.navigator.pop()} style={{fontSize: 15, color: 'navy'}}>Cancel</Text>
+              <Text onPress={()=>this.props.navigator.pop()} style={{fontSize: 15, color: '#d7dbe2'}}>Cancel</Text>
           </View>
           <View style = {{flex: 3, marginTop: 20, alignItems: 'center'}}>
               <Text style={styles.titleBarText}>New Event</Text>
           </View>
           <View style = {{flex: 1, marginTop: 20, marginRight: 17, flexDirection: 'row', justifyContent:'flex-end'}}>
-              <Text onPress={this._checkFields.bind(this)} style={{fontSize: 15, color: 'navy'}}>Save</Text>
+              <Text onPress={this._checkFields.bind(this)} style={{fontSize: 15, color: '#d7dbe2'}}>Save</Text>
           </View>
         </View>
         <ScrollView style={styles.container}>
@@ -454,7 +454,8 @@ var localStyles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   dateText: {
-    color: 'navy'
+    color: '#1f1c3a',
+    fontFamily:'Avenir',
   },
   repeatBody: {
     height: 65,
@@ -487,6 +488,7 @@ var localStyles = StyleSheet.create({
     fontSize: 15
   },
   locationTextStyle: {
+    fontFamily:'Avenir',
   },
 })
 

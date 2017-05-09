@@ -103,7 +103,6 @@ class SchedulePage extends Component {
 
     // build list of today events & all events
     allList.on('value', (snap) => {
-      console.log("I'VE CHANGED.")
       var todayEvents = [];
       var allEvents = [];
       snap.forEach((child) => {
@@ -158,7 +157,7 @@ class SchedulePage extends Component {
     return (
     <View style={styles.container}>
     <Container style={{flex:10}}>
-      <Header style={{ backgroundColor: '#2f3d77'}}>
+      <Header style={{ backgroundColor: '#2f3d77', height:55}}>
         <Left />
         <Body>
           <Title style={{color: 'white', fontFamily:'Avenir-medium'}}>Your Schedule</Title>

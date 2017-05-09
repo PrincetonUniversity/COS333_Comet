@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 //import Bar from 'react-native-pathjs-charts';
 import {Pie, Bar} from 'react-native-pathjs-charts';
-//import 'react-native-svg';
+import Svg from 'react-native-svg';
 
 export default class StatsPage extends Component {
   constructor(props) {
@@ -140,17 +140,11 @@ export default class StatsPage extends Component {
         <Text style={styles.welcome}>
           Your Streak:
         </Text>
-        <Pie
-          data={StreakData}
-          options={StreakOptions}
-          accessorKey="count" />
-        <Bar
-          data={data}
-          options={options}
-          accessorKey='v'/>
         <ScrollView>
           <Text></Text>
         </ScrollView>
+        <Pie
+          data={StreakData} />
 
 {/*        <Text style={{backgroundColor: '#eaecef'}}>Events for Today:</Text>
          <ListView dataSource = {this.state.todayEvents}

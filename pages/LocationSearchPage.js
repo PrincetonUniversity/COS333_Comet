@@ -46,10 +46,10 @@ class LocationSearchPage extends Component{
       <View style={Style.container}>
         <View style={styles.titleBar}>
           <View style = {{flex: 1, marginTop: 20, marginLeft: 17, flexDirection: 'row', justifyContent:'flex-start'}}>
-              <Icon onPress={()=>this.props.navigator.pop()} name="arrow-back" style={{fontSize: 20, color: 'navy'}}/>
+              <Icon onPress={()=>this.props.navigator.pop()} name="arrow-back" style={{fontSize: 20, color: '#d7dbe2'}}/>
           </View>
           <View style = {{flex: 3, marginTop: 20, alignItems: 'center'}}>
-              <Text style={styles.titleBarText}>New Event</Text>
+              <Text style={styles.titleBarText}>Choose Location</Text>
           </View>
           <View style = {{flex: 1, marginTop: 20, marginRight: 17, flexDirection: 'row', justifyContent:'flex-end'}}>
           </View>
@@ -62,7 +62,14 @@ class LocationSearchPage extends Component{
           listViewDisplayed='auto' // true/false/undefined
           fetchDetails={true}
 
-          renderDescription={(row) => row.description} // custom description render
+
+          renderDescription={(row) => {
+            name = row.description
+            if (name.length > 49) {
+              name = name.slice(0,49) + '...'
+            }
+            return name
+          }} // custom description render
           onPress={(data, details = "null") => { // 'details' is provided when fetchDetails = true
             //geocode the planned location
             Geocoder.setApiKey('AIzaSyCNz6l77DLDP0f9pehjVuABmkxByXUm90g');

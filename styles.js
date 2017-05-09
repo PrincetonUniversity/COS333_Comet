@@ -23,7 +23,7 @@ var styles = StyleSheet.create({
 	//'#eaecef' gray
 	titleBar: {
 		flexDirection: 'row',
-		backgroundColor: '#1f1c3a',
+		backgroundColor: '#2f3d77',
 		borderColor: 'gray',
 		borderBottomWidth: .5,
 		height: 55,

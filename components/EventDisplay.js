@@ -227,7 +227,7 @@ var localStyles = StyleSheet.create({
   titleText: {
     fontSize: 15,
     alignItems: 'center',
-    fontFamily:'Avenir-medium'
+    fontFamily:'Avenir'
   },
   eventText: {
     fontSize: 15,

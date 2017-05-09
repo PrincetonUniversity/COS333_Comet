@@ -49,7 +49,7 @@ var localStyles = StyleSheet.create({
   },
   pressedInside: {
     flex: 1,
-    backgroundColor: 'navy'
+    backgroundColor: '#1f1c3a'
   }
 })
 
