@@ -39,8 +39,8 @@ class RadioButton extends Component {
 
 var localStyles = StyleSheet.create({
   button: {
-    height: 15,
-    width: 15,
+    height: 17,
+    width: 17,
     backgroundColor:'white',
     borderColor: 'gray',
     borderWidth: 1,

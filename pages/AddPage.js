@@ -188,7 +188,7 @@ class AddPage extends Component {
     return (
       <View style={localStyles.inputRow}>
         <View style={localStyles.inputText}>
-          <Text style={{fontFamily:'Avenir-medium',}}>{section.title}</Text>
+          <Text style={{fontFamily:'Avenir-medium', fontSize:17}}>{section.title}</Text>
         </View>
         <View style={localStyles.inputDate}>
           <Text style={localStyles.dateText}>{text}</Text>
@@ -319,38 +319,38 @@ class AddPage extends Component {
 
         <View style={localStyles.inputRow}>
           <View style ={localStyles.inputText}>
-            <Text style={{fontFamily:'Avenir-medium',}}>Repeats</Text>
+            <Text style={{fontFamily:'Avenir-medium', fontSize:17}}>Repeats</Text>
           </View>
         </View>
 
         <View style={localStyles.repeatBody}>
           <View style = {localStyles.repeatItem}>
             <RadioButton call={this._Sun.bind(this)}/>
-            <Text style={{fontFamily:'Avenir',}}>Sun</Text>
+            <Text style={{fontFamily:'Avenir', fontSize:17}}>Sun</Text>
           </View>
           <View style = {localStyles.repeatItem}>
             <RadioButton call={this._M.bind(this)}/>
-            <Text style={{fontFamily:'Avenir',}}>M</Text>
+            <Text style={{fontFamily:'Avenir', fontSize:17}}>M</Text>
           </View>
           <View style = {localStyles.repeatItem}>
             <RadioButton call={this._T.bind(this)}/>
-            <Text style={{fontFamily:'Avenir',}}>T</Text>
+            <Text style={{fontFamily:'Avenir', fontSize:17}}>T</Text>
           </View>
           <View style = {localStyles.repeatItem}>
             <RadioButton call={this._W.bind(this)}/>
-            <Text style={{fontFamily:'Avenir',}}>W</Text>
+            <Text style={{fontFamily:'Avenir', fontSize:17}}>W</Text>
           </View>
           <View style = {localStyles.repeatItem}>
             <RadioButton call={this._Th.bind(this)}/>
-            <Text style={{fontFamily:'Avenir',}}>Th</Text>
+            <Text style={{fontFamily:'Avenir', fontSize:17}}>Th</Text>
           </View>
           <View style = {localStyles.repeatItem}>
             <RadioButton call={this._F.bind(this)}/>
-            <Text style={{fontFamily:'Avenir',}}>F</Text>
+            <Text style={{fontFamily:'Avenir', fontSize:17}}>F</Text>
           </View>
           <View style = {localStyles.repeatItem}>
             <RadioButton call={this._Sat.bind(this)}/>
-            <Text style={{fontFamily:'Avenir',}}>Sat</Text>
+            <Text style={{fontFamily:'Avenir', fontSize:17}}>Sat</Text>
           </View>
         </View>
       </View>;
@@ -359,13 +359,13 @@ class AddPage extends Component {
       <View style={styles.container}>
         <View style={styles.titleBar}>
           <View style = {{flex: 1, marginTop: 20, marginRight: 17, flexDirection: 'row', justifyContent:'flex-end'}}>
-              <Text onPress={()=>this.props.navigator.pop()} style={{fontSize: 15, color: '#d7dbe2', fontFamily:'Avenir-medium'}}>Cancel</Text>
+              <Text onPress={()=>this.props.navigator.pop()} style={{fontSize: 17, color: '#d7dbe2', fontFamily:'Avenir-medium'}}>Cancel</Text>
           </View>
           <View style = {{flex: 3, marginTop: 20, alignItems: 'center'}}>
               <Text style={styles.titleBarText}>New Event</Text>
           </View>
           <View style = {{flex: 1, marginTop: 20, marginRight: 17, flexDirection: 'row', justifyContent:'flex-end'}}>
-              <Text onPress={this._checkFields.bind(this)} style={{fontSize: 15, color: '#d7dbe2', fontFamily:'Avenir-medium'}}>Add</Text>
+              <Text onPress={this._checkFields.bind(this)} style={{fontSize: 17, color: '#d7dbe2', fontFamily:'Avenir-medium'}}>Add</Text>
           </View>
         </View>
         <ScrollView style={styles.container} bounces={false}>
@@ -380,7 +380,7 @@ class AddPage extends Component {
 
 var localStyles = StyleSheet.create({
   inputRow: {
-    height: 50,
+    height: 60,
     backgroundColor:'white',
     borderColor: '#d7dbe2',
     borderBottomWidth: 1,
@@ -402,9 +402,10 @@ var localStyles = StyleSheet.create({
   dateText: {
     color: '#1f1c3a',
     fontFamily:'Avenir',
+    fontSize:17
   },
   repeatBody: {
-    height: 65,
+    height: 70,
     backgroundColor: 'white',
     borderColor: '#d7dbe2',
     borderBottomWidth: 1,
@@ -414,14 +415,14 @@ var localStyles = StyleSheet.create({
     padding: 10,
   },
   repeatItem: {
-    height: 55,
+    height: 60,
     alignItems: 'center',
     flexDirection: 'column',
     justifyContent: 'space-around',
     padding: 7,
   },
   locationRow: {
-    height: 50,
+    height: 65,
     backgroundColor:'white',
     borderColor: '#d7dbe2',
     alignItems: 'center',
@@ -431,10 +432,11 @@ var localStyles = StyleSheet.create({
   },
   placeHolder: {
     color: '#d7dbe2',
-    fontSize: 15
+    fontSize: 17
   },
   locationTextStyle: {
     fontFamily:'Avenir',
+    fontSize:17
   },
 })
 

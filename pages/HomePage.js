@@ -57,7 +57,7 @@ class HomePage extends Component {
 
     var streak = 0
     var allList = Firebase.database().ref().child('/users/' + this.userid + '/')
-    allList.on('value', (snap) => {
+    allList.once('value', (snap) => {
       snap.forEach((child) => {
         if (child.key == 'counter') {
           streak = child.val();
@@ -72,17 +72,17 @@ class HomePage extends Component {
             <View style={{flex:1, flexDirection:'row', alignItems: 'center', paddingLeft: 20, paddingTop: 21}}>
               <TouchableOpacity onPress={this._logout.bind(this)} style={{flexDirection: 'row', alignItems:'center'}}>
                 <Icon name="ios-power" style={{fontSize: 25, color: 'white', fontWeight:'bold'}}/>
-                <Text style={{color:'white', fontSize: 15, fontFamily:'Avenir'}}>  logout</Text>
+                <Text style={{color:'white', fontSize: 20, fontFamily:'Avenir'}}>  logout</Text>
               </TouchableOpacity>
             </View>
           </View>
           <View style={{flex:10, alignItems: 'center'}}>
-            <Text style={{color:'white', fontSize: 22, fontFamily:'Avenir-medium', paddingTop: 40}}>hello nina</Text>
-            <Text style={{color:'white', fontSize: 30, fontFamily:'Avenir-medium', paddingBottom: 20}}>{date}</Text>
+            <Text style={{color:'white', fontSize: 35, fontFamily:'Avenir-medium', paddingTop: 45}}>hello nina</Text>
+            <Text style={{color:'white', fontSize: 40, fontFamily:'Avenir-medium', paddingBottom: 20}}> {date} </Text>
             <Image source={require('../constellation4.2.png')} style={localStyles.graphic}/>
             <View style={{flexDirection:'row', alignItems:'center'}}>
-              <Icon name="star" style={{fontSize: 30, color: 'white', fontWeight:'bold', paddingTop:50}}/>
-              <Text style={{color:'white', fontSize: 25, fontFamily:'Avenir-medium', paddingTop: 50}}> {streak} days</Text>
+              <Icon name="star" style={{fontSize: 33, color: 'white', fontWeight:'bold', paddingTop:50}}/>
+              <Text style={{color:'white', fontSize: 33, fontFamily:'Avenir-medium', paddingTop: 50}}> {streak} </Text>
             </View>
           </View>
         </Image>
@@ -114,8 +114,8 @@ const localStyles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   graphic: {
-    height:275,
-    width:275,
+    height:300,
+    width:300,
   }
 });
 

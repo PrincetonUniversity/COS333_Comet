@@ -31,14 +31,13 @@ var styles = StyleSheet.create({
 		justifyContent: 'center',
 	},
 	titleBarText: {
-		fontSize: 15,
-		fontWeight: 'bold',
+		fontSize: 20,
 		color: 'white',
 		alignItems: 'center',
 		fontFamily:'Avenir-medium',
 	},
 	xButton: {
-	    fontSize: 30,
+	    fontSize: 33,
 	    fontWeight:'bold',
 	    color: 'black'
   	},
@@ -97,7 +96,7 @@ var styles = StyleSheet.create({
 	  primaryButtonText: {
 	    color: 'black',
 	    textAlign: 'center',
-	    fontSize: 15,
+	    fontSize: 20,
 			fontFamily:'Avenir-medium',
 	  },
 	  image: {

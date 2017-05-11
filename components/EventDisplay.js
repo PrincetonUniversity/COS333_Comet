@@ -168,11 +168,11 @@ class EventDisplay extends Component {
            <View style={styles.cardBackground}>
               <View style={styles.cardBody}>
                 <View style={{alignItems: 'flex-end'}}>
-                  <Icon onPress={()=>this.setModalVisible(!this.state.modalVisible)} name="close" style={{fontSize: 30, fontWeight:'bold', color: 'black'}}/>
+                  <Icon onPress={()=>this.setModalVisible(!this.state.modalVisible)} name="close" style={{fontSize: 35, fontWeight:'bold', color: 'black'}}/>
                 </View>
 
                 <View style={{alignItems: 'center'}}>
-                  <Text style={{fontWeight: 'bold', fontSize: 17, fontFamily:'Avenir-medium'}}>{this.props.event.eventName}</Text>
+                  <Text style={{fontWeight: 'bold', fontSize: 22, fontFamily:'Avenir-medium'}}>{this.props.event.eventName}</Text>
                 </View>
 
                 <View style={{marginTop:10}}>
@@ -225,17 +225,17 @@ var localStyles = StyleSheet.create({
     margin: 35,
   },
   titleText: {
-    fontSize: 15,
+    fontSize: 19,
     alignItems: 'center',
     fontFamily:'Avenir'
   },
   eventText: {
-    fontSize: 15,
+    fontSize: 17,
     alignItems: 'center',
     fontFamily:'Avenir'
   },
   locationText: {
-    fontSize: 15,
+    fontSize: 17,
     color: 'navy',
     alignItems: 'center',
     fontFamily:'Avenir'

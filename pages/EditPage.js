@@ -242,7 +242,7 @@ class EditPage extends Component {
     return (
       <View style={localStyles.inputRow}>
         <View style={localStyles.inputText}>
-          <Text style={{fontFamily:'Avenir-medium'}}>{section.title}</Text>
+          <Text style={{fontFamily:'Avenir-medium', fontSize:17}}>{section.title}</Text>
         </View>
         <View style={localStyles.inputDate}>
           <Text style={localStyles.dateText}>{text}</Text>
@@ -373,38 +373,38 @@ class EditPage extends Component {
 
         <View style={localStyles.inputRow}>
           <View style ={localStyles.inputText}>
-            <Text style={{fontFamily:'Avenir-medium'}}>Repeats</Text>
+            <Text style={{fontFamily:'Avenir-medium', fontSize:17}}>Repeats</Text>
           </View>
         </View>
 
         <View style={localStyles.repeatBody}>
           <View style = {localStyles.repeatItem}>
             <RadioButton call={this._Sun.bind(this)} truthValue = {this.state.sunday}/>
-            <Text style={{fontFamily:'Avenir'}}>Sun</Text>
+            <Text style={{fontFamily:'Avenir', fontSize:17}}>Sun</Text>
           </View>
           <View style = {localStyles.repeatItem}>
             <RadioButton call={this._M.bind(this)} truthValue = {this.state.monday}/>
-            <Text style={{fontFamily:'Avenir'}}>M</Text>
+            <Text style={{fontFamily:'Avenir', fontSize:17}}>M</Text>
           </View>
           <View style = {localStyles.repeatItem}>
             <RadioButton call={this._T.bind(this)} truthValue = {this.state.tuesday}/>
-            <Text style={{fontFamily:'Avenir'}}>T</Text>
+            <Text style={{fontFamily:'Avenir', fontSize:17}}>T</Text>
           </View>
           <View style = {localStyles.repeatItem}>
             <RadioButton call={this._W.bind(this)} truthValue = {this.state.wednesday}/>
-            <Text style={{fontFamily:'Avenir'}}>W</Text>
+            <Text style={{fontFamily:'Avenir', fontSize:17}}>W</Text>
           </View>
           <View style = {localStyles.repeatItem}>
             <RadioButton call={this._Th.bind(this)} truthValue = {this.state.thursday}/>
-            <Text style={{fontFamily:'Avenir'}}>Th</Text>
+            <Text style={{fontFamily:'Avenir', fontSize:17}}>Th</Text>
           </View>
           <View style = {localStyles.repeatItem}>
             <RadioButton call={this._F.bind(this)} truthValue = {this.state.friday}/>
-            <Text style={{fontFamily:'Avenir'}}>F</Text>
+            <Text style={{fontFamily:'Avenir', fontSize:17}}>F</Text>
           </View>
           <View style = {localStyles.repeatItem}>
             <RadioButton call={this._Sat.bind(this)} truthValue = {this.state.saturday}/>
-            <Text style={{fontFamily:'Avenir'}}>Sat</Text>
+            <Text style={{fontFamily:'Avenir', fontSize:17}}>Sat</Text>
           </View>
         </View>
       </View>;
@@ -434,7 +434,7 @@ class EditPage extends Component {
 
 var localStyles = StyleSheet.create({
   inputRow: {
-    height: 50,
+    height: 60,
     backgroundColor:'white',
     borderColor: '#d7dbe2',
     borderBottomWidth: 1,
@@ -456,9 +456,10 @@ var localStyles = StyleSheet.create({
   dateText: {
     color: '#1f1c3a',
     fontFamily:'Avenir',
+    fontSize:17
   },
   repeatBody: {
-    height: 65,
+    height: 70,
     backgroundColor: 'white',
     borderColor: '#d7dbe2',
     borderBottomWidth: 1,
@@ -468,14 +469,14 @@ var localStyles = StyleSheet.create({
     padding: 10,
   },
   repeatItem: {
-    height: 55,
+    height: 60,
     alignItems: 'center',
     flexDirection: 'column',
     justifyContent: 'space-around',
     padding: 7,
   },
   locationRow: {
-    height: 50,
+    height: 65,
     backgroundColor:'white',
     borderColor: '#d7dbe2',
     alignItems: 'center',
@@ -489,6 +490,7 @@ var localStyles = StyleSheet.create({
   },
   locationTextStyle: {
     fontFamily:'Avenir',
+    fontSize:17
   },
 })
 

@@ -105,46 +105,6 @@ export default class LoginPage extends Component {
   }
 
 
-/*
-  login(){
-    this.setState({
-      loading: true
-    });
-    // Log in and display an alert to tell the user what happened.
-    Firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then((userData) =>
-      {
-        this.setState({
-	        loading: false
-	      });
-        var ref = Firebase.database().ref('users/' + Firebase.auth().currentUser.uid);
-        var hasCounter = false;
-        ref.once("value").then(function(snapshot) {
-          console.log("in here")
-          hasCounter = snapshot.child("counter").exists();
-          if (!hasCounter) {
-            Firebase.database().ref('users/' + Firebase.auth().currentUser.uid).update({
-              counter: 0
-            )};
-          }
-          console.log(hasCounter + "inside snapshot")
-        });
-        Firebase.database().ref('users/' + Firebase.auth().currentUser.uid).update({
-          name: Firebase.auth().currentUser.email,
-        });
-        console.log(hasCounter)
-        this.props.navigator.replace({
-          name: 'HomePage',
-        });
-      }
-    ).catch((error) =>
-    	{
-	      this.setState({
-	        loading: false
-	      });
-        alert('Login failed. ' + error.message + ' Please try again.');
-    });
-  }*/
-
   // Go to the signup page
   goToSignup(){
     this.props.navigator.push({

@@ -37,9 +37,10 @@ class Comet extends Component {
     this.userid = null
     this.timer = null
     this.todayDate = new Date()
+    this.streak = true
   }
 
-  componentWillMount() {
+  componentDidMount() {
     console.log("IM MOUNTING");
     const unsubscribe = Firebase.auth().onAuthStateChanged((user) => {
       if (user != null) {
@@ -68,6 +69,16 @@ class Comet extends Component {
         console.log(" - checkpoint: " + this.state.todayEvents[i].checkPoint + ", key: " + this.state.todayEvents[i]._key)
       }
       this.todayDate = new Date()
+
+      // IF IT IS TOMORROW; YOU NEED TO RECALCULATE THE LIST. !!!
+      if (this.currentEvent._key == 'tomorrow') {
+        this._renderToday();
+        console.log("this is the recalculated tomorrow list.")
+        for (var i = 0; i < this.state.todayEvents.length; i++) {
+          console.log(" - checkpoint: " + this.state.todayEvents[i].checkPoint + ", key: " + this.state.todayEvents[i]._key)
+        }
+      }
+
       var currentEventTime = moment(this.currentEvent.checkPoint, "h:mm A") // {moment}
       if (moment() >= currentEventTime) {
         if (this.currentEvent._key != 'tomorrow') {
@@ -81,7 +92,7 @@ class Comet extends Component {
             _key: 'tomorrow'
           }
           this.timer = BackgroundTimer.setTimeout(checkTime, this._changeInterval())
-          console.log("set timer # " + this.timer)
+          console.log("set tomorrow timer # " + this.timer)
           return;
         }
         else {
@@ -223,40 +234,25 @@ class Comet extends Component {
       // cancel current timer & restart at prev point. if already passed, just increment counter.
       console.log("you added a new event for today at " + snap.val())
       if (this.timer) {
-        if (moment() < moment(snap.val(), 'h:mm A')) { // if not yet passed ***corner case =
-          BackgroundTimer.clearTimeout(this.timer);
-          console.log("cleared timer # " + this.timer)
-        }
+        BackgroundTimer.clearTimeout(this.timer);
+        console.log("cleared timer # " + this.timer)
       }
     });
 
     todayList.on("child_removed", (snap) => {
       console.log("you removed an event for today at " + snap.val())
-      if (this.timer && this.counter > 0) { // should always be true but just in case
-        if (moment() < moment(snap.val(), 'h:mm A')) { // in case you delete the current event.
-          BackgroundTimer.clearTimeout(this.timer);
-          console.log("cleared timer # " + this.timer)
-        }
+      if (this.timer && this.counter >= 0) { // should always be true but just in case
+        BackgroundTimer.clearTimeout(this.timer);
+        console.log("cleared timer # " + this.timer)
       }
     });
-
-  /*  todayList.on("child_changed", (snap) => {
-      // cancel current timer & restart at prev point. if it's already passed, just ignore.
-      console.log("changed an event for today at " + snap.val()) // same logic for added but w/o incrementing
-      if (this.timer) {
-        if (moment() < moment(snap.val(), 'h:mm A')) { // in case you change the current event.
-          BackgroundTimer.clearTimeout(this.timer[0]);
-          console.log("cleared timer # " + this.timer[0])
-        }
-      }
-    });*/
   }
 
 /****************************** ATTENDANCE DATA ******************************/
   _checkEvent(event) {
     this.storedCurrentEvent = event
     var eventKey = event._key
-    Firebase.database().ref('users/' + this.userid + '/').on('value', (snap) => {
+    Firebase.database().ref('users/' + this.userid + '/').once('value', (snap) => {
       var event = snap.child(eventKey).val()
       this.setState({
         //event address
@@ -264,23 +260,6 @@ class Comet extends Component {
         planLongitude: event.location.longitude,
       }, this._checkLocation);
     });
-  }
-
-  _check() {
-    //compare with planned location coordinates, radius currently .005
-    if (Math.abs(this.state.planLatitude - this.state.currLatitude) < 0.005 &&
-      Math.abs(this.state.planLongitude - this.state.currLongitude) < 0.005)
-      {
-        alert("Nice! You attended your event.")
-        console.log("p event coordinates: (" + this.state.planLatitude + ", " + this.state.planLongitude + ")")
-        console.log("p your coordinates: (" + this.state.currLatitude + ", " + this.state.currLongitude + ")")
-        //this._incrementPresence();
-      } else {
-        alert("You missed your event!")
-        console.log("a event coordinates: (" + this.state.planLatitude + ", " + this.state.planLongitude + ")")
-        console.log("a your coordinates: (" + this.state.currLatitude + ", " + this.state.currLongitude + ")")
-        //this._incrementAbsence();
-      }
   }
 
   _checkLocation() {
@@ -294,7 +273,6 @@ class Comet extends Component {
             currLongitude: position.coords.longitude,
             error: null,
           }, this._check);
-
         },
         (error) => this.setState({ error: error.message }),
         { enableHighAccuracy: true, timeout: 20000, maximumAge: 1 },
@@ -303,52 +281,63 @@ class Comet extends Component {
     console.log("CHECKED " + event._key + " at " + event.checkPoint)
   }
 
+  _check() {
+    //compare with planned location coordinates, radius currently .005
+    if (Math.abs(this.state.planLatitude - this.state.currLatitude) < 0.005 &&
+      Math.abs(this.state.planLongitude - this.state.currLongitude) < 0.005)
+      {
+        alert("Nice! You attended your event.")
+        console.log("p event coordinates: (" + this.state.planLatitude + ", " + this.state.planLongitude + ")")
+        console.log("p your coordinates: (" + this.state.currLatitude + ", " + this.state.currLongitude + ")")
+        this._incrementPresence();
+        this._incrementStreak();
+      } else {
+        alert("You missed your event!")
+        console.log("a event coordinates: (" + this.state.planLatitude + ", " + this.state.planLongitude + ")")
+        console.log("a your coordinates: (" + this.state.currLatitude + ", " + this.state.currLongitude + ")")
+        this._incrementAbsence();
+        this._resetStreak();
+      }
+  }
+
   _incrementPresence() {
-    var key = this.currentEvent._key
+    var key = this.storedCurrentEvent._key
     var userid = this.userid
     console.log("+1 presence for " + key)
     var ref = Firebase.database().ref('/users/' + userid + '/' + key);
     ref.once("value")
       .then(function(snapshot) {
         var prevCounter = snapshot.child("present").val();
-        console.log("prevCounter: " + prevCounter)
         prevCounter = prevCounter + 1
         Firebase.database().ref('users/' + userid + '/' + key).update({
           present: prevCounter
         });
       })
-    // if end of the day
-    if (this.state.todayEvents.indexOf(event._key) == this.state.todayEvents.length -1) {
-      this._incrementStreak(event);
-    }
   }
 
   _incrementAbsence() {
-    var key = this.currentEvent._key
+    var key = this.storedCurrentEvent._key
     var userid = this.userid
     var ref = Firebase.database().ref('/users/' + userid + '/' + key);
     ref.once("value")
       .then(function(snapshot) {
         var prevCounter = snapshot.child("absent").val();
-        console.log("prevAbsence: " + prevCounter)
         prevCounter = prevCounter + 1
         Firebase.database().ref('users/' + userid + '/' + key).update({
           absent: prevCounter
         });
         console.log("+1 absence for " + key)
-        console.log("Current absences: " + prevCounter)
       })
-    //this._resetStreak();
     return;
   }
 
-  _incrementStreak(event) {
+  _incrementStreak() {
     var userid = this.userid
     var ref = Firebase.database().ref('/users/' + userid);
+    console.log("congrats! incremented streak.")
     ref.once("value")
       .then(function(snapshot) {
         var prevCounter = snapshot.child("counter").val();
-        console.log("counter is: " + prevCounter);
         prevCounter = prevCounter + 1
         Firebase.database().ref('users/' + userid).update({
           counter: prevCounter
@@ -360,7 +349,6 @@ class Comet extends Component {
     Firebase.database().ref('users/' + this.userid).update({
       counter: 0
     });
-    return;
   }
 
 /****************************** NAVIGATION ************************************/
