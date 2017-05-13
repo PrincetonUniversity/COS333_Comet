@@ -1,8 +1,6 @@
 /*****************************/
  // handle tomorrow
  // behavior when editing events
- // restricting edits
- // removing passed events.
 /*****************************/
 
 
@@ -80,13 +78,13 @@ class Comet extends Component {
 
       // IF IT IS TOMORROW; YOU NEED TO RECALCULATE THE LIST. !!!
       // just grab the list once? .once?
-      if (this.currentEvent._key == 'tomorrow') {
+      /*if (this.currentEvent._key == 'tomorrow') {
         this._renderToday();
         console.log("this is the recalculated tomorrow list.")
         for (var i = 0; i < this.state.todayEvents.length; i++) {
           console.log(" - checkpoint: " + this.state.todayEvents[i].checkPoint + ", key: " + this.state.todayEvents[i]._key)
         }
-      }
+      }*/
 
       var currentEventTime = moment(this.currentEvent.checkPoint, "h:mm A") // {moment}
       if (moment() >= currentEventTime) {
@@ -94,14 +92,14 @@ class Comet extends Component {
           this._checkEvent(this.currentEvent);
         }
         if (this.counter == this.state.todayEvents.length-1) {
-          console.log("going to tomorrow")
-          this.counter = 0
+          console.log("going to tomorrow -- no more timers.")
+          /*this.counter = 0
           this.currentEvent = {
             checkPoint: moment().add(1, 'days').hours(0).minutes(0).second(0).millisecond(0),
             _key: 'tomorrow'
-          }
-          this.timer = BackgroundTimer.setTimeout(checkTime, this._changeInterval())
-          console.log("set tomorrow timer # " + this.timer)
+          }*/
+          //this.timer = BackgroundTimer.setTimeout(checkTime, this._changeInterval())
+          //console.log("set tomorrow timer # " + this.timer)
           return;
         }
         else {
@@ -110,10 +108,8 @@ class Comet extends Component {
           this.counter = this.counter + 1
         }
       }
-      else {
-        console.log("waiting on " + this.currentEvent._key + " at " + this.currentEvent.checkPoint + "; will take " + this._changeInterval() + " milliseconds.")
-      }
       if (this._changeInterval()) {
+        console.log("waiting on " + this.currentEvent._key + " at " + this.currentEvent.checkPoint + "; will take " + this._changeInterval() + " milliseconds.")
         this.timer = BackgroundTimer.setTimeout(checkTime, this._changeInterval())
         console.log("set timer # " + this.timer)
       }
@@ -125,15 +121,15 @@ class Comet extends Component {
       checkTime();
     }
     else { // if no events, just go straight for tmrw
-      this.currentEvent = {
+      /*this.currentEvent = {
         checkPoint: moment().add(1, 'days').hours(0).minutes(0).second(0).millisecond(0),
         _key: 'tomorrow'
-      }
-        console.log("going to tomorrow")
+      }*/
+        console.log("going to tomorrow -- no more timers.")
         console.log("cleared timer # "+ this.timer)
         BackgroundTimer.clearTimeout(this.timer);
-        this.timer = BackgroundTimer.setTimeout(checkTime, this._changeInterval())
-        console.log("set tomorrow timer # " + this.timer)
+        //this.timer = BackgroundTimer.setTimeout(checkTime, this._changeInterval())
+        //console.log("set tomorrow timer # " + this.timer)
     }
   }
 
