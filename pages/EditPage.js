@@ -100,6 +100,28 @@ class EditPage extends Component {
     this._updateLocation = this._updateLocation.bind(this)
   }
 
+  _checkRelative() {
+    var allEvents = []
+    Firebase.database().ref('/users/' + Firebase.auth().currentUser.uid + '/').once('value', (snap) => {
+      snap.forEach((child) => {
+        if (child.key != 'name' && child.key != 'today' && child.key != 'counter') {
+            // push all events to todayList
+          allEvents.push({
+            startTime: child.val().startTime, // a string
+            endTime: child.val().endTime,
+            startDate: child.val().startDate,
+            endDate: child.val().endDate,
+            day: child.val().day,
+            _key: child.key,
+          });
+        }
+      });
+      this.setState({
+        allEvents: allEvents,
+      }, this._checkFields);
+    });
+  }
+
   _checkFields() {
     var eHours = this.state.endTime.getHours()
     var eMins = this.state.endTime.getMinutes()
@@ -119,6 +141,25 @@ class EditPage extends Component {
     var sYear = this.state.startDate.getFullYear()
     var startDate = new Date(sYear, sMonth, sDate, 0, 0, 0, 0);
 
+    // check proximity to other events
+    var pass = true
+    var days = [];
+    if (this.state.monday == true) {days.push("M")}
+    if (this.state.tuesday == true) {days.push("T")}
+    if (this.state.wednesday == true) {days.push("W")}
+    if (this.state.thursday == true) {days.push("Th")}
+    if (this.state.friday == true) {days.push("F")}
+    if (this.state.saturday == true) {days.push("Sat")}
+    if (this.state.sunday == true) {days.push("Sun")}
+    if (days.length == 0) {days.push(" ")}
+
+    for (var i = 0; i < this.state.allEvents.length; i++) {
+      if (this._isClose(startTime, endTime, startDate, endDate, days, this.state.allEvents[i])) {
+        pass = false
+        break;
+      }
+    }
+
     if (this.state.eventName === '' || this.state.day === '' || this.state.location === '') {
       Alert.alert('Error', 'Fields must not be empty.');
     }
@@ -131,10 +172,53 @@ class EditPage extends Component {
     else if (endDate.getTime() < startDate.getTime()) {
       Alert.alert('Error', 'End date cannot come before start date.');
     }
+    else if (pass == false) {
+      Alert.alert('Error', 'Event too close to another event.');
+    }
     else {
       this._updateItem()
     }
   }
+
+  _isClose(startTime, endTime, startDate, endDate, day, other) {
+    var otherStartTime = moment(other.startTime, "h:mm A")
+    var otherEndTime = moment(other.endTime, "h:mm A")
+    var otherDays = other.day
+    var otherStartDate = moment(other.startDate, "MM/DD/YYYY")
+    var otherEndDate = moment(other.endDate, "MM/DD/YYYY")
+
+    var thisStartTime = moment(startTime.toLocaleTimeString(), 'h:mm A')
+    var thisEndTime = moment(endTime.toLocaleTimeString(), 'h:mm A')
+    var thisDays = day
+    var thisStartDate = moment(startDate.toLocaleDateString(), 'MM/DD/YYYY')
+    var thisEndDate = moment(endDate.toLocaleDateString(), 'MM/DD/YYYY')
+
+    // on same day
+    if (thisStartDate >= otherStartDate && thisStartDate <= otherEndDate) {
+      var shareDays = false
+      for (var i = 0; i < otherDays.length; i++) {
+        if (thisDays.includes(otherDays[i])) {
+          shareDays = true
+        }
+        else if (thisDays.length == 0 && otherDays.length == 0) {
+          shareDays = true
+        }
+      }
+      if (shareDays) {
+        // now, overlapping time
+        if (thisStartTime >= otherStartTime && thisStartTime <= otherEndTime) {
+          return true
+        }
+        if (otherStartTime >= thisStartTime && otherStartTime <= thisEndTime) {
+          return true
+        }
+      }
+    }
+    else {
+      return false
+    }
+  }
+
 
   _updateItem() {
     var userid = Firebase.auth().currentUser.uid
@@ -161,7 +245,6 @@ class EditPage extends Component {
     ref.once("value")
       .then(function(snapshot) {
         var absentCount = snapshot.child("absent").val();
-        console.log("absent count: " + absentCount)
         var presentCount = snapshot.child("present").val();
         var scheduleData = {
           eventName: name,
@@ -419,7 +502,7 @@ class EditPage extends Component {
               <Text style={styles.titleBarText}>New Event</Text>
           </View>
           <View style = {{flex: 1, marginTop: 20, marginRight: 17, flexDirection: 'row', justifyContent:'flex-end'}}>
-              <Text onPress={this._checkFields.bind(this)} style={{fontSize: 15, color: '#d7dbe2'}}>Save</Text>
+              <Text onPress={this._checkRelative.bind(this)} style={{fontSize: 15, color: '#d7dbe2'}}>Save</Text>
           </View>
         </View>
         <ScrollView style={styles.container}>

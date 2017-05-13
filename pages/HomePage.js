@@ -11,6 +11,14 @@ import Coordinates from '../components/Coordinates';
 import Firebase from '../components/Firebase';
 import BackgroundTimer from 'react-native-background-timer';
 var moment = require('moment');
+var img0 = require('../constellation0.png')
+var img1 = require('../constellation1.png')
+var img2 = require('../constellation2.png')
+var img3 = require('../constellation3.png')
+var img4 = require('../constellation4.2.png')
+var img5 = require('../constellation5.png')
+var img6 = require('../constellation6.png')
+var img7 = require('../constellation7.png')
 
 class HomePage extends Component {
   constructor(props) {
@@ -18,6 +26,7 @@ class HomePage extends Component {
     this.userid = Firebase.auth().currentUser.uid
     this.currentEvent = null,
     this.counter = 0
+    this.imgArray = [img0, img1, img2, img3, img4, img5, img6, img7]
   }
 
   componentWillUnmount() {
@@ -56,14 +65,19 @@ class HomePage extends Component {
     var date = (dateString[0] + ", " + dateString[1]).toLowerCase()
 
     var streak = 0
+    var index = 0
     var allList = Firebase.database().ref().child('/users/' + this.userid + '/')
     allList.once('value', (snap) => {
       snap.forEach((child) => {
         if (child.key == 'counter') {
           streak = child.val();
+          index = child.val() % 7
         }
       });
     });
+
+    var img = this.imgArray[index]
+    //require('../constellation4.2.png')
 
     return (
       <View style={{flex:1}}>
@@ -79,7 +93,7 @@ class HomePage extends Component {
           <View style={{flex:10, alignItems: 'center'}}>
             <Text style={{color:'white', fontSize: 35, fontFamily:'Avenir-medium', paddingTop: 45}}>hello nina</Text>
             <Text style={{color:'white', fontSize: 40, fontFamily:'Avenir-medium', paddingBottom: 20}}> {date} </Text>
-            <Image source={require('../constellation4.2.png')} style={localStyles.graphic}/>
+            <Image source={img} style={localStyles.graphic}/>
             <View style={{flexDirection:'row', alignItems:'center'}}>
               <Icon name="star" style={{fontSize: 33, color: 'white', fontWeight:'bold', paddingTop:50}}/>
               <Text style={{color:'white', fontSize: 33, fontFamily:'Avenir-medium', paddingTop: 50}}> {streak} </Text>

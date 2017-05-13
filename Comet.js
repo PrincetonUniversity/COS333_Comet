@@ -1,3 +1,11 @@
+/*****************************/
+ // handle tomorrow
+ // behavior when editing events
+ // restricting edits
+ // removing passed events.
+/*****************************/
+
+
 'use strict';
 import React, {Component} from 'react';
 import {AppRegistry, Navigator, Text, View,} from 'react-native';
@@ -64,13 +72,14 @@ class Comet extends Component {
 /****************************** BACKGROUND TIMER ******************************/
   _startTimer() {
     var checkTime = () => {
-      console.log("this is the updated today list:")
+      console.log("this is the updated today list with counter = " + this.counter + ": ")
       for (var i = 0; i < this.state.todayEvents.length; i++) {
         console.log(" - checkpoint: " + this.state.todayEvents[i].checkPoint + ", key: " + this.state.todayEvents[i]._key)
       }
       this.todayDate = new Date()
 
       // IF IT IS TOMORROW; YOU NEED TO RECALCULATE THE LIST. !!!
+      // just grab the list once? .once?
       if (this.currentEvent._key == 'tomorrow') {
         this._renderToday();
         console.log("this is the recalculated tomorrow list.")
@@ -120,11 +129,11 @@ class Comet extends Component {
         checkPoint: moment().add(1, 'days').hours(0).minutes(0).second(0).millisecond(0),
         _key: 'tomorrow'
       }
-      if (!this.timer) {
         console.log("going to tomorrow")
+        console.log("cleared timer # "+ this.timer)
+        BackgroundTimer.clearTimeout(this.timer);
         this.timer = BackgroundTimer.setTimeout(checkTime, this._changeInterval())
-        console.log("set timer # " + this.timer)
-      }
+        console.log("set tomorrow timer # " + this.timer)
     }
   }
 
@@ -188,6 +197,7 @@ class Comet extends Component {
          }
        });
        todayEvents.sort(this._sortEvents);
+       this.counter = 0 //? correct?
        this.setState({
          todayEvents: todayEvents,
        }, this._startTimer);
@@ -236,6 +246,7 @@ class Comet extends Component {
       if (this.timer) {
         BackgroundTimer.clearTimeout(this.timer);
         console.log("cleared timer # " + this.timer)
+        this.counter = 0
       }
     });
 
@@ -244,6 +255,7 @@ class Comet extends Component {
       if (this.timer && this.counter >= 0) { // should always be true but just in case
         BackgroundTimer.clearTimeout(this.timer);
         console.log("cleared timer # " + this.timer)
+        this.counter = 0
       }
     });
   }
@@ -283,8 +295,8 @@ class Comet extends Component {
 
   _check() {
     //compare with planned location coordinates, radius currently .005
-    if (Math.abs(this.state.planLatitude - this.state.currLatitude) < 0.005 &&
-      Math.abs(this.state.planLongitude - this.state.currLongitude) < 0.005)
+    if (Math.abs(this.state.planLatitude - this.state.currLatitude) < 0.003 &&
+      Math.abs(this.state.planLongitude - this.state.currLongitude) < 0.003)
       {
         alert("Nice! You attended your event.")
         console.log("p event coordinates: (" + this.state.planLatitude + ", " + this.state.planLongitude + ")")
@@ -346,6 +358,7 @@ class Comet extends Component {
   }
 
   _resetStreak() {
+    console.log("resetted streak.")
     Firebase.database().ref('users/' + this.userid).update({
       counter: 0
     });

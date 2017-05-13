@@ -18,17 +18,6 @@ import Svg from 'react-native-svg';
 export default class StatsPage extends Component {
   constructor(props) {
     super(props);
-/*    this.eventsRef = Firebase.database().ref()
-    this.state = {
-      modalVisible: false,
-      allEvents: new ListView.DataSource({
-        rowHasChanged: (row1, row2) => row1 !== row2,
-      }),
-      todayEvents: new ListView.DataSource({
-        rowHasChanged: (row1, row2) => row1 !== row2,
-      }),
-    };
-    this.userid = Firebase.auth().currentUser.uid */
   }
 
   render() {
