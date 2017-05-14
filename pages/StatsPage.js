@@ -47,7 +47,7 @@ export default class StatsPage extends Component {
     console.log("Mounted")
   }
 
-  componentWillMount() {
+  componentDidMount() {
     console.log("I've Mounted")
     var allList = Firebase.database().ref('/users/' + this.userid + '/')
     var tAbsences = 1

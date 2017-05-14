@@ -154,6 +154,9 @@ class EditPage extends Component {
     if (days.length == 0) {days.push(" ")}
 
     for (var i = 0; i < this.state.allEvents.length; i++) {
+      if (this.state.allEvents[i]._key == this.state.keyID) {
+        continue;
+      }
       if (this._isClose(startTime, endTime, startDate, endDate, days, this.state.allEvents[i])) {
         pass = false
         break;
@@ -195,6 +198,26 @@ class EditPage extends Component {
 
     // on same day
     if (thisStartDate >= otherStartDate && thisStartDate <= otherEndDate) {
+      var shareDays = false
+      for (var i = 0; i < otherDays.length; i++) {
+        if (thisDays.includes(otherDays[i])) {
+          shareDays = true
+        }
+        else if (thisDays.length == 0 && otherDays.length == 0) {
+          shareDays = true
+        }
+      }
+      if (shareDays) {
+        // now, overlapping time
+        if (thisStartTime >= otherStartTime && thisStartTime <= otherEndTime) {
+          return true
+        }
+        if (otherStartTime >= thisStartTime && otherStartTime <= thisEndTime) {
+          return true
+        }
+      }
+    }
+    else if (otherStartDate >= thisStartDate && otherStartDate <= thisEndDate) {
       var shareDays = false
       for (var i = 0; i < otherDays.length; i++) {
         if (thisDays.includes(otherDays[i])) {

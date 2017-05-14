@@ -10,6 +10,8 @@ import styles from '../styles';
 import Coordinates from '../components/Coordinates';
 import Firebase from '../components/Firebase';
 import BackgroundTimer from 'react-native-background-timer';
+import Loading from '../components/Loading';
+
 var moment = require('moment');
 var img0 = require('../constellation0.png')
 var img1 = require('../constellation1.png')
@@ -28,6 +30,25 @@ class HomePage extends Component {
     this.counter = 0
     this.imgArray = [img0, img1, img2, img3, img4, img5, img6, img7]
     this.streak = 0
+    this.state = {
+      checked: false
+    }
+  }
+
+  componentDidMount() {
+    var streak = 0
+    var allList = Firebase.database().ref().child('/users/' + this.userid + '/')
+    allList.on('value', (snap) => {
+      snap.forEach((child) => {
+        if (child.key == 'counter') {
+          streak = child.val();
+          this.streak = streak
+          this.setState({
+            checked: true
+          })
+        }
+      });
+    });
   }
 
   componentWillUnmount() {
@@ -80,7 +101,7 @@ class HomePage extends Component {
 
     var img = this.imgArray[index]
     //require('../constellation4.2.png')
-
+    if (this.state.checked == true) {
     return (
       <View style={{flex:1}}>
         <Image source={require('../skybg.jpeg')} style={localStyles.imageContainer}>
@@ -105,6 +126,8 @@ class HomePage extends Component {
         <NavBar navigator={this.props.navigator}/>
       </View>
     );
+  }
+  else return( <Loading/>)
   }
 }
 
