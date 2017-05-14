@@ -157,43 +157,43 @@ class SchedulePage extends Component {
   render() {
     return (
     <View style={styles.container}>
-    <Container style={{flex:10}}>
-      <Header style={{ backgroundColor: '#2f3d77', height:55}}>
-        <Left />
-        <Body>
-          <Title style={{color: 'white', fontFamily:'Avenir-medium'}}>Your Schedule</Title>
-        </Body>
-        <Right>
-          <View style={{paddingRight: 5}}>
-            <Icon onPress={()=>this._navigate()} name="add" style={{fontSize: 30, color: 'white', fontWeight:'bold'}}/>
-          </View>
-        </Right>
-      </Header>
-      <View style={styles.screenContainer}>
+      <Container style={{flex:10}}>
+        <Header style={{ backgroundColor: '#000048'}}>
+            <Left />
+            <Body>
+              <Title style={{color: 'white', fontFamily:'Avenir-medium'}}>Your Schedule</Title>
+            </Body>
+            <Right>
+              <View style={{paddingRight: 5}}>
+                <Icon onPress={()=>this._navigate()} name="add" style={{fontSize: 30, color: 'white', fontWeight:'bold'}}/>
+              </View>
+            </Right>
+        </Header>
 
-         <Card>
-             <CardItem header style={{backgroundColor: '#eaecef', height:35}}>
-                 <Text style={{color: 'black', fontSize: 14, fontFamily:'Avenir-medium'}}>{"Today's Events:"}</Text>
+        <View style={styles.screenContainer}>
+           <Card>
+             <CardItem header style={{backgroundColor: '#5CACEE', height:35}}>
+                 <Text style={{color: 'white', fontSize: 14, fontFamily:'Avenir-medium'}}>{"Today's Events:"}</Text>
              </CardItem>
              <ListView dataSource = {this.state.todayEvents}
                  renderRow={this._renderEvent.bind(this)}
                  enableEmptySections={true}
                  bounces={false}/>
-         </Card>
+           </Card>
 
-         <Card>
-             <CardItem header style={{backgroundColor: '#eaecef', height:35}}>
-                 <Text style={{color: 'black', fontSize: 14, fontFamily:'Avenir-medium'}}>All Events:</Text>
+           <Card>
+             <CardItem header style={{backgroundColor: '#5CACEE', height:35}}>
+                 <Text style={{color: 'white', fontSize: 14, fontFamily:'Avenir-medium'}}>All Events:</Text>
              </CardItem>
              <ListView dataSource = {this.state.allEvents}
                  renderRow={this._renderEvent.bind(this)}
                  enableEmptySections={true}
                  bounces={false}/>
-          </Card>
+            </Card>
 
-         </View>
-    </Container>
-    <NavBar navigator={this.props.navigator}/>
+           </View>
+      </Container>
+      <NavBar navigator={this.props.navigator}/>
     </View>
   );
   }

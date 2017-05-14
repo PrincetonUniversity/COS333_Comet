@@ -162,7 +162,7 @@ export default class StatsPage extends Component {
 
         <View style={styles.container}>
         <Container style={{flex:10}}>
-            <Header style={{ backgroundColor: '#1f1c3a' }}>
+            <Header style={{ backgroundColor: '#000048' }}>
               <Left/>
               <Body>
                 <Title style={{color: 'white', fontFamily:'Avenir-medium'}}>Your Stats</Title>
@@ -180,7 +180,7 @@ export default class StatsPage extends Component {
                 options={StreakOptions}
                 accessorKey="count" />
                 <Text style={{color: 'green', fontSize: 30, fontFamily:'Avenir-light'}}>{this.state.totalPresences}
-                  <Text style={{color: 'grey', fontSize: 30, fontFamily:'Avenir-light'}}> |
+                  <Text style={{color: '#545454', fontSize: 30, fontFamily:'Avenir-light'}}> |
                     <Text style={{color: 'red', fontSize: 30, fontFamily:'Avenir-light'}}> {this.state.totalAbsences}
                     </Text>
                   </Text>

@@ -171,25 +171,25 @@ class EventDisplay extends Component {
                   <Icon onPress={()=>this.setModalVisible(!this.state.modalVisible)} name="close" style={{fontSize: 35, fontWeight:'bold', color: 'black'}}/>
                 </View>
 
-                <View style={{alignItems: 'center'}}>
-                  <Text style={{fontWeight: 'bold', fontSize: 22, fontFamily:'Avenir-medium'}}>{this.props.event.eventName}</Text>
+                <View style={{alignItems: 'center',borderBottomWidth: .8,borderBottomColor: '#eaecef',}}>
+                  <Text style={{fontSize: 22, fontFamily:'Avenir-light', paddingBottom: 10, color: '#545454'}}>{this.props.event.eventName}</Text>
                 </View>
 
                 <View style={{marginTop:10}}>
                   <Text style={localStyles.locationText}>{locationText}</Text>
-                  <Text style={localStyles.eventText}>from {sTime} to {eTime}</Text>
+                  <Text style={localStyles.eventText}>{sTime} to {eTime}</Text>
                   <Text style={localStyles.eventText}>{dayDisplay}</Text>
                 </View>
 
                 <View style={{flexDirection:'row', justifyContent: 'space-around'}}>
-                  <TouchableHighlight onPress={()=>this._deleteEvent()}
-                                      style={styles.primaryButton}>
-                    <Text style={styles.primaryButtonText}>Delete</Text>
-                  </TouchableHighlight>
-                  <TouchableHighlight onPress={()=>this._editEvent()}
-                                      style={styles.primaryButton}>
-                    <Text style={styles.primaryButtonText}>Edit</Text>
-                  </TouchableHighlight>
+                  <Button info bordered onPress={()=>this._deleteEvent()}
+                          style={{padding: 10, marginTop: 50,width: 100,alignItems: 'center',justifyContent: 'center',}}>
+                    <Text style={{color: '#5CACEE', textAlign: 'center',fontSize: 16,fontFamily:'Avenir'}}>Delete</Text>
+                  </Button>
+                  <Button info onPress={()=>this._editEvent()}
+                          style={{padding: 10, marginTop: 50,width: 100,backgroundColor: '#5CACEE',alignItems: 'center',justifyContent: 'center',}}>
+                    <Text style={{color: 'white', textAlign: 'center',fontSize: 16,fontFamily:'Avenir'}}>Edit</Text>
+                  </Button>
                 </View>
               </View>
            </View>
@@ -224,21 +224,23 @@ var localStyles = StyleSheet.create({
     padding: 35,
     margin: 35,
   },
-  titleText: {
-    fontSize: 19,
+  rowText: {
+    fontSize: 15,
     alignItems: 'center',
     fontFamily:'Avenir'
   },
   eventText: {
-    fontSize: 17,
+    fontSize: 15,
     alignItems: 'center',
-    fontFamily:'Avenir'
+    fontFamily:'Avenir',
+    color: 'black'
   },
   locationText: {
-    fontSize: 17,
-    color: 'navy',
+    fontSize: 15,
+    color: 'black',
     alignItems: 'center',
-    fontFamily:'Avenir'
+    fontFamily:'Avenir',
+    paddingBottom: 15,
   },
 })
 

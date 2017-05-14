@@ -5,8 +5,13 @@ import {
   TextInput,
   View,
   TouchableHighlight,
-  ActivityIndicator, Alert
+  Image,
+  ActivityIndicator,
+  StyleSheet,
 } from 'react-native';
+import {
+  Form, Item, Input, Label, Button
+} from 'native-base';
 import React, {Component} from 'react';
 import SignupPage from './SignupPage';
 import styles from '../styles';
@@ -27,38 +32,42 @@ export default class LoginPage extends Component {
     // The content of the screen should be inputs for a username, password and submit button.
     // If we are loading then we display an ActivityIndicator.
     const content = this.state.loading ? <Loading/> :
-      <View>
-        <TextInput
-          style={styles.textInput}
-          onChangeText={(text) => this.setState({email: text})}
-          value={this.state.email}
-          placeholder={"Email Address"}/>
+    <Image source={require('../gaussian.png')} style={styles.imageContainer}>
+        <View style={styles.logoContainer}>
+          <Image
+            style = {styles.logo}
+            source={require('../comet_logo.png')}
+          />
+        </View>
 
-        <TextInput
-          style={styles.textInput}
-          onChangeText={(text) => this.setState({password: text})}
-          value={this.state.password}
-          secureTextEntry={true}
-          placeholder={"Password"} />
+        <Item underline>
+            <Input placeholder='Email address'
+              style={{fontSize: 16, color: 'rgba(255,255,255,0.7)',fontFamily: 'Avenir'}}
+              onChangeText={(text) => this.setState({email: text})}
+              value={this.state.email}
+              placeholderTextColor="rgba(255,255,255,0.7)"/>
+        </Item>
 
-        <TouchableHighlight
-          onPress={this.login.bind(this)}
-          style={styles.primaryButton}>
-          <Text style={styles.primaryButtonText}>Login</Text>
-        </TouchableHighlight>
+        <Item underline>
+            <Input placeholder='Password'
+              style={{fontSize: 16, color: 'rgba(255,255,255,0.7)',fontFamily: 'Avenir'}}
+              onChangeText={(text) => this.setState({password: text})}
+              value={this.state.password}
+              secureTextEntry={true}
+              placeholderTextColor="rgba(255,255,255,0.7)"/>
+        </Item>
 
-        <TouchableHighlight
-          onPress={this.goToSignup.bind(this)}
-          style={styles.transparentButton}>
-          <Text style={styles.transparentButtonText}>New here?</Text>
-        </TouchableHighlight>
-      </View>;
+        <Button block onPress={this.login.bind(this)} style={{backgroundColor: '#1C86EE', marginTop: 60, marginBottom: 20, marginHorizontal: 40, alignItems: 'center', justifyContent: 'center',}} >
+            <Text style={styles.loginButtonText}>Login</Text>
+        </Button>
+        <Button bordered block onPress={this.goToSignup.bind(this)} style={{marginHorizontal: 40, alignItems: 'center', justifyContent: 'center',}} >
+            <Text style={styles.loginButtonText}>New here?</Text>
+        </Button>
+    </Image>
 
   	return (
-  		<View style={styles.container}>
-        <View style={styles.body}>
+      <View style={{flex:1}}>
           {content}
-        </View>
       </View>
 		);
   }

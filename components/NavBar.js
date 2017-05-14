@@ -34,13 +34,13 @@ class NavBar extends Component {
       <View style = {styles.navContainer}>
         <View style={styles.navbar}>
           <TouchableOpacity onPress={()=>this._navigate("HomePage")} style={{flex:1, alignItems:'center'}}>
-            <Icon name="home" style={{fontSize: 25, color: 'white'}}/>
+            <Icon name="home" style={{fontSize: 22, color: 'white'}}/>
           </TouchableOpacity>
           <TouchableOpacity onPress={()=>this._navigate("SchedulePage")} style={{flex:1, alignItems:'center'}}>
-            <Icon name="calendar" style={{fontSize: 25, color: 'white'}}/>
+            <Icon name="calendar" style={{fontSize: 22, color: 'white'}}/>
           </TouchableOpacity>
           <TouchableOpacity onPress={()=>this._navigate("StatsPage")} style={{flex:1, alignItems:'center'}}>
-            <Icon name="stats" style={{fontSize: 25, color: 'white'}}/>
+            <Icon name="stats" style={{fontSize: 22, color: 'white'}}/>
           </TouchableOpacity>
         </View>
       </View>

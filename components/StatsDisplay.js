@@ -52,7 +52,7 @@ class StatsDisplay extends Component {
             <View style={localStyles.box2}>
               <Text style={{fontSize: 15, fontFamily:'Avenir', textAlign: 'right', color: 'green'}}>{this.props.event.presences}</Text>
             </View>
-            <View style={localStyles.box2}>
+            <View style={localStyles.box3}>
               <Text style={{fontSize: 15, fontFamily:'Avenir', textAlign: 'right', color: 'red'}}>{this.props.event.absences}</Text>
             </View>
           </View>
@@ -73,34 +73,10 @@ var localStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-around',
   },
-  eventCard: {
-    flex:1,
-    backgroundColor: 'white',
-    borderColor: '#eaecef',
-    borderWidth: 1,
-    padding: 35,
-    margin: 35,
-  },
-  titleText: {
-    fontSize: 19,
-    alignItems: 'center',
-    fontFamily:'Avenir'
-  },
-  eventText: {
-    fontSize: 17,
-    alignItems: 'center',
-    fontFamily:'Avenir'
-  },
-  locationText: {
-    fontSize: 17,
-    color: 'navy',
-    alignItems: 'center',
-    fontFamily:'Avenir'
-  },
   eventRow: {
     alignItems: 'center',
     padding: 12,
-    borderWidth: .5,
+    borderBottomWidth: 1,
     borderColor: '#eaecef',
     flexDirection: 'row'
   },
@@ -120,12 +96,15 @@ var localStyles = StyleSheet.create({
   },
   box1: {
     flex:10,
-    paddingHorizontal: 1,
+    paddingLeft: 15,
   },
   box2: {
     flex:1,
-    paddingHorizontal: 15,
   },
+  box3: {
+    flex:1,
+    paddingRight: 15,
+  }
 })
 
 module.exports = StatsDisplay;
