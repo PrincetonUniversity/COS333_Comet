@@ -1,8 +1,6 @@
 /*****************************/
- // handle tomorrow
- // behavior when editing events
+ // start-end without repeating
 /*****************************/
-
 
 'use strict';
 import React, {Component} from 'react';

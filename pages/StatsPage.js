@@ -44,11 +44,6 @@ export default class StatsPage extends Component {
   }
 
   componentDidMount() {
-    console.log("Mounted")
-  }
-
-  componentDidMount() {
-    console.log("I've Mounted")
     var allList = Firebase.database().ref('/users/' + this.userid + '/')
     var tAbsences = 1
     var tPresences = 1
@@ -69,16 +64,13 @@ export default class StatsPage extends Component {
   }
 
    _listenForEvents(eventsRef) {
-    console.log("listening")
     var allList = Firebase.database().ref('/users/' + this.userid + '/')
 
     // build list of today events & all events
     allList.on('value', (snap) => {
-      console.log("inside snap");
       var todayEvents = [];
       var allEvents = [];
       snap.forEach((child) => {
-        console.log("snapping child")
         // put all events into allEvents
         if (child.key != 'name' && child.key != 'today' && child.key != 'counter') {
           allEvents.push({
@@ -86,7 +78,6 @@ export default class StatsPage extends Component {
             absences: child.val().absent,
             presences: child.val().present,
           });
-          console.log("event: " + child.val().eventName)
         }
       });
     //  allEvents.sort(this._sortEvents);

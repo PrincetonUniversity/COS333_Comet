@@ -130,6 +130,9 @@ class AddPage extends Component {
     else if (endDate.getTime() < startDate.getTime()) {
       Alert.alert('Error', 'End date cannot come before start date.');
     }
+    else if (startDate.getTime() != endDate.getTime() && days.includes(" ")) {
+      Alert.alert('Error', 'No multi-day events.');
+    }
     else if (pass == false) {
       Alert.alert('Error', 'Event too close to another event.');
     }
@@ -144,6 +147,7 @@ class AddPage extends Component {
   }
 
   _isClose(startTime, endTime, startDate, endDate, day, other) {
+    var daysArray = ['', 'M', 'T', 'W', 'Th', 'F', 'Sat', 'Sun']
     var otherStartTime = moment(other.startTime, "h:mm A")
     var otherEndTime = moment(other.endTime, "h:mm A")
     var otherDays = other.day
@@ -155,6 +159,15 @@ class AddPage extends Component {
     var thisDays = day
     var thisStartDate = moment(startDate.toLocaleDateString(), 'MM/DD/YYYY')
     var thisEndDate = moment(endDate.toLocaleDateString(), 'MM/DD/YYYY')
+
+    // one-day event
+    if (thisDays.includes(" ")) {
+      thisDays.push(daysArray[thisStartDate.isoWeekday()])
+    }
+    // one-day event
+    if (otherDays.includes(" ")) {
+      otherDays.push(daysArray[otherStartDate.isoWeekday()])
+    }
 
     // on same day
     if (thisStartDate >= otherStartDate && thisStartDate <= otherEndDate) {
@@ -177,7 +190,7 @@ class AddPage extends Component {
         }
       }
     }
-    else if (otherStartDate >= thisStartDate && otherStartDate <= thisEndDate) {
+    if (otherStartDate >= thisStartDate && otherStartDate <= thisEndDate) {
       var shareDays = false
       for (var i = 0; i < otherDays.length; i++) {
         if (thisDays.includes(otherDays[i])) {
@@ -197,9 +210,7 @@ class AddPage extends Component {
         }
       }
     }
-    else {
-      return false
-    }
+    return false
   }
 
   _addItem() {

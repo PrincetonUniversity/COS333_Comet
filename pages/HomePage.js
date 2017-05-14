@@ -81,7 +81,8 @@ class HomePage extends Component {
   render() {
     var user = Firebase.auth().currentUser
     if (user) {
-      var name = Firebase.auth().currentUser.email
+      var username = Firebase.auth().currentUser.email.split("@")
+      var name = username[0]
     }
     var dateString = moment().format('LLLL').split(',')
     var date = (dateString[0] + ", " + dateString[1]).toLowerCase()
@@ -114,7 +115,7 @@ class HomePage extends Component {
             </View>
           </View>
           <View style={{flex:10, alignItems: 'center'}}>
-            <Text style={{color:'white', fontSize: 35, fontFamily:'Avenir-medium', paddingTop: 45}}>hello nina</Text>
+            <Text style={{color:'white', fontSize: 35, fontFamily:'Avenir-medium', paddingTop: 45}}>hello {name}</Text>
             <Text style={{color:'white', fontSize: 40, fontFamily:'Avenir-medium', paddingBottom: 20}}> {date} </Text>
             <Image source={img} style={localStyles.graphic}/>
             <View style={{flexDirection:'row', alignItems:'center'}}>
