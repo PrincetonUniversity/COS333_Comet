@@ -3,9 +3,12 @@ import React, {Component} from 'react';
 import {
   AppRegistry, Text, TextInput, View, TouchableHighlight,
   ActivityIndicator, Image, Alert, ListView, AlertIOS,
-  DatePickerIOS, StyleSheet, ScrollView, TouchableOpacity
-} from 'react-native';
+  DatePickerIOS, StyleSheet, ScrollView, TouchableOpacity,
+  StatusBar } from 'react-native';
+import {Container, Content, Header, Footer, FooterTab, Button, Icon, Left, Right,
+        Body, Title, Tab, Tabs} from 'native-base';
 import styles from '../styles';
+import NavBar from '../components/NavBar';
 import Firebase from '../components/Firebase';
 import RadioButton from '../components/RadioButton';
 import Accordion from 'react-native-collapsible/Accordion';
@@ -158,6 +161,26 @@ class AddPage extends Component {
 
     // on same day
     if (thisStartDate >= otherStartDate && thisStartDate <= otherEndDate) {
+      var shareDays = false
+      for (var i = 0; i < otherDays.length; i++) {
+        if (thisDays.includes(otherDays[i])) {
+          shareDays = true
+        }
+        else if (thisDays.length == 0 && otherDays.length == 0) {
+          shareDays = true
+        }
+      }
+      if (shareDays) {
+        // now, overlapping time
+        if (thisStartTime >= otherStartTime && thisStartTime <= otherEndTime) {
+          return true
+        }
+        if (otherStartTime >= thisStartTime && otherStartTime <= thisEndTime) {
+          return true
+        }
+      }
+    }
+    else if (otherStartDate >= thisStartDate && otherStartDate <= thisEndDate) {
       var shareDays = false
       for (var i = 0; i < otherDays.length; i++) {
         if (thisDays.includes(otherDays[i])) {
@@ -381,6 +404,8 @@ class AddPage extends Component {
           style={localStyles.inputRow}
           placeholder={"Title"}
           placeholderTextColor={'#d7dbe2'}
+          fontSize={17}
+          fontFamily={'Avenir'}
           onChangeText={(text) => this.setState({eventName: tr(text)})}
           maxLength = {50}/>
 
@@ -403,60 +428,72 @@ class AddPage extends Component {
 
         <View style={localStyles.inputRow}>
           <View style ={localStyles.inputText}>
-            <Text style={{fontFamily:'Avenir-medium', fontSize:17}}>Repeats</Text>
+            <Text style={{fontFamily:'Avenir-medium'}}>Repeats</Text>
           </View>
         </View>
 
         <View style={localStyles.repeatBody}>
           <View style = {localStyles.repeatItem}>
             <RadioButton call={this._Sun.bind(this)}/>
-            <Text style={{fontFamily:'Avenir', fontSize:17}}>Sun</Text>
+            <Text style={{fontFamily:'Avenir',}}>Sun</Text>
           </View>
           <View style = {localStyles.repeatItem}>
             <RadioButton call={this._M.bind(this)}/>
-            <Text style={{fontFamily:'Avenir', fontSize:17}}>M</Text>
+            <Text style={{fontFamily:'Avenir',}}>M</Text>
           </View>
           <View style = {localStyles.repeatItem}>
             <RadioButton call={this._T.bind(this)}/>
-            <Text style={{fontFamily:'Avenir', fontSize:17}}>T</Text>
+            <Text style={{fontFamily:'Avenir',}}>T</Text>
           </View>
           <View style = {localStyles.repeatItem}>
             <RadioButton call={this._W.bind(this)}/>
-            <Text style={{fontFamily:'Avenir', fontSize:17}}>W</Text>
+            <Text style={{fontFamily:'Avenir',}}>W</Text>
           </View>
           <View style = {localStyles.repeatItem}>
             <RadioButton call={this._Th.bind(this)}/>
-            <Text style={{fontFamily:'Avenir', fontSize:17}}>Th</Text>
+            <Text style={{fontFamily:'Avenir',}}>Th</Text>
           </View>
           <View style = {localStyles.repeatItem}>
             <RadioButton call={this._F.bind(this)}/>
-            <Text style={{fontFamily:'Avenir', fontSize:17}}>F</Text>
+            <Text style={{fontFamily:'Avenir',}}>F</Text>
           </View>
           <View style = {localStyles.repeatItem}>
             <RadioButton call={this._Sat.bind(this)}/>
-            <Text style={{fontFamily:'Avenir', fontSize:17}}>Sat</Text>
+            <Text style={{fontFamily:'Avenir',}}>Sat</Text>
           </View>
         </View>
       </View>;
 
     return (
       <View style={styles.container}>
-        <View style={styles.titleBar}>
-          <View style = {{flex: 1, marginTop: 20, marginRight: 17, flexDirection: 'row', justifyContent:'flex-end'}}>
-              <Text onPress={()=>this.props.navigator.pop()} style={{fontSize: 17, color: '#d7dbe2', fontFamily:'Avenir-medium'}}>Cancel</Text>
-          </View>
-          <View style = {{flex: 3, marginTop: 20, alignItems: 'center'}}>
-              <Text style={styles.titleBarText}>New Event</Text>
-          </View>
-          <View style = {{flex: 1, marginTop: 20, marginRight: 17, flexDirection: 'row', justifyContent:'flex-end'}}>
-              <Text onPress={this._checkRelative.bind(this)} style={{fontSize: 17, color: '#d7dbe2', fontFamily:'Avenir-medium'}}>Add</Text>
-          </View>
-        </View>
-        <ScrollView style={styles.container} bounces={false}>
-          <View>
-            {content}
-          </View>
-        </ScrollView>
+        <Container style={{flex:10}}>
+          <Header style={{ backgroundColor: '#000048' }}>
+            <Left>
+              <View style={{paddingLeft: 5}}>
+                  <Text onPress={()=>this.props.navigator.pop()} style={{fontSize: 15, color: 'white', fontFamily:'Avenir-medium'}}>Cancel</Text>
+              </View>
+            </Left>
+            <Body>
+              <Title style={{color: 'white', fontFamily:'Avenir-medium'}}>New Event</Title>
+            </Body>
+            <Right>
+              <View style={{paddingRight: 5}}>
+                  <Text onPress={this._checkFields.bind(this)} style={{fontSize: 15, color: 'white', fontFamily:'Avenir-medium'}}>Add</Text>
+              </View>
+            </Right>
+          </Header>
+          <StatusBar
+             barStyle="light-content"
+          />
+
+          <ScrollView style={styles.container}>
+            <View>
+              {content}
+            </View>
+          </ScrollView>
+
+        </Container>
+        <NavBar navigator={this.props.navigator}/>
       </View>
     );
   }
@@ -464,7 +501,7 @@ class AddPage extends Component {
 
 var localStyles = StyleSheet.create({
   inputRow: {
-    height: 60,
+    height: 50,
     backgroundColor:'white',
     borderColor: '#d7dbe2',
     borderBottomWidth: 1,
@@ -484,12 +521,11 @@ var localStyles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   dateText: {
-    color: '#1f1c3a',
+    color: '#000048',
     fontFamily:'Avenir',
-    fontSize:17
   },
   repeatBody: {
-    height: 70,
+    height: 65,
     backgroundColor: 'white',
     borderColor: '#d7dbe2',
     borderBottomWidth: 1,
@@ -499,14 +535,14 @@ var localStyles = StyleSheet.create({
     padding: 10,
   },
   repeatItem: {
-    height: 60,
+    height: 55,
     alignItems: 'center',
     flexDirection: 'column',
     justifyContent: 'space-around',
     padding: 7,
   },
   locationRow: {
-    height: 65,
+    height: 50,
     backgroundColor:'white',
     borderColor: '#d7dbe2',
     alignItems: 'center',
@@ -516,11 +552,11 @@ var localStyles = StyleSheet.create({
   },
   placeHolder: {
     color: '#d7dbe2',
-    fontSize: 17
+    fontSize: 17,
+    fontFamily: 'Avenir'
   },
   locationTextStyle: {
     fontFamily:'Avenir',
-    fontSize:17
   },
 })
 

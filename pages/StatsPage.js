@@ -1,4 +1,3 @@
-statspage.js:
 
 'use strict';
 import React, { Component } from 'react';
@@ -49,7 +48,7 @@ export default class StatsPage extends Component {
     console.log("Mounted")
   }
 
-  componentWillMount() {
+  componentDidMount() {
     console.log("I've Mounted")
     var allList = Firebase.database().ref('/users/' + this.userid + '/')
     var tAbsences = 1
@@ -191,7 +190,7 @@ export default class StatsPage extends Component {
                 options={StreakOptions}
                 accessorKey="count" />
                 <Text style={{color: 'green', fontSize: 30, fontFamily:'Avenir-light'}}>{this.state.totalPresences}
-                  <Text style={{color: 'grey', fontSize: 30, fontFamily:'Avenir-light'}}> |
+                  <Text style={{color: '#545454', fontSize: 30, fontFamily:'Avenir-light'}}> |
                     <Text style={{color: 'red', fontSize: 30, fontFamily:'Avenir-light'}}> {this.state.totalAbsences}
                     </Text>
                   </Text>

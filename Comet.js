@@ -118,6 +118,11 @@ class Comet extends Component {
     var start = this.counter
     if (this.state.todayEvents.length > start) {
       this.currentEvent = this.state.todayEvents[start] // {moment, key}
+
+      BackgroundTimer.clearTimeout(this.timer);
+      console.log("cleared timer # " + this.timer)
+      this.counter = 0
+
       checkTime();
     }
     else { // if no events, just go straight for tmrw
@@ -192,6 +197,7 @@ class Comet extends Component {
            });
          }
        });
+
        todayEvents.sort(this._sortEvents);
        this.counter = 0 //? correct?
        this.setState({
@@ -239,20 +245,16 @@ class Comet extends Component {
     todayList.on("child_added", (snap) => {
       // cancel current timer & restart at prev point. if already passed, just increment counter.
       console.log("you added a new event for today at " + snap.val())
-      if (this.timer) {
-        BackgroundTimer.clearTimeout(this.timer);
-        console.log("cleared timer # " + this.timer)
-        this.counter = 0
-      }
+      BackgroundTimer.clearTimeout(this.timer);
+      console.log("cleared timer # " + this.timer)
+      this.counter = 0
     });
 
     todayList.on("child_removed", (snap) => {
       console.log("you removed an event for today at " + snap.val())
-      if (this.timer && this.counter >= 0) { // should always be true but just in case
-        BackgroundTimer.clearTimeout(this.timer);
-        console.log("cleared timer # " + this.timer)
-        this.counter = 0
-      }
+      BackgroundTimer.clearTimeout(this.timer);
+      console.log("cleared timer # " + this.timer)
+      this.counter = 0
     });
   }
 

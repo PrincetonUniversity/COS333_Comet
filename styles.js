@@ -2,10 +2,19 @@ const React = require('react-native')
 const {StyleSheet} = React
 
 var styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		backgroundColor:'#eff3f9'
+	},
 	screenContainer: {
 		flex:10,
 		flexDirection: 'column',
-		backgroundColor: 'white',
+		backgroundColor: '#eff3f9',
+	},
+	imageContainer: {
+		flex: 1,
+		alignSelf: 'stretch',
+		width: null,
 	},
 	navContainer:{
 		flex:1,
@@ -14,96 +23,100 @@ var styles = StyleSheet.create({
 	navbar: {
 		flex:1,
 		alignItems: 'center',
-		backgroundColor: '#1f1c3a',
+		backgroundColor: '#000048',
 		borderColor: 'transparent',
 		borderWidth: 1,
 		justifyContent: 'space-around',
 		flexDirection: 'row'
 	},
-	//'#eaecef' gray
 	titleBar: {
 		flexDirection: 'row',
-		backgroundColor: '#2f3d77',
-		borderColor: 'gray',
-		borderBottomWidth: .5,
-		height: 55,
+		backgroundColor: '#483D8B',
+		height: 65,
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
 	titleBarText: {
-		fontSize: 20,
+		fontSize: 15,
+		fontWeight: 'bold',
 		color: 'white',
 		alignItems: 'center',
-		fontFamily:'Avenir-medium',
+	},
+	primaryButton: {
+		padding: 10,
+		marginTop: 40,
+		width: 100,
+		backgroundColor: '#5CACEE',
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	primaryButtonText: {
+		color: 'white',
+		textAlign: 'center',
+		fontSize: 16,
+		fontFamily:'Avenir'
 	},
 	xButton: {
-	    fontSize: 33,
-	    fontWeight:'bold',
-	    color: 'black'
-  	},
-
-  	// Formatting a Card
-  	cardBackground: {
-  		flex:1,
-  		backgroundColor: 'rgba(0,0,0,0.3)',
-  	},
-  	cardBody: {
-	    flex:1,
-	    backgroundColor: 'white',
-	    borderColor: '#eaecef',
-	    borderWidth: 1,
-	    paddingTop: 10,
-	    padding: 25,
-	    margin: 25,
-	},
-
-
-
-
-
-	/***********/
-	container: {
-	    flex: 1,
-			backgroundColor:'#eff3f9'
+    fontSize: 30,
+    fontWeight:'bold',
+    color: 'black'
 	},
  	toolbar: {
 	   	height: 56,
 	    backgroundColor: '#e9eaed',
 	},
 	textInput: {
-    backgroundColor: 'white',
-    borderColor: 'black',
-    borderWidth: 1,
-    height: 50,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+		fontSize: 16,
+		color: 'rgba(255,255,255,0.7)',
+		paddingHorizontal: 10,
+    height: 40,
     alignItems: 'center',
     justifyContent: 'space-around',
+		marginBottom: 20,
 	},
-	 transparentButton: {
-	    marginTop: 10,
-	    padding: 15
-	  },
-	  transparentButtonText: {
-	    color: '#0485A9',
-	    textAlign: 'center',
-	    fontSize: 16
-	  },
-	  primaryButton: {
-	    margin: 10,
-	    padding: 15,
-			width: 100,
-	    backgroundColor: '#d7dbe2',
-	  },
-	  primaryButtonText: {
-	    color: 'black',
-	    textAlign: 'center',
-	    fontSize: 20,
-			fontFamily:'Avenir-medium',
-	  },
-	  image: {
-	    width: 100,
-	    height: 100
-	  },
-	 /***/
+	image: {
+		width: 100,
+		height: 100,
+	},
+
+	//login and signup page styles
+	loginContainer: {
+		padding: 20,
+	},
+	logoContainer: {
+		marginTop: 80,
+		marginBottom: 40,
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	logo: {
+		width: 150,
+		height: 150,
+	},
+	loginButton: {
+		padding: 15,
+		marginTop: 60,
+		margin: 20,
+		backgroundColor: '#1C86EE',
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	loginButtonText: {
+		color: 'white',
+		textAlign: 'center',
+		fontSize: 16,
+		fontFamily: 'Avenir'
+	},
+	transparentButton: {
+	 marginTop: 10,
+ },
+ transparentButtonText: {
+	 color: '#5CACEE',
+	 textAlign: 'center',
+	 fontSize: 16,
+	 fontFamily: 'Avenir'
+ },
 })
 
 

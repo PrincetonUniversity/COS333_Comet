@@ -165,31 +165,31 @@ class EventDisplay extends Component {
           animationType={"none"}
           transparent={true}
           visible={this.state.modalVisible}>
-           <View style={styles.cardBackground}>
-              <View style={styles.cardBody}>
+          <View style={localStyles.cardBackground}>
+             <View style={localStyles.cardBody}>
                 <View style={{alignItems: 'flex-end'}}>
-                  <Icon onPress={()=>this.setModalVisible(!this.state.modalVisible)} name="close" style={{fontSize: 35, fontWeight:'bold', color: 'black'}}/>
+                  <Icon onPress={()=>this.setModalVisible(!this.state.modalVisible)} name="close" style={{fontSize: 30, fontWeight:'bold', color: 'black'}}/>
                 </View>
 
-                <View style={{alignItems: 'center'}}>
-                  <Text style={{fontWeight: 'bold', fontSize: 22, fontFamily:'Avenir-medium'}}>{this.props.event.eventName}</Text>
+                <View style={{alignItems: 'center',borderBottomWidth: .8,borderBottomColor: '#eaecef',}}>
+                  <Text style={{fontSize: 22, fontFamily:'Avenir-light', paddingBottom: 10, color: '#545454'}}>{this.props.event.eventName}</Text>
                 </View>
 
-                <View style={{marginTop:10}}>
+                <View style={{marginTop:25}}>
                   <Text style={localStyles.locationText}>{locationText}</Text>
-                  <Text style={localStyles.eventText}>from {sTime} to {eTime}</Text>
+                  <Text style={localStyles.eventText}>{sTime} to {eTime}</Text>
                   <Text style={localStyles.eventText}>{dayDisplay}</Text>
                 </View>
 
                 <View style={{flexDirection:'row', justifyContent: 'space-around'}}>
-                  <TouchableHighlight onPress={()=>this._deleteEvent()}
-                                      style={styles.primaryButton}>
-                    <Text style={styles.primaryButtonText}>Delete</Text>
-                  </TouchableHighlight>
-                  <TouchableHighlight onPress={()=>this._editEvent()}
-                                      style={styles.primaryButton}>
-                    <Text style={styles.primaryButtonText}>Edit</Text>
-                  </TouchableHighlight>
+                  <Button info bordered onPress={()=>this._deleteEvent()}
+                          style={{padding: 10, marginTop: 50,width: 100,alignItems: 'center',justifyContent: 'center',}}>
+                    <Text style={{color: '#5CACEE', textAlign: 'center',fontSize: 16,fontFamily:'Avenir'}}>Delete</Text>
+                  </Button>
+                  <Button info onPress={()=>this._editEvent()}
+                          style={{padding: 10, marginTop: 50,width: 100,backgroundColor: '#5CACEE',alignItems: 'center',justifyContent: 'center',}}>
+                    <Text style={{color: 'white', textAlign: 'center',fontSize: 16,fontFamily:'Avenir'}}>Edit</Text>
+                  </Button>
                 </View>
               </View>
            </View>
@@ -197,7 +197,7 @@ class EventDisplay extends Component {
 
         <TouchableHighlight onPress={()=>this._eventDetails()}>
           <View style={localStyles.eventContainer}>
-            <Text style={localStyles.titleText}>{this.props.event.eventName}</Text>
+            <Text style={localStyles.rowText}>{this.props.event.eventName}</Text>
           </View>
         </TouchableHighlight>
       </View>
@@ -205,7 +205,31 @@ class EventDisplay extends Component {
   }
 }
 
+// <TouchableHighlight onPress={()=>this._deleteEvent()}
+//                     style={styles.primaryButton}>
+//   <Text style={styles.primaryButtonText}>Delete</Text>
+// </TouchableHighlight>
+// <TouchableHighlight onPress={()=>this._editEvent()}
+//                     style={styles.primaryButton}>
+//   <Text style={styles.primaryButtonText}>Edit</Text>
+// </TouchableHighlight>
+
 var localStyles = StyleSheet.create({
+  cardBackground: {
+    flex:1,
+    backgroundColor: 'rgba(0,0,0,0.3)',
+  },
+  cardBody: {
+    flex:1,
+    backgroundColor: 'white',
+    borderColor: '#eaecef',
+    borderWidth: 1,
+    paddingTop: 10,
+    padding: 15,
+    margin: 40,
+    marginTop: 80,
+    marginBottom: 80,
+  },
   eventContainer: {
     flex:1,
     flexDirection: 'row',
@@ -224,21 +248,23 @@ var localStyles = StyleSheet.create({
     padding: 35,
     margin: 35,
   },
-  titleText: {
-    fontSize: 19,
+  rowText: {
+    fontSize: 15,
     alignItems: 'center',
     fontFamily:'Avenir'
   },
   eventText: {
-    fontSize: 17,
+    fontSize: 15,
     alignItems: 'center',
-    fontFamily:'Avenir'
+    fontFamily:'Avenir',
+    color: 'black'
   },
   locationText: {
-    fontSize: 17,
-    color: 'navy',
+    fontSize: 15,
+    color: 'black',
     alignItems: 'center',
-    fontFamily:'Avenir'
+    fontFamily:'Avenir',
+    paddingBottom: 15,
   },
 })
 
