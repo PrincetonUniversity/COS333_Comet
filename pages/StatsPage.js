@@ -1,47 +1,161 @@
-//to install:
-// npm install react-native-pathjs-charts --save
-// react-native link react-native-svg
-// in node-modules/react-native-svg go to android/build.gradle change to 23.0.1 and 22
+statspage.js:
 
+'use strict';
 import React, { Component } from 'react';
+import {
+  Container,
+  Content,
+  Header,
+  Footer,
+  FooterTab,
+  Button,
+  Icon,
+  Text,
+  Left,
+  Right,
+  Body,
+  Title,
+  Tab,
+  Tabs,
+  Item,
+  CardItem,
+  Card
+} from 'native-base';
+import {Pie, Bar} from 'react-native-pathjs-charts';
 import {
   AppRegistry,
   StyleSheet,
-  Text,
   View,
-  ScrollView
+  StatusBar,
+  ListView
 } from 'react-native';
-//import Bar from 'react-native-pathjs-charts';
-import {Pie, Bar} from 'react-native-pathjs-charts';
-import Svg from 'react-native-svg';
-
+import NavBar from '../components/NavBar';
+import styles from '../styles';
+import StatsDisplay from '../components/StatsDisplay';
+import Firebase from '../components/Firebase';
 export default class StatsPage extends Component {
   constructor(props) {
     super(props);
+    this.eventsRef = Firebase.database().ref()
+    this.userid = Firebase.auth().currentUser.uid
+    this.state = {
+      totalAbsences: 1,
+      totalPresences: 1,
+      allEvents: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
+    };
+  }
+
+  componentDidMount() {
+    console.log("Mounted")
+  }
+
+  componentWillMount() {
+    console.log("I've Mounted")
+    var allList = Firebase.database().ref('/users/' + this.userid + '/')
+    var tAbsences = 1
+    var tPresences = 1
+    // build list of today events & all events
+    allList.on('value', (snap) => {
+      snap.forEach((child) => {
+        if (child.key != 'name' && child.key != 'today' && child.key != 'counter') {
+          tAbsences += child.val().absent
+          tPresences += child.val().present
+        }
+      });
+      this.setState({
+        totalAbsences: tAbsences,
+        totalPresences: tPresences,
+      });
+    });
+    this._listenForEvents(this.eventsRef);
+  }
+
+   _listenForEvents(eventsRef) {
+    console.log("listening")
+    var allList = Firebase.database().ref('/users/' + this.userid + '/')
+
+    // build list of today events & all events
+    allList.on('value', (snap) => {
+      console.log("inside snap");
+      var todayEvents = [];
+      var allEvents = [];
+      snap.forEach((child) => {
+        console.log("snapping child")
+        // put all events into allEvents
+        if (child.key != 'name' && child.key != 'today' && child.key != 'counter') {
+          allEvents.push({
+            eventName: child.val().eventName,
+            absences: child.val().absent,
+            presences: child.val().present,
+          });
+          console.log("event: " + child.val().eventName)
+        }
+      });
+    //  allEvents.sort(this._sortEvents);
+      this.setState({
+        allEvents: this.state.allEvents.cloneWithRows(allEvents),
+      });
+    });
+  }
+
+  // sort events by their start times
+  _sortEvents(a, b) {
+    var aTime = moment(a.startTime, "h:mm A")
+    var bTime = moment(b.startTime, "h:mm A")
+    if (aTime < bTime)
+      return -1;
+    else if (aTime > bTime)
+      return 1;
+    return 0;
+  }
+
+ /* _renderEvent(event) {
+    return (
+      <View style={localStyles.eventRow}>
+        <View style={localStyles.box1}>
+          <Text style={{fontSize: 15, fontFamily:'Avenir'}}>{event}</Text>
+        </View>
+        <View style={localStyles.box2}>
+          <Text style={{fontSize: 15, fontFamily:'Avenir', textAlign: 'right', color: 'green'}}>40</Text>
+        </View>
+        <View style={localStyles.box2}>
+          <Text style={{fontSize: 15, fontFamily:'Avenir', textAlign: 'right', color: 'red'}}>10</Text>
+        </View>
+      </View>
+    );
+  }*/
+  _renderEvent(event) {
+    return (
+      <StatsDisplay event={event} navigator={this.props.navigator}></StatsDisplay>
+    );
   }
 
   render() {
+    var a = this.state.totalAbsences
+    var b = this.state.totalPresences
+    var absentCounts = []
+    var absentNames = []
 
     let StreakData = [{
       "name": "Absences",
-      "count": 50
+      "count": a,
     }, {
       "name": "Presences",
-      "count": 100
+      "count": b,
     }]
 
-    let StreakOptions = {
+     let StreakOptions = {
       margin: {
         top: 1,
         left: 1,
         right: 1,
         bottom: 1
       },
-      width: 150,
-      height: 150,
+      width: 300,
+      height: 300,
       color: '#2980B9',
-      r: 20,
-      R: 75,
+      r: 0,
+      R: 110,
       legendPosition: 'topLeft',
       animate: {
         type: 'oneByOne',
@@ -49,118 +163,86 @@ export default class StatsPage extends Component {
         fillTransition: 3
       },
       label: {
-        fontFamily: 'Arial',
+        fontFamily: 'Avenir',
         fontSize: 10,
         fontWeight: true,
         color: '#ECF0F1'
       }
     }
-
-  let data = [
-    [{
-      "v": 30,
-      "name": "Event 1"
-    }],
-    [{
-      "v": 23,
-      "name": "Event 2"
-    }],
-    [{
-      "v": 19,
-      "name": "Event 3"
-    }],
-    [{
-      "v": 10,
-      "name": "Event 4"
-    }],
-    [{
-      "v": 15,
-      "name": "Event 4"
-    }]
-  ]
-
-  let options = {
-    width: 200,
-    height: 150,
-    margin: {
-      top: 20,
-      left: 25,
-      bottom: 30,
-      right: 20
-    },
-    color: '#2980B9',
-    gutter: 20,
-    animate: {
-      type: 'oneByOne',
-      duration: 200,
-      fillTransition: 3
-    },
-    axisX: {
-      showAxis: true,
-      showLines: true,
-      showLabels: true,
-      showTicks: true,
-      zeroAxis: false,
-      orient: 'bottom',
-      label: {
-        fontFamily: 'Arial',
-        fontSize:10,
-        fontWeight: true,
-        fill: '#34495E'
-      }
-    },
-    axisY: {
-      showAxis: true,
-      showLines: true,
-      showLabels: true,
-      showTicks: true,
-      zeroAxis: false,
-      orient: 'left',
-      label: {
-        fontFamily: 'Arial',
-        fontSize: 10,
-        fontWeight: true,
-        fill: '#34495E'
-      }
-    }
-  }
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Your Streak:
-        </Text>
-        <ScrollView>
-          <Text></Text>
-        </ScrollView>
-        <Pie
-          data={StreakData} />
 
-{/*        <Text style={{backgroundColor: '#eaecef'}}>Events for Today:</Text>
-         <ListView dataSource = {this.state.todayEvents}
+        <View style={styles.container}>
+        <Container style={{flex:10}}>
+            <Header style={{ backgroundColor: '#1f1c3a' }}>
+              <Left/>
+              <Body>
+                <Title style={{color: 'white', fontFamily:'Avenir-medium'}}>Your Stats</Title>
+              </Body>
+              <Right/>
+            </Header>
+            <StatusBar
+               barStyle="light-content"
+            />
+
+            <View style={styles.screenContainer}>
+              <Body>
+                    <Pie
+                data={StreakData}
+                options={StreakOptions}
+                accessorKey="count" />
+                <Text style={{color: 'green', fontSize: 30, fontFamily:'Avenir-light'}}>{this.state.totalPresences}
+                  <Text style={{color: 'grey', fontSize: 30, fontFamily:'Avenir-light'}}> |
+                    <Text style={{color: 'red', fontSize: 30, fontFamily:'Avenir-light'}}> {this.state.totalAbsences}
+                    </Text>
+                  </Text>
+                </Text>
+              </Body>
+              <Content/>
+              <Card>
+                  <CardItem header style={{backgroundColor: '#5CACEE', height:35}}>
+                      <Text style={{color: 'white', fontSize: 14, fontFamily:'Avenir-medium'}}>{"Your Events:"}</Text>
+                  </CardItem>
+                  <ListView dataSource={this.state.allEvents}
                     renderRow={this._renderEvent.bind(this)}
-                    enableEmptySections={true}/>
-*/}
-      </View>
+                    enableEmptySections={true}
+                    bounces={false}/>
+              </Card>
+            </View>
+
+          </Container>
+          <NavBar navigator={this.props.navigator}/>
+        </View>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
+const localStyles = StyleSheet.create({
+  eventRow: {
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    padding: 12,
+    borderWidth: .5,
+    borderColor: '#eaecef',
+    flexDirection: 'row'
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
+  eventTitle: {
+    fontSize: 15,
+    fontFamily:'Avenir'
   },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
+  present: {
+    fontSize: 15,
+    fontFamily:'Avenir',
+    color: 'green'
+  },
+  absent: {
+    fontSize: 15,
+    fontFamily:'Avenir',
+    color: 'red'
+  },
+  box1: {
+    flex:8,
+  },
+  box2: {
+    flex:1,
   },
 });
 

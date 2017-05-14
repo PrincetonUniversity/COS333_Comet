@@ -27,6 +27,7 @@ class HomePage extends Component {
     this.currentEvent = null,
     this.counter = 0
     this.imgArray = [img0, img1, img2, img3, img4, img5, img6, img7]
+    this.streak = 0
   }
 
   componentWillUnmount() {
@@ -64,7 +65,7 @@ class HomePage extends Component {
     var dateString = moment().format('LLLL').split(',')
     var date = (dateString[0] + ", " + dateString[1]).toLowerCase()
 
-    var streak = 0
+    var streak = this.streak
     var index = 0
     var allList = Firebase.database().ref().child('/users/' + this.userid + '/')
     allList.once('value', (snap) => {
@@ -72,6 +73,7 @@ class HomePage extends Component {
         if (child.key == 'counter') {
           streak = child.val();
           index = child.val() % 7
+          this.streak = streak
         }
       });
     });
