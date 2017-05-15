@@ -45,8 +45,8 @@ export default class StatsPage extends Component {
 
   componentDidMount() {
     var allList = Firebase.database().ref('/users/' + this.userid + '/')
-    var tAbsences = 1
-    var tPresences = 1
+    var tAbsences = 0
+    var tPresences = 0
     // build list of today events & all events
     allList.on('value', (snap) => {
       snap.forEach((child) => {
